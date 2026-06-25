@@ -3,7 +3,8 @@ import fs from 'fs'
 import path from 'path'
 import { fetchWc2026Data } from '@/lib/apiFootball'
 import { readOverlayCache, writeOverlayCache, isCacheFresh } from '@/lib/overlayCache'
-import { isJsonFreshForToday } from '@/lib/liveOverlay'
+import { isJsonFreshForToday, mergeApiOverlay } from '@/lib/liveOverlay'
+import { dbUpsert, dbGet } from '@/lib/db/helpers'
 
 export const dynamic = 'force-dynamic'
 
@@ -19,21 +20,26 @@ async function handleSync(req: NextRequest) {
     }
   }
 
-  // 2. Read raw JSON, check freshness
+  // 2. Read base JSON (from DB if available, otherwise from file)
   let raw: any
   try {
-    const filePath = path.join(process.cwd(), 'public/data/wc-2026.json')
-    const content = fs.readFileSync(filePath, 'utf8')
-    raw = JSON.parse(content)
+    const dbData = await dbGet('wc-2026')
+    if (dbData) {
+      raw = dbData
+    } else {
+      const filePath = path.join(process.cwd(), 'public/data/wc-2026.json')
+      raw = JSON.parse(fs.readFileSync(filePath, 'utf8'))
+    }
   } catch {
-    return NextResponse.json({ status: 'error', reason: 'failed_to_read_json' })
+    return NextResponse.json({ status: 'error', reason: 'failed_to_read_data' })
   }
 
+  // 3. Check if JSON is already fresh (all today's matches have results)
   if (isJsonFreshForToday(raw, now)) {
-    return NextResponse.json({ status: 'skipped', reason: 'json_is_fresh' })
+    return NextResponse.json({ status: 'skipped', reason: 'data_is_fresh' })
   }
 
-  // 3. Check cache freshness
+  // 4. Check /tmp overlay cache freshness
   const cache = readOverlayCache()
   if (cache && isCacheFresh(cache, now)) {
     return NextResponse.json({
@@ -43,18 +49,31 @@ async function handleSync(req: NextRequest) {
     })
   }
 
-  // 4. Call API
+  // 5. Fetch live data from API-FOOTBALL
   const apiData = await fetchWc2026Data()
-  if (apiData) {
-    writeOverlayCache(apiData)
-    return NextResponse.json({
-      status: 'synced',
-      matchesAvailable: apiData.fixtures.length,
-    })
+  if (!apiData) {
+    return NextResponse.json({ status: 'error', reason: 'api_failed' })
   }
 
-  // 5. API failed — return error but with 200 so cron doesn't retry aggressively
-  return NextResponse.json({ status: 'error', reason: 'api_failed' })
+  // 6. Write to /tmp overlay cache (for fast same-container reads)
+  writeOverlayCache(apiData)
+
+  // 7. Merge API data into the base JSON
+  const mergeResult = mergeApiOverlay(raw, apiData)
+  const enriched = mergeResult.tournament
+
+  // 8. Persist merged data to DB (so it survives across Vercel deployments)
+  if (mergeResult.matchesUpdated > 0) {
+    await dbUpsert('wc-2026', enriched)
+  }
+
+  return NextResponse.json({
+    status: 'synced',
+    matchesAvailable: apiData.fixtures.length,
+    matchesUpdated: mergeResult.matchesUpdated,
+    liveMatchCount: mergeResult.liveMatchCount,
+    persistedToDb: mergeResult.matchesUpdated > 0,
+  })
 }
 
 export function GET(req: NextRequest) {

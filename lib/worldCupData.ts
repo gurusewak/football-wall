@@ -165,6 +165,7 @@ function normalizeV2(raw: any): Tournament {
         rank: l.rank,
         playerName: l.playerName,
         teamId: l.teamId ?? '',
+        teamName: l.teamName ?? undefined,
         goals: l.goals ?? null,
         assists: l.assists ?? null,
       })),

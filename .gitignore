@@ -31,3 +31,9 @@ __v0_jsx-dev-runtime.ts
 
 # pnpm
 .pnpm-debug.log*
+
+# Local API response cache (used by enrichment scripts)
+.api-cache/
+
+# Script output files (not part of the app)
+public/data/api-ingestion-report.json

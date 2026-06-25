@@ -234,6 +234,44 @@ export function StatsPanel({ tournament }: { tournament: Tournament }) {
       }
     }
 
+    // ── Player leaderboards from awardStandings ───────────────────────────────
+    const teamFlagById = new Map<string, string>()
+    for (const t of allTeams) {
+      if (t.id) teamFlagById.set(t.id, t.flagCode)
+    }
+
+    const goldenBootStanding = (tournament.awardStandings ?? []).find(s =>
+      s.awardName.toLowerCase().includes('boot') || s.awardName.toLowerCase().includes('scorer')
+    )
+    const topAssistsStanding = (tournament.awardStandings ?? []).find(s =>
+      s.awardName.toLowerCase().includes('assist')
+    )
+
+    const topScorers = (goldenBootStanding?.leaders ?? []).slice(0, 10).map(l => ({
+      ...l,
+      flagCode: teamFlagById.get(l.teamId) ?? '',
+      displayTeam: l.teamName ?? l.teamId,
+    }))
+
+    const topAssists = (topAssistsStanding?.leaders ?? []).slice(0, 5).map(l => ({
+      ...l,
+      flagCode: teamFlagById.get(l.teamId) ?? '',
+      displayTeam: l.teamName ?? l.teamId,
+    }))
+
+    // ── Yellow card leaders from match events ─────────────────────────────────
+    const yellowMap = new Map<string, { name: string; team: string; flagCode: string; count: number }>()
+    for (const m of allCompleted) {
+      for (const c of (m.cards as any[]) ?? []) {
+        const pName = c.playerName ?? c.player
+        if (!pName || c.cardType !== 'yellow') continue
+        const entry = yellowMap.get(pName) ?? { name: pName, team: c.team ?? m.homeTeam, flagCode: teamFlagMap.get(c.team ?? '') ?? '', count: 0 }
+        entry.count++
+        yellowMap.set(pName, entry)
+      }
+    }
+    const topYellowCards = [...yellowMap.values()].filter(p => p.count >= 2).sort((a, b) => b.count - a.count).slice(0, 5)
+
     // ── Awards — merge winners with goal counts from standings ────────────────
     const standingsGoalMap = new Map<string, number>()
     for (const s of tournament.awardStandings ?? []) {
@@ -277,12 +315,16 @@ export function StatsPanel({ tournament }: { tournament: Tournament }) {
       bestGD,
       mostWins,
       topCleanSheets,
+      topScorers,
+      topAssists,
+      topYellowCards,
       highestScoring,
       biggestMargin,
       awards,
       facts: tournament.facts ?? [],
       hasMatchData: allCompleted.length > 0,
       hasKnockoutData: completedKnockout.length > 0,
+      hasPlayerData: topScorers.length > 0,
     }
   }, [tournament])
 
@@ -372,6 +414,87 @@ export function StatsPanel({ tournament }: { tournament: Tournament }) {
         )}
 
       </div>
+
+      {/* ── Player Leaderboards ── */}
+      {stats.hasPlayerData && (
+        <>
+          <Divider />
+          <SectionTitle>Player Leaderboards</SectionTitle>
+          <div style={{ display: 'flex', gap: 10, flexWrap: 'wrap', marginBottom: 4 }}>
+
+            <StatCard title="Golden Boot — Top Scorers">
+              {stats.topScorers.map((p, i) => (
+                <div
+                  key={p.playerName + i}
+                  style={{
+                    display: 'flex',
+                    alignItems: 'center',
+                    gap: 6,
+                    padding: '4px 0',
+                    borderBottom: i < stats.topScorers.length - 1 ? '1px solid rgba(255,255,255,0.04)' : 'none',
+                  }}
+                >
+                  <span style={{ fontSize: 11, color: '#555', width: 14, textAlign: 'right', flexShrink: 0 }}>{i + 1}</span>
+                  <span style={{ fontSize: 13, flexShrink: 0, lineHeight: 1 }}>{flagEmoji(p.flagCode)}</span>
+                  <span style={{ fontSize: 12, color: '#b0b0b0', flex: 1, overflow: 'hidden', textOverflow: 'ellipsis', whiteSpace: 'nowrap' }}>
+                    {p.playerName}
+                  </span>
+                  <span style={{ fontSize: 11, color: '#666', flexShrink: 0, marginRight: 4 }}>{p.displayTeam}</span>
+                  <span style={{ fontSize: 13, fontVariantNumeric: 'tabular-nums', fontWeight: 600, color: '#e8c86a', flexShrink: 0 }}>
+                    {p.goals}
+                    <span style={{ fontSize: 10, color: '#666', marginLeft: 2 }}>g</span>
+                  </span>
+                </div>
+              ))}
+            </StatCard>
+
+            {stats.topAssists.length > 0 && (
+              <StatCard title="Top Assists">
+                {stats.topAssists.map((p, i) => (
+                  <div
+                    key={p.playerName + i}
+                    style={{
+                      display: 'flex',
+                      alignItems: 'center',
+                      gap: 6,
+                      padding: '4px 0',
+                      borderBottom: i < stats.topAssists.length - 1 ? '1px solid rgba(255,255,255,0.04)' : 'none',
+                    }}
+                  >
+                    <span style={{ fontSize: 11, color: '#555', width: 14, textAlign: 'right', flexShrink: 0 }}>{i + 1}</span>
+                    <span style={{ fontSize: 13, flexShrink: 0, lineHeight: 1 }}>{flagEmoji(p.flagCode)}</span>
+                    <span style={{ fontSize: 12, color: '#b0b0b0', flex: 1, overflow: 'hidden', textOverflow: 'ellipsis', whiteSpace: 'nowrap' }}>
+                      {p.playerName}
+                    </span>
+                    <span style={{ fontSize: 11, color: '#666', flexShrink: 0, marginRight: 4 }}>{p.displayTeam}</span>
+                    <span style={{ fontSize: 13, fontVariantNumeric: 'tabular-nums', fontWeight: 600, color: '#9eb8cf', flexShrink: 0 }}>
+                      {p.assists}
+                      <span style={{ fontSize: 10, color: '#666', marginLeft: 2 }}>a</span>
+                    </span>
+                  </div>
+                ))}
+              </StatCard>
+            )}
+
+            {stats.topYellowCards.length > 0 && (
+              <StatCard title="Most Yellow Cards">
+                {stats.topYellowCards.map((p, i) => (
+                  <TeamRow
+                    key={p.name + i}
+                    rank={i + 1}
+                    flagCode={p.flagCode}
+                    name={p.name}
+                    value={p.count}
+                    valueLabel="yc"
+                    accent="#e8d06a"
+                  />
+                ))}
+              </StatCard>
+            )}
+
+          </div>
+        </>
+      )}
 
       {/* ── Match Records ── */}
       {stats.hasMatchData && (
@@ -484,7 +607,7 @@ export function StatsPanel({ tournament }: { tournament: Tournament }) {
       {/* ── Transparency Note ── */}
       <div style={{ height: 1, background: 'rgba(255,255,255,0.04)', margin: '14px 0 12px' }} />
       <div style={{ fontSize: 11, color: '#555', lineHeight: 1.55 }}>
-        Stats computed from available match data. Individual scorer and card data is not tracked in this dataset. Clean sheets derived from match scorelines. ET and penalty counts reflect available match records.
+        Stats computed from available match data. Scorer and card data available for 2010–2026 via API-Football. Clean sheets derived from match scorelines.
       </div>
 
     </motion.div>

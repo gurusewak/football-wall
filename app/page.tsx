@@ -129,10 +129,10 @@ export default function Page() {
   const [apiUpdatedAt, setApiUpdatedAt] = useState<string | null>(null)
 
   useEffect(() => {
-    // Load wc-index.json for file paths + latestYear, then enrich with winner names from world-cups.json
+    // Load year index and winner data from DB-backed API endpoints (fall back to JSON if DB unavailable)
     Promise.all([
-      fetch('/data/wc-index.json').then(r => r.json()),
-      fetch('/data/world-cups.json').then(r => r.json()),
+      fetch('/api/worldcup/index').then(r => r.json()),
+      fetch('/api/worldcup/world-cups').then(r => r.json()),
     ]).then(([idx, allData]) => {
       // Build winner map: year → winner name
       const winnerMap = new Map<number, string>()
@@ -166,7 +166,8 @@ export default function Page() {
     }
     setLoading(true)
 
-    // For 2026, use the live overlay API endpoint
+    // For 2026, use the live overlay API endpoint (reads from DB + API-FOOTBALL overlay)
+    // For all other years, read from DB-backed data endpoint (seeds DB from JSON if needed)
     const fetchPromise = selectedYear === 2026
       ? fetch('/api/worldcup/2026/live')
           .then(r => r.json())
@@ -176,12 +177,11 @@ export default function Page() {
             return resp.tournament
           })
           .catch(() => {
-            // Fallback to static JSON if API route errors
             setDataSource('json')
             setApiUpdatedAt(null)
-            return fetch(entry.file).then(r => r.json())
+            return fetch(`/api/worldcup/data?year=${selectedYear}`).then(r => r.json())
           })
-      : fetch(entry.file).then(r => r.json())
+      : fetch(`/api/worldcup/data?year=${selectedYear}`).then(r => r.json())
 
     fetchPromise
       .then(data => {

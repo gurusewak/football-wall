@@ -98,6 +98,7 @@ export interface AwardLeader {
   rank: number
   playerName: string
   teamId: string
+  teamName?: string
   goals: number | null
   assists: number | null
 }
