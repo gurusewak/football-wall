@@ -1,6 +1,7 @@
 'use client'
 
 import { useEffect, useRef, useLayoutEffect, useState, useCallback } from 'react'
+import { toPng } from 'html-to-image'
 import { motion, AnimatePresence } from 'framer-motion'
 import { Tournament } from '@/lib/types'
 import { CompactGroupTable } from '@/components/CompactGroupTable'
@@ -38,6 +39,27 @@ function WallChartPoster({ tournament, simKey, onSimulate, onMatchClick }: {
   const leftGroups  = tournament.groups.slice(0, Math.ceil(tournament.groups.length / 2))
   const rightGroups = tournament.groups.slice(Math.ceil(tournament.groups.length / 2))
 
+  const chartRef = useRef<HTMLDivElement>(null)
+  const [exporting, setExporting] = useState(false)
+
+  async function handleExport() {
+    if (!chartRef.current || exporting) return
+    setExporting(true)
+    try {
+      const dataUrl = await toPng(chartRef.current, {
+        pixelRatio: 2,
+        backgroundColor: '#070707',
+        style: { borderRadius: '0' },
+      })
+      const a = document.createElement('a')
+      a.href = dataUrl
+      a.download = `wc-${tournament.year ?? 'wall'}-chart.png`
+      a.click()
+    } finally {
+      setExporting(false)
+    }
+  }
+
   return (
     // Full-size bracket — always scrollable, never shrunk
     <div
@@ -46,8 +68,8 @@ function WallChartPoster({ tournament, simKey, onSimulate, onMatchClick }: {
     >
       <div style={{ width: NATURAL_W, margin: '0 auto' }}>
 
-        {/* Simulate button */}
-        <div style={{ paddingLeft: '10px', paddingBottom: '8px' }}>
+        {/* Button row: Simulate left | Export right */}
+        <div style={{ paddingLeft: '10px', paddingRight: '10px', paddingBottom: '8px', display: 'flex', justifyContent: 'space-between', alignItems: 'center' }}>
           <motion.button
             initial={{ opacity: 0, y: -4 }}
             animate={{ opacity: 1, y: 0 }}
@@ -62,9 +84,27 @@ function WallChartPoster({ tournament, simKey, onSimulate, onMatchClick }: {
             <span style={{ fontSize: '11px' }}>▶</span>
             <span>{simKey > 0 ? 'Re-simulate' : 'Simulate'}</span>
           </motion.button>
+
+          <motion.button
+            initial={{ opacity: 0, y: -4 }}
+            animate={{ opacity: 1, y: 0 }}
+            transition={{ delay: 0.6 }}
+            onClick={handleExport}
+            disabled={exporting}
+            className="flex items-center gap-1.5 px-3 py-1.5 rounded"
+            style={{
+              background: 'rgba(255,255,255,0.07)', border: '1px solid rgba(255,255,255,0.14)',
+              color: exporting ? '#666' : '#c0c0c0', fontSize: '12px', fontWeight: 600,
+              letterSpacing: '0.06em', cursor: exporting ? 'default' : 'pointer',
+            }}
+          >
+            <span style={{ fontSize: '11px' }}>↓</span>
+            <span>{exporting ? 'Exporting…' : 'Export HD'}</span>
+          </motion.button>
         </div>
 
         <motion.div
+          ref={chartRef}
           initial={{ opacity: 0 }}
           animate={{ opacity: 1 }}
           transition={{ duration: 0.45 }}
@@ -107,7 +147,7 @@ export default function WorldCupApp({ initialYear }: { initialYear?: number }) {
   const [loading, setLoading]                 = useState(true)
   const [tab, setTab]                         = useState<Tab>('brackets')
   const [simKey, setSimKey]                   = useState(0)
-  const [dataSource, setDataSource]           = useState<'json' | 'json+api' | null>(null)
+  const [dataSource, setDataSource]           = useState<'json' | 'json+api' | 'db' | null>(null)
   const [apiUpdatedAt, setApiUpdatedAt]       = useState<string | null>(null)
   const [now, setNow]                         = useState<number | null>(null)
   const [selectedMatchId, setSelectedMatchId] = useState<string | null>(null)
@@ -181,7 +221,7 @@ export default function WorldCupApp({ initialYear }: { initialYear?: number }) {
     const fetchPromise = selectedYear === 2026
       ? fetch('/api/worldcup/2026/live')
           .then(r => r.json())
-          .then((resp: { tournament: any; meta: { dataSource: 'json' | 'json+api'; apiCacheFetchedAt: string | null; matchesUpdated: number; liveMatchCount: number } }) => {
+          .then((resp: { tournament: any; meta: { dataSource: 'json' | 'json+api' | 'db'; apiCacheFetchedAt: string | null; matchesUpdated: number; liveMatchCount: number } }) => {
             setDataSource(resp.meta.dataSource)
             setApiUpdatedAt(resp.meta.apiCacheFetchedAt)
             return resp.tournament

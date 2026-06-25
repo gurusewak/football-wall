@@ -1,8 +1,8 @@
+import 'server-only'
 import { NextRequest, NextResponse } from 'next/server'
 import fs from 'fs'
 import path from 'path'
 import { fetchWc2026Data } from '@/lib/apiFootball'
-import { readOverlayCache, writeOverlayCache, isCacheFresh } from '@/lib/overlayCache'
 import { isJsonFreshForToday, mergeApiOverlay } from '@/lib/liveOverlay'
 import { dbUpsert, dbGet } from '@/lib/db/helpers'
 
@@ -34,45 +34,30 @@ async function handleSync(req: NextRequest) {
     return NextResponse.json({ status: 'error', reason: 'failed_to_read_data' })
   }
 
-  // 3. Check if JSON is already fresh (all today's matches have results)
+  // 3. Skip only if all today's matches are already complete with scores
   if (isJsonFreshForToday(raw, now)) {
     return NextResponse.json({ status: 'skipped', reason: 'data_is_fresh' })
   }
 
-  // 4. Check /tmp overlay cache freshness
-  const cache = readOverlayCache()
-  if (cache && isCacheFresh(cache, now)) {
-    return NextResponse.json({
-      status: 'skipped',
-      reason: 'cache_is_fresh',
-      cachedAt: cache.fetchedAt,
-    })
-  }
-
-  // 5. Fetch live data from API-FOOTBALL
+  // 4. Fetch live data from API-FOOTBALL
   const apiData = await fetchWc2026Data()
   if (!apiData) {
     return NextResponse.json({ status: 'error', reason: 'api_failed' })
   }
 
-  // 6. Write to /tmp overlay cache (for fast same-container reads)
-  writeOverlayCache(apiData)
-
-  // 7. Merge API data into the base JSON
+  // 5. Merge API data into the base JSON (scores, events, stats, standings)
   const mergeResult = mergeApiOverlay(raw, apiData)
   const enriched = mergeResult.tournament
 
-  // 8. Persist merged data to DB (so it survives across Vercel deployments)
-  if (mergeResult.matchesUpdated > 0) {
-    await dbUpsert('wc-2026', enriched)
-  }
+  // 6. Always persist to DB so page loads always get the latest data
+  await dbUpsert('wc-2026', enriched)
 
   return NextResponse.json({
     status: 'synced',
     matchesAvailable: apiData.fixtures.length,
     matchesUpdated: mergeResult.matchesUpdated,
     liveMatchCount: mergeResult.liveMatchCount,
-    persistedToDb: mergeResult.matchesUpdated > 0,
+    persistedToDb: true,
   })
 }
 
