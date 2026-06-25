@@ -173,7 +173,7 @@ export default function WorldCupApp({ initialYear }: { initialYear?: number }) {
       const t = setTimeout(() => {
         setTournament(cache.get(selectedYear)!)
         setLoading(false)
-      }, 350)
+      }, 700)
       return () => clearTimeout(t)
     }
     setLoading(true)
