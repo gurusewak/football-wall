@@ -245,7 +245,17 @@ export default function Page() {
           </span>
         </button>
 
-        <YearSelector yearIndex={yearIndex} selectedYear={selectedYear} onChange={changeYear} />
+        <div className="flex items-center gap-3">
+          {selectedYear === 2026 && dataSource && (
+            <span style={{ fontSize: 11, letterSpacing: '0.07em', color: '#555', display: 'flex', alignItems: 'center', gap: '5px' }}>
+              <span style={{ fontSize: 7, lineHeight: 1, color: dataSource === 'json+api' ? '#666' : '#444' }}>●</span>
+              {dataSource === 'json+api'
+                ? `Live · ${apiUpdatedAt ? Math.round((Date.now() - new Date(apiUpdatedAt).getTime()) / 60000) + 'm ago' : 'synced'}`
+                : 'Cached'}
+            </span>
+          )}
+          <YearSelector yearIndex={yearIndex} selectedYear={selectedYear} onChange={changeYear} />
+        </div>
       </div>
 
       {/* ── Title section ── */}
@@ -274,44 +284,6 @@ export default function Page() {
           </p>
         </motion.div>
       </div>
-
-      {/* ── Data source badge (2026 only) ── */}
-      {selectedYear === 2026 && dataSource && (
-        <div className="flex items-center justify-center mb-2">
-          {dataSource === 'json+api' ? (
-            <span
-              style={{
-                fontSize: 11,
-                letterSpacing: '0.08em',
-                color: 'rgba(74, 222, 128, 0.75)',
-                display: 'flex',
-                alignItems: 'center',
-                gap: '5px',
-              }}
-            >
-              <span style={{ fontSize: 8, lineHeight: 1 }}>●</span>
-              Live overlay
-              {apiUpdatedAt
-                ? ` · updated ${Math.round((Date.now() - new Date(apiUpdatedAt).getTime()) / 60000)} min ago`
-                : ''}
-            </span>
-          ) : (
-            <span
-              style={{
-                fontSize: 11,
-                letterSpacing: '0.08em',
-                color: 'rgba(120, 120, 120, 0.7)',
-                display: 'flex',
-                alignItems: 'center',
-                gap: '5px',
-              }}
-            >
-              <span style={{ fontSize: 8, lineHeight: 1 }}>●</span>
-              From JSON bundle
-            </span>
-          )}
-        </div>
-      )}
 
       {/* ── Tab bar ── */}
       <div className="flex items-center justify-center gap-1.5 mb-5 px-4">
