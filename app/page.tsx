@@ -137,6 +137,10 @@ export default function Page() {
   const [simKey, setSimKey]             = useState(0)
   const [dataSource, setDataSource]     = useState<'json' | 'json+api' | null>(null)
   const [apiUpdatedAt, setApiUpdatedAt] = useState<string | null>(null)
+  const [now, setNow]                   = useState<number | null>(null)
+
+  // Populate `now` only on the client to avoid SSR/hydration mismatch with Date.now()
+  useEffect(() => { setNow(Date.now()) }, [])
 
   useEffect(() => {
     // Load year index and winner data from DB-backed API endpoints (fall back to JSON if DB unavailable)
@@ -260,14 +264,15 @@ export default function Page() {
             <span style={{ fontSize: 11, letterSpacing: '0.07em', color: '#555', display: 'flex', alignItems: 'center', gap: '5px' }}>
               <span style={{ fontSize: 7, lineHeight: 1, color: dataSource === 'json+api' ? '#666' : '#444' }}>●</span>
               {(() => {
+                if (!now) return null
                 const ts = apiUpdatedAt ?? tournament?.lastUpdated ?? null
                 if (!ts) return 'Updated'
-                const mins = Math.round((Date.now() - new Date(ts).getTime()) / 60000)
-                if (mins < 1) return 'Updated just now'
-                if (mins < 60) return `Updated ${mins}m ago`
+                const mins = Math.round((now - new Date(ts).getTime()) / 60000)
+                if (mins < 1) return 'Just updated'
+                if (mins < 60) return `${mins}m ago`
                 const hrs = Math.round(mins / 60)
-                if (hrs < 24) return `Updated ${hrs}h ago`
-                return `Updated ${Math.round(hrs / 24)}d ago`
+                if (hrs < 24) return `${hrs}h ago`
+                return `${Math.round(hrs / 24)}d ago`
               })()}
             </span>
           )}

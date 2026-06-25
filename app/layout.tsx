@@ -23,8 +23,8 @@ export const viewport: Viewport = {
 
 export default function RootLayout({ children }: { children: React.ReactNode }) {
   return (
-    <html lang="en" className={`${geistSans.variable} ${geistMono.variable} dark`}>
-      <body className="font-sans antialiased bg-transparent text-foreground relative">
+    <html lang="en" suppressHydrationWarning className={`${geistSans.variable} ${geistMono.variable} dark`}>
+      <body suppressHydrationWarning className="font-sans antialiased bg-transparent text-foreground relative">
         <PageBackground />
         {children}
         {process.env.NODE_ENV === 'production' && <Analytics />}
