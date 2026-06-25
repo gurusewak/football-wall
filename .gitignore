@@ -38,3 +38,4 @@ __v0_jsx-dev-runtime.ts
 
 # Script output files (not part of the app)
 public/data/api-ingestion-report.json
+zscaler-ca.pem
