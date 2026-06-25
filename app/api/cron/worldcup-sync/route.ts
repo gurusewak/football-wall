@@ -47,7 +47,7 @@ async function handleSync(req: NextRequest) {
 
   // 5. Merge API data into the base JSON (scores, events, stats, standings)
   const mergeResult = mergeApiOverlay(raw, apiData)
-  const enriched = mergeResult.tournament
+  const enriched = { ...mergeResult.tournament, lastUpdated: now.toISOString() }
 
   // 6. Always persist to DB so page loads always get the latest data
   await dbUpsert('wc-2026', enriched)
