@@ -201,50 +201,60 @@ export function MatchDetailModal({
           {/* Centering wrapper */}
           <div
             style={{
-              position: 'fixed', bottom: 0, left: 0, right: 0, zIndex: 61,
-              display: 'flex', justifyContent: 'center',
+              position: 'fixed', inset: 0, zIndex: 61,
+              display: 'flex', justifyContent: 'center', alignItems: 'center',
+              padding: '16px',
               pointerEvents: 'none',
             }}
           >
           {/* Panel */}
           <motion.div
             key="panel"
-            initial={{ opacity: 0, y: 40 }}
-            animate={{ opacity: 1, y: 0 }}
-            exit={{ opacity: 0, y: 30 }}
+            initial={{ opacity: 0, y: 24, scale: 0.97 }}
+            animate={{ opacity: 1, y: 0, scale: 1 }}
+            exit={{ opacity: 0, y: 16, scale: 0.97 }}
             transition={{ duration: 0.26, ease: [0.22, 1, 0.36, 1] }}
             style={{
               width: '100%', maxWidth: 720,
               maxHeight: '92vh',
               background: 'rgba(8,8,8,0.97)',
               border: '1px solid rgba(255,255,255,0.1)',
-              borderRadius: '16px 16px 0 0',
+              borderRadius: 16,
               overflow: 'hidden',
               display: 'flex', flexDirection: 'column',
               pointerEvents: 'auto',
             }}
           >
-            {/* Drag handle */}
-            <div style={{ display: 'flex', justifyContent: 'center', padding: '10px 0 4px' }}>
-              <div style={{ width: 36, height: 4, borderRadius: 2, background: 'rgba(255,255,255,0.15)' }} />
+            {/* ── Sticky header with close button (always visible) ── */}
+            <div style={{
+              display: 'flex', alignItems: 'center', justifyContent: 'space-between',
+              padding: '12px 16px 12px 24px',
+              borderBottom: '1px solid rgba(255,255,255,0.07)',
+              flexShrink: 0,
+            }}>
+              <span style={{ fontSize: 11, color: '#555', fontWeight: 700, letterSpacing: '0.12em', textTransform: 'uppercase' }}>
+                {stageLabel(match.stage)}{match.matchLabel ? ` · ${match.matchLabel}` : ''}
+              </span>
+              <button
+                onClick={onClose}
+                aria-label="Close"
+                style={{
+                  background: 'rgba(255,255,255,0.08)', border: 'none', cursor: 'pointer',
+                  color: '#aaa', fontSize: 18, lineHeight: 1,
+                  width: 36, height: 36, borderRadius: 8,
+                  display: 'flex', alignItems: 'center', justifyContent: 'center',
+                  flexShrink: 0,
+                }}
+              >
+                ×
+              </button>
             </div>
 
             {/* Scrollable content */}
             <div style={{ overflowY: 'auto', flex: 1, WebkitOverflowScrolling: 'touch' } as React.CSSProperties}>
 
-              {/* ── Header: match info ── */}
-              <div style={{ padding: '8px 24px 0' }}>
-                <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between', marginBottom: 6 }}>
-                  <span style={{ fontSize: 11, color: '#666', fontWeight: 700, letterSpacing: '0.12em', textTransform: 'uppercase' }}>
-                    {stageLabel(match.stage)}{match.matchLabel ? ` · ${match.matchLabel}` : ''}
-                  </span>
-                  <button
-                    onClick={onClose}
-                    style={{ background: 'none', border: 'none', cursor: 'pointer', color: '#555', fontSize: 22, lineHeight: 1, padding: '4px 0 4px 16px' }}
-                  >
-                    ×
-                  </button>
-                </div>
+              {/* ── Sub-header: date / venue ── */}
+              <div style={{ padding: '12px 24px 0' }}>
                 <div style={{ fontSize: 11, color: '#505050', marginBottom: 20, lineHeight: 1.5 }}>
                   {formatFullDate(match.date)}
                   {match.venue && <span> · {match.venue}</span>}
