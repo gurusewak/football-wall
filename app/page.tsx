@@ -24,8 +24,8 @@ type Tab = 'brackets' | 'groups' | 'stats'
 // ── Poster layout ─────────────────────────────────────────────────────────────
 const GROUP_COL_W = 134
 
-// Below this zoom the poster is too small to read → switch to scrollable
-const MIN_ZOOM = 0.38
+// Minimum readable zoom — below this the poster scrolls horizontally
+const MIN_ZOOM = 0.55
 
 function WallChartPoster({ tournament, simKey, onSimulate }: {
   tournament: Tournament
@@ -54,16 +54,15 @@ function WallChartPoster({ tournament, simKey, onSimulate }: {
   const leftGroups  = tournament.groups.slice(0, Math.ceil(tournament.groups.length / 2))
   const rightGroups = tournament.groups.slice(Math.ceil(tournament.groups.length / 2))
 
-  // When zoom is clamped at MIN_ZOOM the inner box is wider than the viewport → scroll
-  const needsScroll = zoom === MIN_ZOOM
+  const needsScroll = zoom < 1
 
   return (
     <div
       ref={containerRef}
       className="w-full"
-      style={{ overflowX: needsScroll ? 'auto' : 'hidden' }}
+      style={{ overflowX: needsScroll ? 'auto' : 'hidden', WebkitOverflowScrolling: 'touch' } as React.CSSProperties}
     >
-      <div style={{ zoom, width: NATURAL_W, margin: needsScroll ? '0' : '0 auto' }}>
+      <div style={{ zoom, width: NATURAL_W, margin: needsScroll ? '0 auto' : '0 auto' }}>
 
         {/* Simulate button — in normal flow, above the card */}
         <div style={{ paddingLeft: '10px', paddingBottom: '8px' }}>
@@ -308,16 +307,16 @@ export default function Page() {
       </div>
 
       {/* ── Tab bar ── */}
-      <div className="flex items-center justify-center gap-1.5 mb-5 px-4">
+      <div className="flex items-center justify-center gap-2 mb-6 px-4">
         {(['brackets', 'groups', 'stats'] as Tab[]).map(t => (
           <button
             key={t}
             onClick={() => setTab(t)}
-            className="px-4 py-2 rounded text-[13px] font-semibold tracking-wide uppercase transition-all"
+            className="flex-1 max-w-[140px] px-4 py-3 rounded text-[13px] font-semibold tracking-wide uppercase transition-all"
             style={{
               background: tab === t ? 'rgba(255,255,255,0.09)' : 'transparent',
-              color: tab === t ? '#e8e8e8' : '#777',
-              border: `1px solid ${tab === t ? 'rgba(255,255,255,0.15)' : 'rgba(255,255,255,0.04)'}`,
+              color: tab === t ? '#e8e8e8' : '#666',
+              border: `1px solid ${tab === t ? 'rgba(255,255,255,0.15)' : 'rgba(255,255,255,0.06)'}`,
               letterSpacing: '0.06em',
             }}
           >
@@ -338,12 +337,12 @@ export default function Page() {
           </motion.div>
         )}
         {tab === 'groups' && (
-          <motion.div key="groups" initial={{ opacity: 0, y: 6 }} animate={{ opacity: 1, y: 0 }} exit={{ opacity: 0 }} transition={{ duration: 0.2 }} className="max-w-5xl mx-auto px-6">
+          <motion.div key="groups" initial={{ opacity: 0, y: 6 }} animate={{ opacity: 1, y: 0 }} exit={{ opacity: 0 }} transition={{ duration: 0.2 }} className="max-w-5xl mx-auto px-3 sm:px-6">
             <GroupsPanel tournament={tournament} />
           </motion.div>
         )}
         {tab === 'stats' && (
-          <motion.div key="stats" initial={{ opacity: 0, y: 6 }} animate={{ opacity: 1, y: 0 }} exit={{ opacity: 0 }} transition={{ duration: 0.2 }} className="max-w-5xl mx-auto px-6">
+          <motion.div key="stats" initial={{ opacity: 0, y: 6 }} animate={{ opacity: 1, y: 0 }} exit={{ opacity: 0 }} transition={{ duration: 0.2 }} className="max-w-5xl mx-auto px-3 sm:px-6">
             <StatsPanel tournament={tournament} />
           </motion.div>
         )}

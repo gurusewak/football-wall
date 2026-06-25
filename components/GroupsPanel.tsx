@@ -162,10 +162,6 @@ function MatchRow({ match }: { match: Match }) {
   const isPlayed = match.status === 'completed' || (match.homeScore !== null && match.awayScore !== null)
   const isLive = match.status === 'live'
   const allScorers = match.goals?.filter(g => g.player) ?? []
-  const homeScorers = allScorers.filter(g => !g.ownGoal
-    ? match.goals?.indexOf(g) !== -1 && true  // home goals: not own goals scored by home
-    : false
-  )
   const hasET = match.wentToExtraTime
   const hasPKS = match.wentToPenaltyShootout
   const homeWin = isPlayed && (match.homeScore ?? 0) > (match.awayScore ?? 0)
@@ -173,79 +169,81 @@ function MatchRow({ match }: { match: Match }) {
 
   return (
     <div
-      className="px-3 py-2"
-      style={{ borderBottom: '1px solid rgba(255,255,255,0.04)' }}
+      className="px-4 py-3"
+      style={{ borderBottom: '1px solid rgba(255,255,255,0.05)' }}
     >
-      {/* Top row: date + label + venue */}
-      <div className="flex items-center gap-2 mb-1.5">
-        <span style={{ fontSize: '10px', color: '#666' }}>
-          {match.matchLabel && <span style={{ color: '#777', marginRight: '6px' }}>{match.matchLabel}</span>}
+      {/* Top row: date + label + venue + badges */}
+      <div className="flex items-center gap-2 mb-2">
+        <span style={{ fontSize: '11px', color: '#555' }}>
+          {match.matchLabel && <span style={{ color: '#666', marginRight: '6px' }}>{match.matchLabel}</span>}
           {formatDate(match.date)}
-          {match.city && <span style={{ color: '#606060', marginLeft: '6px' }}>{match.city.replace(/\s*\([^)]*\)/g, '')}</span>}
+          {match.city && <span style={{ color: '#505050', marginLeft: '6px' }}>{match.city.replace(/\s*\([^)]*\)/g, '')}</span>}
         </span>
         {hasET && (
-          <span className="px-1 rounded-sm" style={{ fontSize: '9px', fontWeight: 700, background: 'rgba(255,255,255,0.06)', color: '#666', letterSpacing: '0.06em' }}>ET</span>
+          <span className="px-1.5 py-0.5 rounded" style={{ fontSize: '10px', fontWeight: 700, background: 'rgba(255,255,255,0.07)', color: '#666', letterSpacing: '0.05em' }}>ET</span>
         )}
         {hasPKS && (
-          <span className="px-1 rounded-sm" style={{ fontSize: '9px', fontWeight: 700, background: 'rgba(255,255,255,0.06)', color: '#888', letterSpacing: '0.06em' }}>PKS</span>
+          <span className="px-1.5 py-0.5 rounded" style={{ fontSize: '10px', fontWeight: 700, background: 'rgba(255,255,255,0.07)', color: '#888', letterSpacing: '0.05em' }}>PKS</span>
         )}
         {isLive && (
-          <span className="px-1 rounded-sm" style={{ fontSize: '9px', fontWeight: 700, background: 'rgba(239,68,68,0.15)', color: '#f87171', letterSpacing: '0.06em' }}>LIVE</span>
+          <span className="px-1.5 py-0.5 rounded" style={{ fontSize: '10px', fontWeight: 700, background: 'rgba(239,68,68,0.15)', color: '#f87171', letterSpacing: '0.05em' }}>LIVE</span>
         )}
       </div>
 
-      {/* Main row: teams + score */}
-      <div className="flex items-center justify-between gap-2">
+      {/* Main row: home flag+name — score — away flag+name */}
+      <div className="flex items-center gap-3">
         {/* Home team */}
-        <div className="flex items-center gap-1.5 justify-end flex-1 min-w-0">
-          <span className="truncate text-right" style={{ fontSize: '12px', fontWeight: homeWin ? 600 : 400, color: homeWin ? '#e0e0e0' : '#888' }}>
+        <div className="flex items-center gap-2 justify-end flex-1 min-w-0">
+          <span className="truncate text-right" style={{ fontSize: '14px', fontWeight: homeWin ? 600 : 400, color: homeWin ? '#e8e8e8' : '#888' }}>
             {match.homeTeam}
           </span>
-          <span style={{ fontSize: '13px', flexShrink: 0 }}>{homeFlag}</span>
+          <span style={{ fontSize: '15px', flexShrink: 0 }}>{homeFlag}</span>
         </div>
 
         {/* Score / vs */}
-        <div className="flex flex-col items-center flex-shrink-0" style={{ minWidth: '52px' }}>
+        <div className="flex flex-col items-center flex-shrink-0" style={{ minWidth: '60px' }}>
           {isPlayed ? (
             <>
-              <span className="tabular-nums font-bold" style={{ fontSize: '13px', color: '#c8c8c8', letterSpacing: '0.04em' }}>
+              <span className="tabular-nums font-bold" style={{ fontSize: '15px', color: '#d0d0d0', letterSpacing: '0.02em' }}>
                 {match.homeScore} – {match.awayScore}
               </span>
               {hasPKS && match.homePenaltyScore !== null && match.awayPenaltyScore !== null && (
-                <span className="tabular-nums" style={{ fontSize: '10px', color: '#555', letterSpacing: '0.02em' }}>
-                  ({match.homePenaltyScore} – {match.awayPenaltyScore} pen)
+                <span className="tabular-nums" style={{ fontSize: '11px', color: '#555', marginTop: '1px' }}>
+                  ({match.homePenaltyScore}–{match.awayPenaltyScore} pens)
                 </span>
               )}
             </>
           ) : (
-            <span style={{ fontSize: '11px', color: '#666', letterSpacing: '0.06em' }}>vs</span>
+            <span style={{ fontSize: '12px', color: '#555', letterSpacing: '0.08em' }}>vs</span>
           )}
         </div>
 
         {/* Away team */}
-        <div className="flex items-center gap-1.5 flex-1 min-w-0">
-          <span style={{ fontSize: '13px', flexShrink: 0 }}>{awayFlag}</span>
-          <span className="truncate" style={{ fontSize: '12px', fontWeight: awayWin ? 600 : 400, color: awayWin ? '#e0e0e0' : '#888' }}>
+        <div className="flex items-center gap-2 flex-1 min-w-0">
+          <span style={{ fontSize: '15px', flexShrink: 0 }}>{awayFlag}</span>
+          <span className="truncate" style={{ fontSize: '14px', fontWeight: awayWin ? 600 : 400, color: awayWin ? '#e8e8e8' : '#888' }}>
             {match.awayTeam}
           </span>
         </div>
       </div>
 
-      {/* Scorers (when data available) */}
+      {/* Goal scorers */}
       {allScorers.length > 0 && (
-        <div className="mt-1.5 flex flex-wrap gap-x-3 gap-y-0.5">
+        <div className="mt-2 flex flex-wrap gap-x-4 gap-y-1">
           {allScorers.map((g, i) => (
-            <span key={i} style={{ fontSize: '10px', color: '#888' }}>
-              ⚽ {g.player} {g.minute}&apos;{g.penalty ? ' (p)' : ''}{g.ownGoal ? ' (og)' : ''}
+            <span key={i} style={{ fontSize: '11px', color: '#777' }}>
+              ⚽ {(g as any).scorerPlayerName ?? g.player} {g.minute}&apos;{g.penalty ? ' (p)' : ''}{g.ownGoal ? ' (og)' : ''}
             </span>
           ))}
         </div>
       )}
+
+      {/* Cards */}
       {match.cards && match.cards.length > 0 && (
-        <div className="mt-1 flex flex-wrap gap-x-3">
+        <div className="mt-1.5 flex flex-wrap gap-x-4 gap-y-1">
           {match.cards.map((c, i) => (
-            <span key={i} style={{ fontSize: '10px', color: '#888' }}>
-              {c.cardType === 'yellow' ? '🟨' : '🟥'} {c.player} {c.minute}&apos;
+            <span key={i} style={{ fontSize: '11px', color: '#666' }}>
+              {c.cardType === 'yellow' ? '🟨' : '🟥'} {(c as any).playerName ?? c.player} {c.minute}&apos;
             </span>
           ))}
         </div>
@@ -282,14 +280,13 @@ function GroupDetail({
       {/* Back button */}
       <button
         onClick={onBack}
-        className="flex items-center gap-1.5 mb-4"
+        className="flex items-center gap-2 mb-5 px-1 py-2"
         style={{
           background: 'none',
           border: 'none',
           cursor: 'pointer',
-          padding: 0,
           color: '#777',
-          fontSize: '13px',
+          fontSize: '14px',
           letterSpacing: '0.04em',
         }}
       >
@@ -443,7 +440,7 @@ function GroupCard({
         return (
           <div
             key={team.id}
-            className="flex items-center justify-between px-3 py-2"
+            className="flex items-center justify-between px-3 py-2.5"
             style={{
               background: isQ ? 'rgba(255,255,255,0.025)' : 'transparent',
               borderBottom:
@@ -546,9 +543,9 @@ export function GroupsPanel({ tournament }: { tournament: Tournament }) {
         animate={{ opacity: 1 }}
         exit={{ opacity: 0 }}
         transition={{ duration: 0.25 }}
-        className="grid gap-3"
+        className="grid gap-4"
         style={{
-          gridTemplateColumns: 'repeat(auto-fill, minmax(min(100%, 200px), 1fr))',
+          gridTemplateColumns: 'repeat(auto-fill, minmax(min(100%, 220px), 1fr))',
         }}
       >
         {tournament.groups.map((group, idx) => (
