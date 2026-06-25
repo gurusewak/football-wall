@@ -207,10 +207,9 @@ export function MatchDetailModal({
             animate={{ opacity: 1, y: 0 }}
             exit={{ opacity: 0, y: 30 }}
             transition={{ duration: 0.26, ease: [0.22, 1, 0.36, 1] }}
-            className="rounded-t-[20px] md:rounded-2xl min-h-[45vh] md:min-h-0"
+            className="rounded-t-[20px] md:rounded-2xl min-h-[45vh] md:min-h-0 max-h-[calc(100vh-120px)] md:max-h-[88vh]"
             style={{
               width: '100%', maxWidth: 720,
-              maxHeight: '88vh',
               background: 'rgba(8,8,8,0.97)',
               border: '1px solid rgba(255,255,255,0.1)',
               overflow: 'hidden',
