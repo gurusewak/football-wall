@@ -229,43 +229,72 @@ function MatchRow({ match, onMatchClick }: { match: Match; onMatchClick?: (id: s
         </div>
       </div>
 
-      {/* Goal scorers with assists */}
-      {allScorers.length > 0 && (
-        <div className="mt-2 flex flex-col gap-0.5">
-          {allScorers.map((g, i) => {
-            const raw = g as any
-            const scorer = raw.scorerPlayerName ?? g.player ?? ''
-            const assist = raw.assistPlayerName ?? null
-            const minute = raw.minute ?? g.minute
-            const isPen = raw.isPenalty ?? g.penalty
-            const isOG = raw.isOwnGoal ?? g.ownGoal
-            return (
-              <div key={i} className="flex items-baseline gap-1.5" style={{ fontSize: '11px' }}>
-                <span>⚽</span>
-                <span style={{ color: '#c0c0c0' }}>{scorer}</span>
-                <span style={{ color: '#555' }}>{minute}&apos;</span>
-                {isPen && <span style={{ color: '#666' }}>(pen)</span>}
-                {isOG && <span style={{ color: '#888' }}>(og)</span>}
-                {assist && <span style={{ color: '#505050' }}>↳ {assist}</span>}
-              </div>
-            )
-          })}
-        </div>
-      )}
-
-      {/* Cards */}
-      {match.cards && match.cards.length > 0 && (
-        <div className="mt-1.5 flex flex-wrap gap-x-4 gap-y-0.5">
-          {match.cards.map((c, i) => {
-            const raw = c as any
-            return (
-              <span key={i} style={{ fontSize: '11px', color: '#666' }}>
-                {c.cardType === 'yellow' ? '🟨' : '🟥'} {raw.playerName ?? c.player} {c.minute}&apos;
-              </span>
-            )
-          })}
-        </div>
-      )}
+      {/* Side-by-side match events: home left | minute | away right */}
+      {(allScorers.length > 0 || (match.cards && match.cards.length > 0)) && (() => {
+        type Ev = { minute: number; minuteExtra?: number | null; icon: string; player: string; detail?: string; isHome: boolean }
+        const events: Ev[] = []
+        for (const g of allScorers) {
+          const raw = g as any
+          const scorer = raw.scorerPlayerName ?? g.player ?? ''
+          const assist = raw.assistPlayerName ?? null
+          const isPen = raw.isPenalty ?? g.penalty
+          const isOG = raw.isOwnGoal ?? g.ownGoal
+          const scoringTeam = raw.scoringTeam ?? raw.team ?? ''
+          const scoringTeamId = raw.scoringTeamId ?? raw.teamId ?? ''
+          const isHome = scoringTeamId
+            ? scoringTeamId === (match as any).homeTeamId
+            : scoringTeam === match.homeTeam
+          const detail = [isPen ? '(pen)' : null, isOG ? '(og)' : null, assist ? `↳ ${assist}` : null].filter(Boolean).join(' ')
+          events.push({ minute: raw.minute ?? g.minute ?? 0, minuteExtra: raw.minuteExtra ?? null, icon: '⚽', player: scorer, detail: detail || undefined, isHome })
+        }
+        for (const c of match.cards ?? []) {
+          const raw = c as any
+          const cardTeam = raw.team ?? ''
+          const cardTeamId = raw.teamId ?? ''
+          const isHome = cardTeamId
+            ? cardTeamId === (match as any).homeTeamId
+            : cardTeam === match.homeTeam
+          events.push({ minute: c.minute ?? 0, minuteExtra: raw.minuteExtra ?? null, icon: c.cardType === 'yellow' ? '🟨' : '🟥', player: raw.playerName ?? c.player ?? '', isHome })
+        }
+        events.sort((a, b) => a.minute - b.minute)
+        return (
+          <div style={{ marginTop: 8, display: 'flex', flexDirection: 'column', gap: 0 }}>
+            {events.map((ev, i) => {
+              const minStr = `${ev.minute}${ev.minuteExtra ? '+' + ev.minuteExtra : ''}'`
+              return (
+                <div key={i} style={{ display: 'grid', gridTemplateColumns: '1fr 36px 1fr', alignItems: 'start', padding: '3px 0' }}>
+                  {/* Home side */}
+                  <div style={{ display: 'flex', flexDirection: 'column', alignItems: 'flex-end', paddingRight: 6 }}>
+                    {ev.isHome && (
+                      <>
+                        <div style={{ display: 'flex', alignItems: 'center', gap: 4 }}>
+                          <span style={{ fontSize: 11 }}>{ev.icon}</span>
+                          <span style={{ fontSize: 11, color: '#c0c0c0' }}>{ev.player}</span>
+                        </div>
+                        {ev.detail && <span style={{ fontSize: 10, color: '#555' }}>{ev.detail}</span>}
+                      </>
+                    )}
+                  </div>
+                  {/* Minute */}
+                  <div style={{ textAlign: 'center', fontSize: 10, color: '#505050', fontVariantNumeric: 'tabular-nums', paddingTop: 1 }}>{minStr}</div>
+                  {/* Away side */}
+                  <div style={{ display: 'flex', flexDirection: 'column', alignItems: 'flex-start', paddingLeft: 6 }}>
+                    {!ev.isHome && (
+                      <>
+                        <div style={{ display: 'flex', alignItems: 'center', gap: 4 }}>
+                          <span style={{ fontSize: 11 }}>{ev.icon}</span>
+                          <span style={{ fontSize: 11, color: '#c0c0c0' }}>{ev.player}</span>
+                        </div>
+                        {ev.detail && <span style={{ fontSize: 10, color: '#555' }}>{ev.detail}</span>}
+                      </>
+                    )}
+                  </div>
+                </div>
+              )
+            })}
+          </div>
+        )
+      })()}
     </div>
   )
 }

@@ -198,6 +198,14 @@ export function MatchDetailModal({
             }}
           />
 
+          {/* Centering wrapper */}
+          <div
+            style={{
+              position: 'fixed', bottom: 0, left: 0, right: 0, zIndex: 61,
+              display: 'flex', justifyContent: 'center',
+              pointerEvents: 'none',
+            }}
+          >
           {/* Panel */}
           <motion.div
             key="panel"
@@ -206,13 +214,14 @@ export function MatchDetailModal({
             exit={{ opacity: 0, y: 30 }}
             transition={{ duration: 0.26, ease: [0.22, 1, 0.36, 1] }}
             style={{
-              position: 'fixed', bottom: 0, left: 0, right: 0, zIndex: 61,
+              width: '100%', maxWidth: 720,
               maxHeight: '92vh',
               background: 'rgba(8,8,8,0.97)',
               border: '1px solid rgba(255,255,255,0.1)',
               borderRadius: '16px 16px 0 0',
               overflow: 'hidden',
               display: 'flex', flexDirection: 'column',
+              pointerEvents: 'auto',
             }}
           >
             {/* Drag handle */}
@@ -224,19 +233,19 @@ export function MatchDetailModal({
             <div style={{ overflowY: 'auto', flex: 1, WebkitOverflowScrolling: 'touch' } as React.CSSProperties}>
 
               {/* ── Header: match info ── */}
-              <div style={{ padding: '4px 20px 0' }}>
-                <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between', marginBottom: 4 }}>
+              <div style={{ padding: '8px 24px 0' }}>
+                <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between', marginBottom: 6 }}>
                   <span style={{ fontSize: 11, color: '#666', fontWeight: 700, letterSpacing: '0.12em', textTransform: 'uppercase' }}>
                     {stageLabel(match.stage)}{match.matchLabel ? ` · ${match.matchLabel}` : ''}
                   </span>
                   <button
                     onClick={onClose}
-                    style={{ background: 'none', border: 'none', cursor: 'pointer', color: '#555', fontSize: 20, lineHeight: 1, padding: '0 0 0 12px' }}
+                    style={{ background: 'none', border: 'none', cursor: 'pointer', color: '#555', fontSize: 22, lineHeight: 1, padding: '4px 0 4px 16px' }}
                   >
                     ×
                   </button>
                 </div>
-                <div style={{ fontSize: 11, color: '#444', marginBottom: 16 }}>
+                <div style={{ fontSize: 11, color: '#505050', marginBottom: 20, lineHeight: 1.5 }}>
                   {formatFullDate(match.date)}
                   {match.venue && <span> · {match.venue}</span>}
                   {match.city && <span>, {match.city}</span>}
@@ -245,7 +254,7 @@ export function MatchDetailModal({
               </div>
 
               {/* ── Score block ── */}
-              <div style={{ padding: '0 20px 20px', borderBottom: '1px solid rgba(255,255,255,0.07)' }}>
+              <div style={{ padding: '0 24px 24px', borderBottom: '1px solid rgba(255,255,255,0.07)' }}>
                 {/* ET/PKS badges */}
                 {(match.wentToExtraTime || match.wentToPenaltyShootout) && (
                   <div style={{ display: 'flex', gap: 6, marginBottom: 10 }}>
@@ -305,8 +314,8 @@ export function MatchDetailModal({
 
               {/* ── Timeline ── */}
               {timeline.length > 0 && (
-                <div style={{ padding: '16px 20px', borderBottom: '1px solid rgba(255,255,255,0.07)' }}>
-                  <div style={{ fontSize: 10, fontWeight: 700, letterSpacing: '0.12em', textTransform: 'uppercase', color: '#555', marginBottom: 12 }}>
+                <div style={{ padding: '20px 24px', borderBottom: '1px solid rgba(255,255,255,0.07)' }}>
+                  <div style={{ fontSize: 10, fontWeight: 700, letterSpacing: '0.12em', textTransform: 'uppercase', color: '#555', marginBottom: 16 }}>
                     Match Events
                   </div>
 
@@ -379,8 +388,8 @@ export function MatchDetailModal({
 
               {/* ── Team stats ── */}
               {hasStats && (
-                <div style={{ padding: '16px 20px', borderBottom: '1px solid rgba(255,255,255,0.07)' }}>
-                  <div style={{ fontSize: 10, fontWeight: 700, letterSpacing: '0.12em', textTransform: 'uppercase', color: '#555', marginBottom: 14 }}>
+                <div style={{ padding: '20px 24px', borderBottom: '1px solid rgba(255,255,255,0.07)' }}>
+                  <div style={{ fontSize: 10, fontWeight: 700, letterSpacing: '0.12em', textTransform: 'uppercase', color: '#555', marginBottom: 16 }}>
                     Match Statistics
                   </div>
 
@@ -409,7 +418,7 @@ export function MatchDetailModal({
 
               {/* ── No data state for unplayed matches ── */}
               {!isPlayed && (
-                <div style={{ padding: '24px 20px', textAlign: 'center' }}>
+                <div style={{ padding: '28px 24px', textAlign: 'center' }}>
                   <div style={{ fontSize: 13, color: '#555' }}>Match not yet played</div>
                   {match.date && (
                     <div style={{ fontSize: 12, color: '#444', marginTop: 4 }}>{formatFullDate(match.date)}</div>
@@ -417,9 +426,10 @@ export function MatchDetailModal({
                 </div>
               )}
 
-              <div style={{ height: 32 }} />
+              <div style={{ height: 48 }} />
             </div>
           </motion.div>
+          </div>
         </>
       )}
     </AnimatePresence>
