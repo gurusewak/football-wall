@@ -20,6 +20,7 @@ Thumbs.db
 # Editor
 .vscode/
 .idea/
+.history/
 
 # v0 sandbox
 __v0_runtime_loader.js
