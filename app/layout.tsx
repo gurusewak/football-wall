@@ -8,15 +8,11 @@ const geistSans = Geist({ variable: '--font-geist-sans', subsets: ['latin'] })
 const geistMono = Geist_Mono({ variable: '--font-geist-mono', subsets: ['latin'] })
 
 export const metadata: Metadata = {
-  title: 'Football World Cup 2026 — Live Wall Chart',
-  description: 'Premium interactive Football World Cup 2026 wall chart with group standings, knockout bracket, and live statistics.',
+  title: 'The Football Wall — World Cup Wall Chart',
+  description: 'The Football Wall — thefootballwall.com — interactive World Cup wall chart with group standings, knockout brackets, and live statistics for every tournament since 1998.',
   icons: {
-    icon: [
-      { url: '/icon-light-32x32.png', media: '(prefers-color-scheme: light)' },
-      { url: '/icon-dark-32x32.png',  media: '(prefers-color-scheme: dark)' },
-      { url: '/icon.svg', type: 'image/svg+xml' },
-    ],
-    apple: '/apple-icon.png',
+    icon: [{ url: '/icon.svg', type: 'image/svg+xml' }],
+    apple: [{ url: '/icon.svg', type: 'image/svg+xml' }],
   },
 }
 

@@ -1,13 +1,258 @@
 {
+  "schemaVersion": "3.0",
   "latestYear": 2026,
+  "datasetProfile": "world_cup_v3_scoreline_plus_awards_source_ready",
   "years": [
-    { "year": 2026, "host": "USA / Canada / Mexico", "winner": null, "format": 48, "file": "/data/wc-2026.json" },
-    { "year": 2022, "host": "Qatar", "winner": "Argentina", "format": 32, "file": "/data/wc-2022.json" },
-    { "year": 2018, "host": "Russia", "winner": "France", "format": 32, "file": "/data/wc-2018.json" },
-    { "year": 2014, "host": "Brazil", "winner": "Germany", "format": 32, "file": "/data/wc-2014.json" },
-    { "year": 2010, "host": "South Africa", "winner": "Spain", "format": 32, "file": "/data/wc-2010.json" },
-    { "year": 2006, "host": "Germany", "winner": "Italy", "format": 32, "file": "/data/wc-2006.json" },
-    { "year": 2002, "host": "South Korea / Japan", "winner": "Brazil", "format": 32, "file": "/data/wc-2002.json" },
-    { "year": 1998, "host": "France", "winner": "France", "format": 32, "file": "/data/wc-1998.json" }
+    {
+      "year": 1998,
+      "name": "1998 FIFA World Cup",
+      "hostCountries": [
+        "France"
+      ],
+      "status": "completed",
+      "format": 32,
+      "formatProfile": null,
+      "file": "/data/wc-1998.json",
+      "matches": 64,
+      "groupStageMatches": 48,
+      "knockoutAndPlacementMatches": 16,
+      "schemaVersion": "3.0",
+      "validationStatus": "passed_with_event_data_gaps",
+      "dataAvailability": {
+        "matches": "complete",
+        "standings": "complete",
+        "bracket": "complete",
+        "goals": "source_available_not_ingested",
+        "goalMinutes": "source_available_not_ingested",
+        "ownGoals": "source_available_not_ingested",
+        "penaltyGoals": "source_available_not_ingested",
+        "assists": "missing",
+        "cards": "missing",
+        "saves": "missing",
+        "playerOfTheMatch": "missing",
+        "awards": "complete",
+        "attendance": "missing"
+      }
+    },
+    {
+      "year": 2002,
+      "name": "2002 FIFA World Cup",
+      "hostCountries": [
+        "South Korea",
+        "Japan"
+      ],
+      "status": "completed",
+      "format": 32,
+      "formatProfile": null,
+      "file": "/data/wc-2002.json",
+      "matches": 64,
+      "groupStageMatches": 48,
+      "knockoutAndPlacementMatches": 16,
+      "schemaVersion": "3.0",
+      "validationStatus": "passed_with_event_data_gaps",
+      "dataAvailability": {
+        "matches": "complete",
+        "standings": "complete",
+        "bracket": "complete",
+        "goals": "source_available_not_ingested",
+        "goalMinutes": "source_available_not_ingested",
+        "ownGoals": "source_available_not_ingested",
+        "penaltyGoals": "source_available_not_ingested",
+        "assists": "missing",
+        "cards": "missing",
+        "saves": "missing",
+        "playerOfTheMatch": "missing",
+        "awards": "complete",
+        "attendance": "missing"
+      }
+    },
+    {
+      "year": 2006,
+      "name": "2006 FIFA World Cup",
+      "hostCountries": [
+        "Germany"
+      ],
+      "status": "completed",
+      "format": 32,
+      "formatProfile": null,
+      "file": "/data/wc-2006.json",
+      "matches": 64,
+      "groupStageMatches": 48,
+      "knockoutAndPlacementMatches": 16,
+      "schemaVersion": "3.0",
+      "validationStatus": "passed_with_event_data_gaps",
+      "dataAvailability": {
+        "matches": "complete",
+        "standings": "complete",
+        "bracket": "complete",
+        "goals": "source_available_not_ingested",
+        "goalMinutes": "source_available_not_ingested",
+        "ownGoals": "source_available_not_ingested",
+        "penaltyGoals": "source_available_not_ingested",
+        "assists": "missing",
+        "cards": "missing",
+        "saves": "missing",
+        "playerOfTheMatch": "missing",
+        "awards": "complete",
+        "attendance": "missing"
+      }
+    },
+    {
+      "year": 2010,
+      "name": "2010 FIFA World Cup",
+      "hostCountries": [
+        "South Africa"
+      ],
+      "status": "completed",
+      "format": 32,
+      "formatProfile": null,
+      "file": "/data/wc-2010.json",
+      "matches": 64,
+      "groupStageMatches": 48,
+      "knockoutAndPlacementMatches": 16,
+      "schemaVersion": "3.0",
+      "validationStatus": "passed_with_event_data_gaps",
+      "dataAvailability": {
+        "matches": "complete",
+        "standings": "complete",
+        "bracket": "complete",
+        "goals": "source_available_not_ingested",
+        "goalMinutes": "source_available_not_ingested",
+        "ownGoals": "source_available_not_ingested",
+        "penaltyGoals": "source_available_not_ingested",
+        "assists": "missing",
+        "cards": "missing",
+        "saves": "missing",
+        "playerOfTheMatch": "missing",
+        "awards": "complete",
+        "attendance": "missing"
+      }
+    },
+    {
+      "year": 2014,
+      "name": "2014 FIFA World Cup",
+      "hostCountries": [
+        "Brazil"
+      ],
+      "status": "completed",
+      "format": 32,
+      "formatProfile": null,
+      "file": "/data/wc-2014.json",
+      "matches": 64,
+      "groupStageMatches": 48,
+      "knockoutAndPlacementMatches": 16,
+      "schemaVersion": "3.0",
+      "validationStatus": "passed_with_event_data_gaps",
+      "dataAvailability": {
+        "matches": "complete",
+        "standings": "complete",
+        "bracket": "complete",
+        "goals": "source_available_not_ingested",
+        "goalMinutes": "source_available_not_ingested",
+        "ownGoals": "source_available_not_ingested",
+        "penaltyGoals": "source_available_not_ingested",
+        "assists": "missing",
+        "cards": "missing",
+        "saves": "missing",
+        "playerOfTheMatch": "missing",
+        "awards": "complete",
+        "attendance": "missing"
+      }
+    },
+    {
+      "year": 2018,
+      "name": "2018 FIFA World Cup",
+      "hostCountries": [
+        "Russia"
+      ],
+      "status": "completed",
+      "format": 32,
+      "formatProfile": null,
+      "file": "/data/wc-2018.json",
+      "matches": 64,
+      "groupStageMatches": 48,
+      "knockoutAndPlacementMatches": 16,
+      "schemaVersion": "3.0",
+      "validationStatus": "passed_with_event_data_gaps",
+      "dataAvailability": {
+        "matches": "complete",
+        "standings": "complete",
+        "bracket": "complete",
+        "goals": "source_available_not_ingested",
+        "goalMinutes": "source_available_not_ingested",
+        "ownGoals": "source_available_not_ingested",
+        "penaltyGoals": "source_available_not_ingested",
+        "assists": "missing",
+        "cards": "missing",
+        "saves": "missing",
+        "playerOfTheMatch": "missing",
+        "awards": "complete",
+        "attendance": "missing"
+      }
+    },
+    {
+      "year": 2022,
+      "name": "2022 FIFA World Cup",
+      "hostCountries": [
+        "Qatar"
+      ],
+      "status": "completed",
+      "format": 32,
+      "formatProfile": null,
+      "file": "/data/wc-2022.json",
+      "matches": 64,
+      "groupStageMatches": 48,
+      "knockoutAndPlacementMatches": 16,
+      "schemaVersion": "3.0",
+      "validationStatus": "passed_with_event_data_gaps",
+      "dataAvailability": {
+        "matches": "complete",
+        "standings": "complete",
+        "bracket": "complete",
+        "goals": "source_available_not_ingested",
+        "goalMinutes": "source_available_not_ingested",
+        "ownGoals": "source_available_not_ingested",
+        "penaltyGoals": "source_available_not_ingested",
+        "assists": "missing",
+        "cards": "missing",
+        "saves": "missing",
+        "playerOfTheMatch": "missing",
+        "awards": "complete",
+        "attendance": "missing"
+      }
+    },
+    {
+      "year": 2026,
+      "name": "2026 FIFA World Cup",
+      "hostCountries": [
+        "Canada",
+        "Mexico",
+        "United States"
+      ],
+      "status": "in_progress",
+      "format": 48,
+      "formatProfile": null,
+      "file": "/data/wc-2026.json",
+      "matches": 104,
+      "groupStageMatches": 72,
+      "knockoutAndPlacementMatches": 32,
+      "schemaVersion": "3.0",
+      "validationStatus": "passed_with_event_data_gaps",
+      "dataAvailability": {
+        "matches": "complete",
+        "standings": "partial",
+        "bracket": "partial_live",
+        "goals": "source_available_not_ingested",
+        "goalMinutes": "source_available_not_ingested",
+        "ownGoals": "source_available_not_ingested",
+        "penaltyGoals": "source_available_not_ingested",
+        "assists": "missing",
+        "cards": "missing",
+        "saves": "missing",
+        "playerOfTheMatch": "missing",
+        "awards": "not_final_until_tournament_completed",
+        "attendance": "missing"
+      }
+    }
   ]
 }

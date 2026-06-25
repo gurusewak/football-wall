@@ -3,6 +3,7 @@
 import { useState } from 'react'
 import { motion, AnimatePresence } from 'framer-motion'
 import { Match } from '@/lib/types'
+import { teamFlagCode } from '@/lib/flagUtils'
 
 interface PosterMatchBoxProps {
   match: Match | null
@@ -16,30 +17,8 @@ function flagEmoji(code: string): string {
   return code.toUpperCase().split('').map(c => String.fromCodePoint(127397 + c.charCodeAt(0))).join('')
 }
 
-const FLAG_MAP: Record<string, string> = {
-  Argentina: 'AR', France: 'FR', Poland: 'PL', Mexico: 'MX',
-  Spain: 'ES', Germany: 'DE', Japan: 'JP', 'Costa Rica': 'CR',
-  Brazil: 'BR', England: 'GB', Serbia: 'RS', Switzerland: 'CH',
-  Italy: 'IT', Netherlands: 'NL', Belgium: 'BE', Canada: 'CA',
-  Portugal: 'PT', Uruguay: 'UY', 'South Korea': 'KR', Ghana: 'GH',
-  Croatia: 'HR', Morocco: 'MA', Denmark: 'DK', Australia: 'AU',
-  Senegal: 'SN', Ecuador: 'EC', Qatar: 'QA', Iran: 'IR',
-  'Saudi Arabia': 'SA', Tunisia: 'TN', Peru: 'PE', 'New Zealand': 'NZ',
-  Colombia: 'CO', Nigeria: 'NG', Chile: 'CL', Turkey: 'TR',
-  USA: 'US', Egypt: 'EG', Panama: 'PA', Algeria: 'DZ',
-  Austria: 'AT', 'Ivory Coast': 'CI', Bolivia: 'BO', Iraq: 'IQ',
-  Jamaica: 'JM', China: 'CN', Greece: 'GR', Indonesia: 'ID',
-  Wales: 'GB', Iceland: 'IS', Russia: 'RU', Sweden: 'SE',
-  Norway: 'NO', Scotland: 'GB', Yugoslavia: 'RS', Romania: 'RO',
-  Bulgaria: 'BG', Paraguay: 'PY', Honduras: 'HN', 'South Africa': 'ZA',
-  Slovenia: 'SI', Slovakia: 'SK', 'Trinidad & Tobago': 'TT', Angola: 'AO',
-  Togo: 'TG', Ukraine: 'UA', 'Czech Republic': 'CZ', 'North Korea': 'KP',
-  Cameroon: 'CM', 'Republic of Ireland': 'IE', Ireland: 'IE', Bosnia: 'BA',
-  'Bosnia-Herzegovina': 'BA', Cameroun: 'CM',
-}
-
 function teamFlag(name: string): string {
-  return FLAG_MAP[name] || 'UN'
+  return teamFlagCode(name)
 }
 
 function fmtDate(iso: string): string {
@@ -53,7 +32,28 @@ function fmtDateTime(iso: string): string {
     ' · ' + d.toLocaleTimeString('en-US', { hour: '2-digit', minute: '2-digit' })
 }
 
-const isTBD = (name: string) => !name || name === 'TBD' || /^[A-L][12]$|Winner|Loser|Runner/i.test(name)
+const isTBD = (name: string) => !name || name === 'TBD' || /^[A-L][12]$|Winner|Loser|Runner|Third.?place/i.test(name)
+
+function formatSlotName(name: string): string {
+  if (!name || name === 'TBD') return 'TBD'
+  // "Winner Match 74" → "W M74"
+  const winnerMatch = name.match(/Winner\s+Match\s+(\d+)/i)
+  if (winnerMatch) return `W M${winnerMatch[1]}`
+  // "Runner-up Group A" → "2nd A"
+  const runnerUp = name.match(/Runner.?up\s+Group\s+([A-L])/i)
+  if (runnerUp) return `2nd ${runnerUp[1]}`
+  // "Winner Group A" → "W Grp A"
+  const winnerGroup = name.match(/Winner\s+Group\s+([A-L])/i)
+  if (winnerGroup) return `W Grp ${winnerGroup[1]}`
+  // "Third-place Group A/B/C/D/F" → "3ABCDF"
+  const thirdGroup = name.match(/Third.?place\s+Group\s+([A-L/]+)/i)
+  if (thirdGroup) return `3${thirdGroup[1].replace(/\//g, '')}`
+  if (/Third.?place/i.test(name)) return '3rd'
+  // "Loser Match 74" → "L M74"
+  const loserMatch = name.match(/Loser\s+Match\s+(\d+)/i)
+  if (loserMatch) return `L M${loserMatch[1]}`
+  return name.slice(0, 8)
+}
 
 // ─── Popover ─────────────────────────────────────────────────────────────────
 function MatchPopover({ match, side }: { match: Match; side: 'left' | 'right' | 'top' }) {
@@ -91,10 +91,10 @@ function MatchPopover({ match, side }: { match: Match; side: 'left' | 'right' | 
 
       {/* Venue */}
       <div className="px-3 py-1.5" style={{ borderBottom: '1px solid rgba(255,255,255,0.05)' }}>
-        <p className="text-[8px] leading-tight" style={{ color: '#444' }}>{match.venue}</p>
+        <p className="text-[8px] leading-tight" style={{ color: '#777' }}>{match.venue}</p>
         <p className="text-[9px] font-medium" style={{ color: '#666' }}>{match.city}</p>
         {match.attendance && (
-          <p className="text-[8px] mt-0.5" style={{ color: '#383838' }}>{match.attendance.toLocaleString()} att.</p>
+          <p className="text-[8px] mt-0.5" style={{ color: '#666' }}>{match.attendance.toLocaleString()} att.</p>
         )}
       </div>
 
@@ -119,7 +119,7 @@ function MatchPopover({ match, side }: { match: Match; side: 'left' | 'right' | 
       {/* Goals */}
       {match.goals && match.goals.length > 0 && (
         <div className="px-3 pb-2" style={{ borderTop: '1px solid rgba(255,255,255,0.05)' }}>
-          <p className="text-[7.5px] font-bold mt-1.5 mb-1 tracking-widest uppercase" style={{ color: '#444' }}>Goals</p>
+          <p className="text-[7.5px] font-bold mt-1.5 mb-1 tracking-widest uppercase" style={{ color: '#777' }}>Goals</p>
           <div className="space-y-0.5 max-h-20 overflow-y-auto">
             {match.goals.map((g, i) => (
               <div key={i} className="flex items-center gap-1">
@@ -127,7 +127,7 @@ function MatchPopover({ match, side }: { match: Match; side: 'left' | 'right' | 
                 <span className="text-[8.5px]" style={{ color: '#888' }}>
                   {g.player}{g.penalty && <span style={{ color: '#aaa' }}> (P)</span>}{g.ownGoal && <span style={{ color: '#c87878' }}> (OG)</span>}
                 </span>
-                <span className="text-[8px] ml-auto" style={{ color: '#484848' }}>{g.minute}&apos;</span>
+                <span className="text-[8px] ml-auto" style={{ color: '#777' }}>{g.minute}&apos;</span>
               </div>
             ))}
           </div>
@@ -137,12 +137,12 @@ function MatchPopover({ match, side }: { match: Match; side: 'left' | 'right' | 
       {/* Cards */}
       {match.cards && match.cards.length > 0 && (
         <div className="px-3 pb-2" style={{ borderTop: '1px solid rgba(255,255,255,0.05)' }}>
-          <p className="text-[7.5px] font-bold mt-1.5 mb-1 tracking-widest uppercase" style={{ color: '#444' }}>Cards</p>
+          <p className="text-[7.5px] font-bold mt-1.5 mb-1 tracking-widest uppercase" style={{ color: '#777' }}>Cards</p>
           {match.cards.map((c, i) => (
             <div key={i} className="flex items-center gap-1">
               <span className="text-[9px]">{c.cardType === 'yellow' ? '🟨' : '🟥'}</span>
               <span className="text-[8.5px]" style={{ color: '#777' }}>{c.player}</span>
-              <span className="text-[8px] ml-auto" style={{ color: '#484848' }}>{c.minute}&apos;</span>
+              <span className="text-[8px] ml-auto" style={{ color: '#777' }}>{c.minute}&apos;</span>
             </div>
           ))}
         </div>
@@ -162,10 +162,10 @@ function MatchPopover({ match, side }: { match: Match; side: 'left' | 'right' | 
 export function PosterMatchBox({ match, size = 'sm', showLabel = true, popoverSide = 'right' }: PosterMatchBoxProps) {
   const [hovered, setHovered] = useState(false)
 
-  const boxH = size === 'lg' ? 76 : size === 'md' ? 64 : 60
-  const nameFontSize = size === 'lg' ? '10px' : '9px'
-  const nameMaxW = size === 'lg' ? '96px' : '82px'
-  const scoreFontSize = size === 'lg' ? '14px' : '11.5px'
+  const boxH = size === 'lg' ? 72 : size === 'md' ? 64 : 56
+  const nameFontSize = size === 'lg' ? '13px' : '12px'
+  const nameMaxW = size === 'lg' ? '108px' : '94px'
+  const scoreFontSize = size === 'lg' ? '15px' : '13px'
   const nameMaxLen = size === 'lg' ? 14 : 12
 
   // Null match — skeleton placeholder
@@ -177,7 +177,7 @@ export function PosterMatchBox({ match, size = 'sm', showLabel = true, popoverSi
       >
         {showLabel && (
           <div className="px-2 py-0.5 flex-shrink-0" style={{ background: 'rgba(20,20,20,0.6)', borderBottom: '1px solid rgba(255,255,255,0.04)' }}>
-            <span className="text-[8px]" style={{ color: '#333' }}>TBD</span>
+            <span className="text-[8px]" style={{ color: '#606060' }}>TBD</span>
           </div>
         )}
         <div className="flex-1 flex flex-col justify-center gap-1.5 px-2">
@@ -213,7 +213,6 @@ export function PosterMatchBox({ match, size = 'sm', showLabel = true, popoverSi
           <span className="mono-label" style={{ color: '#909090' }}>{match.matchLabel}</span>
           <div className="flex items-center gap-1.5">
             {match.status === 'live' && <span className="text-[7px] font-bold" style={{ color: '#f87171' }}>●LIVE</span>}
-            <span className="mono-label" style={{ color: '#383838' }}>{fmtDate(match.date)}</span>
           </div>
         </div>
       )}
@@ -231,14 +230,14 @@ export function PosterMatchBox({ match, size = 'sm', showLabel = true, popoverSi
             </span>
             <span
               className="truncate"
-              style={{ fontSize: nameFontSize, fontWeight: homeWin ? 600 : 400, color: homeWin ? '#efefef' : homeTBD ? '#444' : '#888', maxWidth: nameMaxW }}
+              style={{ fontSize: nameFontSize, fontWeight: homeWin ? 600 : 400, color: homeWin ? '#efefef' : homeTBD ? '#777' : '#888', maxWidth: nameMaxW }}
             >
-              {homeTBD ? match.homeTeam : match.homeTeam.length > nameMaxLen ? match.homeTeam.slice(0, nameMaxLen - 1) + '.' : match.homeTeam}
+              {homeTBD ? formatSlotName(match.homeTeam) : match.homeTeam.length > nameMaxLen ? match.homeTeam.slice(0, nameMaxLen - 1) + '.' : match.homeTeam}
             </span>
           </div>
           <span
             className="tabular-nums font-bold flex-shrink-0"
-            style={{ fontSize: scoreFontSize, color: homeWin ? '#f5f5f5' : scheduled || homeTBD ? '#282828' : '#585858' }}
+            style={{ fontSize: scoreFontSize, color: homeWin ? '#f5f5f5' : scheduled || homeTBD ? '#505050' : '#888' }}
           >
             {scheduled || homeTBD || match.homeScore === null ? '·' : match.homeScore}
           </span>
@@ -255,33 +254,19 @@ export function PosterMatchBox({ match, size = 'sm', showLabel = true, popoverSi
             </span>
             <span
               className="truncate"
-              style={{ fontSize: nameFontSize, fontWeight: awayWin ? 600 : 400, color: awayWin ? '#efefef' : awayTBD ? '#444' : '#888', maxWidth: nameMaxW }}
+              style={{ fontSize: nameFontSize, fontWeight: awayWin ? 600 : 400, color: awayWin ? '#efefef' : awayTBD ? '#777' : '#888', maxWidth: nameMaxW }}
             >
-              {awayTBD ? match.awayTeam : match.awayTeam.length > nameMaxLen ? match.awayTeam.slice(0, nameMaxLen - 1) + '.' : match.awayTeam}
+              {awayTBD ? formatSlotName(match.awayTeam) : match.awayTeam.length > nameMaxLen ? match.awayTeam.slice(0, nameMaxLen - 1) + '.' : match.awayTeam}
             </span>
           </div>
           <span
             className="tabular-nums font-bold flex-shrink-0"
-            style={{ fontSize: scoreFontSize, color: awayWin ? '#f5f5f5' : scheduled || awayTBD ? '#282828' : '#585858' }}
+            style={{ fontSize: scoreFontSize, color: awayWin ? '#f5f5f5' : scheduled || awayTBD ? '#505050' : '#888' }}
           >
             {scheduled || awayTBD || match.awayScore === null ? '·' : match.awayScore}
           </span>
         </div>
       </div>
-
-      {/* City for final */}
-      {size === 'lg' && !homeTBD && (
-        <div className="px-1.5 pb-[3px] flex-shrink-0">
-          <span className="text-[7.5px]" style={{ color: '#383838' }}>{match.city}</span>
-        </div>
-      )}
-
-      {/* Date for scheduled TBD placeholders */}
-      {scheduled && (homeTBD || awayTBD) && (
-        <div className="px-1.5 pb-[3px] flex-shrink-0">
-          <span className="text-[7.5px]" style={{ color: '#383838' }}>{fmtDate(match.date)} · {match.city}</span>
-        </div>
-      )}
 
       {/* Hover shimmer line */}
       {hovered && (

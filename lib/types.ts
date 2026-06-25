@@ -11,11 +11,13 @@ export interface Team {
   goalDifference: number
   points: number
   played: number
+  qualified?: boolean
 }
 
 export interface GroupStanding {
   group: string
   teams: Team[]
+  matches?: Match[]
 }
 
 export interface Player {
@@ -64,6 +66,10 @@ export interface Match {
   cards: Card[]
   playerOfMatch?: string
   group?: string
+  wentToExtraTime?: boolean
+  wentToPenaltyShootout?: boolean
+  homePenaltyScore?: number | null
+  awayPenaltyScore?: number | null
 }
 
 export interface Bracket {
@@ -73,16 +79,54 @@ export interface Bracket {
 
 export type Group = GroupStanding
 
+export interface TournamentFact {
+  id: string
+  factType: string
+  statement: string
+}
+
+export interface Award {
+  id: string
+  awardName: string
+  winnerPlayerName: string
+  winnerTeamId: string
+  rank: number
+  verified: boolean
+}
+
+export interface AwardLeader {
+  rank: number
+  playerName: string
+  teamId: string
+  goals: number | null
+  assists: number | null
+}
+
+export interface AwardStanding {
+  id: string
+  awardName: string
+  leaders: AwardLeader[]
+  verified: boolean
+}
+
 export interface Tournament {
   name: string
   year: number
   host?: string
   winner?: string | null
   format?: number
+  status?: 'completed' | 'in_progress'
   groups: GroupStanding[]
   knockoutBracket: Bracket[]
   players: Player[]
+  matches?: Match[]
   lastUpdated: string
+  totalGoals?: number
+  averageGoalsPerMatch?: number
+  totalMatchesPlayed?: number
+  facts?: TournamentFact[]
+  awards?: Award[]
+  awardStandings?: AwardStanding[]
 }
 
 export interface SimulationState {

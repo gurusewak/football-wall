@@ -67,10 +67,10 @@ export function PageBackground() {
       {/* Real photo background — user should place the soccer ball image at /public/soccer-bg.jpg */}
       {!imgError && (
         <img
-          src="/soccer-bg.jpg"
+          src="/background.png"
           alt=""
           className="absolute inset-0 w-full h-full object-cover pointer-events-none select-none"
-          style={{ opacity: 0.12, filter: 'grayscale(100%) contrast(1.1)' }}
+          style={{ opacity: 0.22, filter: 'grayscale(100%) contrast(1.1)' }}
           onError={() => setImgError(true)}
         />
       )}

@@ -37,7 +37,7 @@ export function CompactGroupTable({ group, side, animDelay = 0 }: CompactGroupTa
           borderBottom: '1px solid rgba(255,255,255,0.07)',
         }}
       >
-        <span className="text-[9px] font-bold tracking-[0.14em] uppercase" style={{ color: '#c8c8c8' }}>
+        <span className="text-[11px] font-bold tracking-[0.14em] uppercase" style={{ color: '#c8c8c8' }}>
           GROUP {group.group}
         </span>
       </div>
@@ -53,27 +53,31 @@ export function CompactGroupTable({ group, side, animDelay = 0 }: CompactGroupTa
       >
         {side === 'left' ? (
           <>
-            <span className="text-[7.5px] font-medium uppercase tracking-wider" style={{ color: '#555' }}>Team</span>
-            <span className="text-[7.5px] font-medium text-center" style={{ color: '#555' }}>P</span>
-            <span className="text-[7.5px] font-medium text-center" style={{ color: '#555' }}>GD</span>
-            <span className="text-[7.5px] font-medium text-center" style={{ color: '#555' }}>Pts</span>
+            <span className="text-[10px] font-medium uppercase tracking-wider" style={{ color: '#777' }}>Team</span>
+            <span className="text-[10px] font-medium text-center" style={{ color: '#777' }}>P</span>
+            <span className="text-[10px] font-medium text-center" style={{ color: '#777' }}>GD</span>
+            <span className="text-[10px] font-medium text-center" style={{ color: '#777' }}>Pts</span>
           </>
         ) : (
           <>
-            <span className="text-[7.5px] font-medium text-center" style={{ color: '#555' }}>Pts</span>
-            <span className="text-[7.5px] font-medium text-center" style={{ color: '#555' }}>GD</span>
-            <span className="text-[7.5px] font-medium text-center" style={{ color: '#555' }}>P</span>
-            <span className="text-[7.5px] font-medium text-right" style={{ color: '#555' }}>Team</span>
+            <span className="text-[10px] font-medium text-center" style={{ color: '#777' }}>Pts</span>
+            <span className="text-[10px] font-medium text-center" style={{ color: '#777' }}>GD</span>
+            <span className="text-[10px] font-medium text-center" style={{ color: '#777' }}>P</span>
+            <span className="text-[10px] font-medium text-right" style={{ color: '#777' }}>Team</span>
           </>
         )}
       </div>
 
       {/* Team rows */}
       {sorted.map((team, idx) => {
-        const isQ = idx < 2
-        const textColor = isQ ? '#e8e8e8' : '#666'
-        const ptsColor = isQ ? '#f0f0f0' : '#505050'
+        // qualified: true = confirmed in, false = confirmed out, undefined = use position heuristic
+        const isQ = team.qualified === true || (team.qualified === undefined && idx < 2)
+        // 3rd-place contender in 48-team format (position 3, not confirmed eliminated)
+        const is3rdContender = idx === 2 && team.qualified !== true && team.qualified !== false && sorted.length === 4
+        const textColor = isQ ? '#e8e8e8' : is3rdContender ? '#999' : '#666'
+        const ptsColor = isQ ? '#f0f0f0' : is3rdContender ? '#777' : '#505050'
         const gdColor = team.goalDifference > 0 ? '#7ecf9e' : team.goalDifference < 0 ? '#cf7e7e' : '#666'
+        const borderColor = isQ ? 'rgba(255,255,255,0.25)' : is3rdContender ? 'rgba(255,255,255,0.1)' : 'transparent'
 
         return (
           <div
@@ -83,36 +87,36 @@ export function CompactGroupTable({ group, side, animDelay = 0 }: CompactGroupTa
               gridTemplateColumns: side === 'left' ? '1fr 18px 22px 22px' : '22px 22px 18px 1fr',
               background: isQ ? 'rgba(255,255,255,0.03)' : 'transparent',
               borderBottom: idx < sorted.length - 1 ? '1px solid rgba(255,255,255,0.04)' : 'none',
-              borderLeft: side === 'left' ? `2px solid ${isQ ? 'rgba(255,255,255,0.25)' : 'transparent'}` : undefined,
-              borderRight: side === 'right' ? `2px solid ${isQ ? 'rgba(255,255,255,0.25)' : 'transparent'}` : undefined,
+              borderLeft: side === 'left' ? `2px solid ${borderColor}` : undefined,
+              borderRight: side === 'right' ? `2px solid ${borderColor}` : undefined,
             }}
           >
             {side === 'left' ? (
               <>
                 <div className="flex items-center gap-1 min-w-0">
-                  <span className="text-[10px] leading-none flex-shrink-0">{flagEmoji(team.flagCode)}</span>
-                  <span className="text-[8.5px] font-medium truncate" style={{ color: textColor }}>
+                  <span className="text-[12px] leading-none flex-shrink-0">{flagEmoji(team.flagCode)}</span>
+                  <span className="text-[11px] font-medium truncate" style={{ color: textColor }}>
                     {team.name.length > 10 ? team.name.slice(0, 9) + '.' : team.name}
                   </span>
                 </div>
-                <span className="text-[8.5px] text-center" style={{ color: '#4a4a4a' }}>{team.played}</span>
-                <span className="text-[8.5px] text-center font-medium" style={{ color: gdColor }}>
+                <span className="text-[11px] text-center" style={{ color: '#777' }}>{team.played}</span>
+                <span className="text-[11px] text-center font-medium" style={{ color: gdColor }}>
                   {team.goalDifference > 0 ? '+' : ''}{team.goalDifference}
                 </span>
-                <span className="text-[8.5px] text-center font-bold" style={{ color: ptsColor }}>{team.points}</span>
+                <span className="text-[11px] text-center font-bold" style={{ color: ptsColor }}>{team.points}</span>
               </>
             ) : (
               <>
-                <span className="text-[8.5px] text-center font-bold" style={{ color: ptsColor }}>{team.points}</span>
-                <span className="text-[8.5px] text-center font-medium" style={{ color: gdColor }}>
+                <span className="text-[11px] text-center font-bold" style={{ color: ptsColor }}>{team.points}</span>
+                <span className="text-[11px] text-center font-medium" style={{ color: gdColor }}>
                   {team.goalDifference > 0 ? '+' : ''}{team.goalDifference}
                 </span>
-                <span className="text-[8.5px] text-center" style={{ color: '#4a4a4a' }}>{team.played}</span>
+                <span className="text-[11px] text-center" style={{ color: '#777' }}>{team.played}</span>
                 <div className="flex items-center gap-1 min-w-0 justify-end">
-                  <span className="text-[8.5px] font-medium truncate text-right" style={{ color: textColor }}>
+                  <span className="text-[11px] font-medium truncate text-right" style={{ color: textColor }}>
                     {team.name.length > 10 ? team.name.slice(0, 9) + '.' : team.name}
                   </span>
-                  <span className="text-[10px] leading-none flex-shrink-0">{flagEmoji(team.flagCode)}</span>
+                  <span className="text-[12px] leading-none flex-shrink-0">{flagEmoji(team.flagCode)}</span>
                 </div>
               </>
             )}
