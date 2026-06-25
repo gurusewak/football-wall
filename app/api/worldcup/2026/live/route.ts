@@ -13,7 +13,7 @@ export async function GET() {
   const dbData = await dbGet('wc-2026')
   if (dbData) {
     return NextResponse.json(
-      { tournament: dbData, meta: { dataSource: 'db', apiCacheFetchedAt: dbData.lastUpdated ?? null } },
+      { tournament: dbData, source: 'db', meta: { apiCacheFetchedAt: dbData.lastUpdated ?? null } },
       { headers: { 'Cache-Control': 'no-store' } }
     )
   }
@@ -25,7 +25,7 @@ export async function GET() {
     // Seed DB in background so next request hits DB
     dbUpsert('wc-2026', raw).catch(() => {})
     return NextResponse.json(
-      { tournament: raw, meta: { dataSource: 'json', apiCacheFetchedAt: null } },
+      { tournament: raw, source: 'json', meta: { apiCacheFetchedAt: null } },
       { headers: { 'Cache-Control': 'no-store' } }
     )
   } catch {

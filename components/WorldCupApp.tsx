@@ -159,7 +159,9 @@ export default function WorldCupApp({ initialYear }: { initialYear?: number }) {
     Promise.all([
       fetch('/api/worldcup/index').then(r => r.json()),
       fetch('/api/worldcup/world-cups').then(r => r.json()),
-    ]).then(([idx, allData]) => {
+    ]).then(([idxResp, allDataResp]) => {
+      const idx = idxResp.data ?? idxResp
+      const allData = allDataResp.data ?? allDataResp
       const winnerMap = new Map<number, string>()
       for (const t of allData.tournaments ?? []) {
         const winnerId = t.tournamentSummary?.winnerTeamId
@@ -221,17 +223,21 @@ export default function WorldCupApp({ initialYear }: { initialYear?: number }) {
     const fetchPromise = selectedYear === 2026
       ? fetch('/api/worldcup/2026/live')
           .then(r => r.json())
-          .then((resp: { tournament: any; meta: { dataSource: 'json' | 'json+api' | 'db'; apiCacheFetchedAt: string | null; matchesUpdated: number; liveMatchCount: number } }) => {
-            setDataSource(resp.meta.dataSource)
+          .then((resp: { tournament: any; source: 'json' | 'json+api' | 'db'; meta: { apiCacheFetchedAt: string | null } }) => {
+            setDataSource(resp.source)
             setApiUpdatedAt(resp.meta.apiCacheFetchedAt)
             return resp.tournament
           })
           .catch(() => {
             setDataSource('json')
             setApiUpdatedAt(null)
-            return fetch(`/api/worldcup/data?year=${selectedYear}`).then(r => r.json())
+            return fetch(`/api/worldcup/data?year=${selectedYear}`)
+              .then(r => r.json())
+              .then(resp => resp.data ?? resp)
           })
-      : fetch(`/api/worldcup/data?year=${selectedYear}`).then(r => r.json())
+      : fetch(`/api/worldcup/data?year=${selectedYear}`)
+          .then(r => r.json())
+          .then(resp => resp.data ?? resp)
 
     fetchPromise
       .then(data => {
