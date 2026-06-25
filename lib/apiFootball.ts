@@ -22,12 +22,19 @@ export interface ApiFixture {
   }
 }
 
-export interface ApiGoalEvent {
+export interface ApiMatchEvent {
   time: { elapsed: number; extra: number | null }
-  team: { name: string }
-  player: { name: string }
+  team: { id: number; name: string }
+  player: { id: number; name: string }
+  assist: { id: number | null; name: string | null }
   type: 'Goal' | 'Card' | 'subst' | 'Var'
   detail: string
+  comments: string | null
+}
+
+export interface ApiMatchStatBlock {
+  team: { id: number; name: string }
+  statistics: Array<{ type: string; value: number | string | null }>
 }
 
 export interface ApiStandingEntry {
@@ -60,6 +67,9 @@ export interface ApiFetchedData {
   liveFixtures: ApiFixture[]
   standings: ApiStandingEntry[]
   topScorers: ApiTopScorer[]
+  // Per-fixture detail for live + recently completed matches (keyed by fixture ID)
+  fixtureEvents: Record<number, ApiMatchEvent[]>
+  fixtureStats: Record<number, ApiMatchStatBlock[]>
 }
 
 async function apiFetch<T>(path: string): Promise<T | null> {
@@ -69,9 +79,7 @@ async function apiFetch<T>(path: string): Promise<T | null> {
   try {
     const url = `${BASE_URL}${path}`
     const res = await fetch(url, {
-      headers: {
-        'x-apisports-key': apiKey,
-      },
+      headers: { 'x-apisports-key': apiKey },
     })
     if (!res.ok) return null
     const json = await res.json()
@@ -80,6 +88,10 @@ async function apiFetch<T>(path: string): Promise<T | null> {
     return null
   }
 }
+
+const LIVE_STATUS_SET = new Set(['1H', 'HT', '2H', 'ET', 'BT', 'P', 'INT'])
+const DONE_STATUS_SET = new Set(['FT', 'AET', 'PEN'])
+const THREE_DAYS_MS = 3 * 24 * 60 * 60 * 1000
 
 // Actual shape of /standings response: [{league: {standings: ApiStandingEntry[][]}}]
 type StandingsResponse = Array<{ league: { standings: ApiStandingEntry[][] } }>
@@ -97,8 +109,28 @@ export async function fetchWc2026Data(): Promise<ApiFetchedData | null> {
 
   if (!fixtures) return null
 
-  // Standings: response[0].league.standings is ApiStandingEntry[][] (one array per group) — flatten
   const standings: ApiStandingEntry[] = standingsWrapper?.[0]?.league?.standings?.flat() ?? []
+
+  // Identify fixtures needing per-fixture detail: live or completed within the last 3 days
+  const cutoff = Date.now() - THREE_DAYS_MS
+  const detailFixtures = fixtures.filter(f => {
+    const status = f.fixture.status.short
+    if (!LIVE_STATUS_SET.has(status) && !DONE_STATUS_SET.has(status)) return false
+    return new Date(f.fixture.date).getTime() > cutoff
+  })
+
+  // Fetch events + statistics in parallel for up to 15 fixtures (30 API calls max)
+  const fixtureEvents: Record<number, ApiMatchEvent[]> = {}
+  const fixtureStats: Record<number, ApiMatchStatBlock[]> = {}
+
+  await Promise.all(
+    detailFixtures.slice(0, 15).flatMap(f => [
+      apiFetch<ApiMatchEvent[]>(`/fixtures/events?fixture=${f.fixture.id}`)
+        .then(ev => { if (ev?.length) fixtureEvents[f.fixture.id] = ev }),
+      apiFetch<ApiMatchStatBlock[]>(`/fixtures/statistics?fixture=${f.fixture.id}`)
+        .then(st => { if (st?.length) fixtureStats[f.fixture.id] = st }),
+    ])
+  )
 
   return {
     fetchedAt: new Date().toISOString(),
@@ -107,5 +139,7 @@ export async function fetchWc2026Data(): Promise<ApiFetchedData | null> {
     liveFixtures: liveFixtures ?? [],
     standings,
     topScorers: topScorers ?? [],
+    fixtureEvents,
+    fixtureStats,
   }
 }
