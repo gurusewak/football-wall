@@ -2,7 +2,7 @@
   "crons": [
     {
       "path": "/api/cron/worldcup-sync",
-      "schedule": "0 * * * *"
+      "schedule": "0 15-23,0-7 * * *"
     }
   ]
 }
