@@ -101,18 +101,28 @@ function MatchPopover({ match, side }: { match: Match; side: 'left' | 'right' | 
 
       {/* Score block */}
       <div className="px-3 py-2.5 space-y-2">
-        {[
-          { team: match.homeTeam, score: match.homeScore, win: !scheduled && (match.homeScore ?? 0) > (match.awayScore ?? 0) },
-          { team: match.awayTeam, score: match.awayScore, win: !scheduled && (match.awayScore ?? 0) > (match.homeScore ?? 0) },
-        ].map(({ team, score, win }, i) => (
+        {(() => {
+          const wentToPens = match.wentToPenaltyShootout && match.homePenaltyScore != null && match.awayPenaltyScore != null
+          const hWin = !scheduled && (wentToPens ? (match.homePenaltyScore as number) > (match.awayPenaltyScore as number) : (match.homeScore ?? 0) > (match.awayScore ?? 0))
+          const aWin = !scheduled && (wentToPens ? (match.awayPenaltyScore as number) > (match.homePenaltyScore as number) : (match.awayScore ?? 0) > (match.homeScore ?? 0))
+          return [
+            { team: match.homeTeam, score: match.homeScore, win: hWin, penScore: wentToPens ? match.homePenaltyScore : null },
+            { team: match.awayTeam, score: match.awayScore, win: aWin, penScore: wentToPens ? match.awayPenaltyScore : null },
+          ]
+        })().map(({ team, score, win, penScore }, i) => (
           <div key={i} className="flex items-center justify-between">
             <div className="flex items-center gap-1.5">
               <span className="text-sm">{isTBD(team) ? '🏳' : flagEmoji(teamFlag(team))}</span>
               <span className="text-[10px] font-semibold" style={{ color: win ? '#f0f0f0' : '#a0a0a0' }}>{team}</span>
             </div>
-            <span className="text-base font-bold tabular-nums" style={{ color: win ? '#ffffff' : '#686868', minWidth: '16px', textAlign: 'right' }}>
-              {scheduled ? '—' : (score ?? '?')}
-            </span>
+            <div className="flex items-center gap-1 tabular-nums">
+              {penScore != null && (
+                <span className="text-[9px]" style={{ color: win ? '#aaa' : '#555' }}>({penScore})</span>
+              )}
+              <span className="text-base font-bold" style={{ color: win ? '#ffffff' : '#686868', minWidth: '16px', textAlign: 'right' }}>
+                {scheduled ? '—' : (score ?? '?')}
+              </span>
+            </div>
           </div>
         ))}
       </div>
@@ -192,8 +202,17 @@ export function PosterMatchBox({ match, size = 'sm', showLabel = true, popoverSi
   const scheduled = match.status === 'scheduled'
   const homeTBD = isTBD(match.homeTeam)
   const awayTBD = isTBD(match.awayTeam)
-  const homeWin = !scheduled && !homeTBD && (match.homeScore ?? 0) > (match.awayScore ?? 0)
-  const awayWin = !scheduled && !awayTBD && (match.awayScore ?? 0) > (match.homeScore ?? 0)
+  const wentToPens = match.wentToPenaltyShootout && match.homePenaltyScore != null && match.awayPenaltyScore != null
+  let homeWin = false, awayWin = false
+  if (!scheduled && !homeTBD && !awayTBD && match.homeScore !== null && match.awayScore !== null) {
+    if (wentToPens) {
+      homeWin = (match.homePenaltyScore as number) > (match.awayPenaltyScore as number)
+      awayWin = (match.awayPenaltyScore as number) > (match.homePenaltyScore as number)
+    } else {
+      homeWin = (match.homeScore ?? 0) > (match.awayScore ?? 0)
+      awayWin = (match.awayScore ?? 0) > (match.homeScore ?? 0)
+    }
+  }
 
   const borderColor = hovered ? 'rgba(255,255,255,0.28)' : 'rgba(255,255,255,0.09)'
   const bgColor = hovered ? 'rgba(22,22,22,0.97)' : 'rgba(13,13,13,0.88)'
@@ -237,12 +256,15 @@ export function PosterMatchBox({ match, size = 'sm', showLabel = true, popoverSi
               {homeTBD ? formatSlotName(match.homeTeam) : match.homeTeam.length > nameMaxLen ? match.homeTeam.slice(0, nameMaxLen - 1) + '.' : match.homeTeam}
             </span>
           </div>
-          <span
-            className="tabular-nums font-bold flex-shrink-0"
-            style={{ fontSize: scoreFontSize, color: homeWin ? '#f5f5f5' : scheduled || homeTBD ? '#505050' : '#888' }}
-          >
-            {scheduled || homeTBD || match.homeScore === null ? '·' : match.homeScore}
-          </span>
+          <div className="flex items-center gap-0.5 flex-shrink-0">
+            {wentToPens && homeWin && <span style={{ fontSize: '8px', color: '#888' }}>P</span>}
+            <span
+              className="tabular-nums font-bold"
+              style={{ fontSize: scoreFontSize, color: homeWin ? '#f5f5f5' : scheduled || homeTBD ? '#505050' : '#888' }}
+            >
+              {scheduled || homeTBD || match.homeScore === null ? '·' : match.homeScore}
+            </span>
+          </div>
         </div>
 
         {/* Away */}
@@ -261,12 +283,15 @@ export function PosterMatchBox({ match, size = 'sm', showLabel = true, popoverSi
               {awayTBD ? formatSlotName(match.awayTeam) : match.awayTeam.length > nameMaxLen ? match.awayTeam.slice(0, nameMaxLen - 1) + '.' : match.awayTeam}
             </span>
           </div>
-          <span
-            className="tabular-nums font-bold flex-shrink-0"
-            style={{ fontSize: scoreFontSize, color: awayWin ? '#f5f5f5' : scheduled || awayTBD ? '#505050' : '#888' }}
-          >
-            {scheduled || awayTBD || match.awayScore === null ? '·' : match.awayScore}
-          </span>
+          <div className="flex items-center gap-0.5 flex-shrink-0">
+            {wentToPens && awayWin && <span style={{ fontSize: '8px', color: '#888' }}>P</span>}
+            <span
+              className="tabular-nums font-bold"
+              style={{ fontSize: scoreFontSize, color: awayWin ? '#f5f5f5' : scheduled || awayTBD ? '#505050' : '#888' }}
+            >
+              {scheduled || awayTBD || match.awayScore === null ? '·' : match.awayScore}
+            </span>
+          </div>
         </div>
       </div>
 

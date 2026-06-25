@@ -245,6 +245,70 @@ export function mergeApiOverlay(rawTournament: any, apiData: ApiFetchedData): Me
     }
   }
 
+  // ── Qualification status recompute ────────────────────────────────────────
+  // Sort helper: points → GD → GF
+  const byStanding = (a: any, b: any) => {
+    if (b.points !== a.points) return b.points - a.points
+    if (b.goalDifference !== a.goalDifference) return b.goalDifference - a.goalDifference
+    return b.goalsFor - a.goalsFor
+  }
+
+  const groups: any[] = tournament.groups ?? []
+  const is48Team = groups.length === 12   // 2026: 12 groups of 4
+
+  for (const group of groups) {
+    const standings: any[] = group.standings ?? []
+    if (!standings.length) continue
+    const matchesPerTeam = standings.length - 1  // 3 in a 4-team group
+    const groupComplete = matchesPerTeam > 0 && standings.every((s: any) => (s.played ?? 0) >= matchesPerTeam)
+
+    const sorted = [...standings].sort(byStanding)
+
+    if (!groupComplete) {
+      // Group still in progress: clear all qualification so position heuristic drives the UI
+      if (is48Team) {
+        for (const s of sorted) {
+          s.qualified = undefined
+          s.qualificationType = null
+        }
+      }
+      continue
+    }
+
+    // Top 2 always advance
+    sorted[0].qualified = true
+    sorted[0].qualificationType = 'automatic_group_top_two'
+    sorted[1].qualified = true
+    sorted[1].qualificationType = 'automatic_group_top_two'
+    // 3rd: mark undefined for now — resolved below if all groups done
+    if (sorted[2]) { sorted[2].qualified = undefined; sorted[2].qualificationType = null }
+    // 4th (or last): eliminated
+    if (sorted[3]) { sorted[3].qualified = false; sorted[3].qualificationType = null }
+    // Non-48 formats (8 groups of 4): 3rd never qualifies
+    if (!is48Team && sorted[2]) { sorted[2].qualified = false }
+  }
+
+  // For 2026 (48-team): once all 12 groups finish, rank all thirds, best 8 qualify
+  if (is48Team) {
+    const allGroupsComplete = groups.every((g: any) => {
+      const s: any[] = g.standings ?? []
+      if (!s.length) return false
+      const mpt = s.length - 1
+      return mpt > 0 && s.every((t: any) => (t.played ?? 0) >= mpt)
+    })
+    if (allGroupsComplete) {
+      const thirds: any[] = groups.map((g: any) => {
+        const s = [...(g.standings ?? [])].sort(byStanding)
+        return s[2] ?? null
+      }).filter(Boolean)
+      thirds.sort(byStanding)
+      thirds.forEach((s: any, i: number) => {
+        s.qualified = i < 8
+        s.qualificationType = i < 8 ? 'best_third_place' : null
+      })
+    }
+  }
+
   // ── Top scorers fallback ──────────────────────────────────────────────────
   if ((!tournament.players || tournament.players.length === 0) && apiData.topScorers.length > 0) {
     tournament.players = apiData.topScorers.slice(0, 20).map(p => ({

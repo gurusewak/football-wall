@@ -4,6 +4,7 @@ import { useMemo } from 'react'
 import { motion } from 'framer-motion'
 import { Bracket, Match } from '@/lib/types'
 import { PosterMatchBox } from './PosterMatchBox'
+import { teamFlagCode } from '@/lib/flagUtils'
 
 interface Props {
   knockoutBracket: Bracket[]
@@ -265,7 +266,6 @@ function cleanCity(city: string): string {
 function MatchCaption({ match }: { match: Match | null }) {
   if (!match) return <div style={{ height: CAPTION_H }} />
   const parts = [
-    match.matchLabel,
     fmtDate(match.date),
     match.city ? cleanCity(match.city) : undefined,
   ].filter(Boolean)
@@ -340,15 +340,35 @@ function SingleMatch({ match, colX, cy, matchH, side, delay, simKey, enterX, onM
       style={{ left: colX, top: cy - matchH / 2 - CAPTION_H, width: COL_W }}
     >
       <MatchCaption match={match} />
-      <PosterMatchBox match={match} size="sm" showLabel popoverSide={side === 'left' ? 'right' : 'left'} onMatchClick={onMatchClick} />
+      <PosterMatchBox match={match} size="sm" showLabel={false} popoverSide={side === 'left' ? 'right' : 'left'} onMatchClick={onMatchClick} />
     </motion.div>
   )
 }
 
-const TROPHY_H = 88   // trophy height + gap before match box
+const TROPHY_H = 150  // space above match box (winner + trophy)
 const FINAL_H  = 72   // lg boxH
 
+function flagEmoji(code: string): string {
+  if (!code || code === 'UN') return '🏳'
+  return code.toUpperCase().split('').map(c => String.fromCodePoint(127397 + c.charCodeAt(0))).join('')
+}
+
+function getFinalWinner(match: Match | null): { name: string; flag: string } | null {
+  if (!match || match.status !== 'completed') return null
+  const { homeScore, awayScore, homeTeam, awayTeam, wentToPenaltyShootout, homePenaltyScore, awayPenaltyScore } = match
+  if (homeScore === null || awayScore === null) return null
+  let winnerName: string
+  if (wentToPenaltyShootout && homePenaltyScore != null && awayPenaltyScore != null) {
+    winnerName = homePenaltyScore > awayPenaltyScore ? homeTeam : awayTeam
+  } else {
+    if (homeScore === awayScore) return null
+    winnerName = homeScore > awayScore ? homeTeam : awayTeam
+  }
+  return { name: winnerName, flag: flagEmoji(teamFlagCode(winnerName)) }
+}
+
 function FinalBox({ match, colX, cy, delay, simKey, onMatchClick }: { match: Match | null; colX: number; cy: number; delay: number; simKey: number; onMatchClick?: (id: string) => void }) {
+  const winner = getFinalWinner(match)
   return (
     <motion.div
       key={`${simKey}-final`}
@@ -358,13 +378,19 @@ function FinalBox({ match, colX, cy, delay, simKey, onMatchClick }: { match: Mat
       className="absolute"
       style={{ left: colX, top: cy - FINAL_H / 2 - TROPHY_H, width: COL_W }}
     >
-      {/* Trophy */}
-      <div style={{ height: TROPHY_H - 4, display: 'flex', flexDirection: 'column', alignItems: 'center', justifyContent: 'flex-end' }}>
+      {/* Winner flag + name above trophy */}
+      <div style={{ height: TROPHY_H - 4, display: 'flex', flexDirection: 'column', alignItems: 'center', justifyContent: winner ? 'space-between' : 'flex-end', paddingTop: winner ? 6 : 0 }}>
+        {winner && (
+          <div style={{ display: 'flex', flexDirection: 'column', alignItems: 'center', gap: 5 }}>
+            <span style={{ fontSize: '38px', lineHeight: 1 }}>{winner.flag}</span>
+            <span style={{ fontSize: '11px', fontWeight: 700, letterSpacing: '0.06em', color: '#e8e8e8', textTransform: 'uppercase', textAlign: 'center', maxWidth: COL_W - 8 }}>{winner.name}</span>
+          </div>
+        )}
         <img
           src="/trophy.svg"
           alt="World Cup Trophy"
-          width={64}
-          height={78}
+          width={56}
+          height={68}
           style={{ objectFit: 'contain', display: 'block' }}
         />
       </div>
@@ -384,10 +410,20 @@ function ThirdBox({ match, colX, cy, matchH, delay, simKey, onMatchClick }: { ma
       animate={{ opacity: 1, y: 0 }}
       transition={{ duration: 0.38, delay }}
       className="absolute"
-      style={{ left: colX, top: cy - matchH / 2 - CAPTION_H - 18, width: COL_W }}
+      style={{ left: colX, top: cy - matchH / 2 - CAPTION_H - 18 - (getFinalWinner(match) ? 28 : 0), width: COL_W }}
     >
+      {/* 3rd place winner */}
+      {(() => {
+        const third = getFinalWinner(match)
+        return third ? (
+          <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'center', gap: 5, marginBottom: 10 }}>
+            <span style={{ fontSize: '18px', lineHeight: 1 }}>{third.flag}</span>
+            <span style={{ fontSize: '11px', fontWeight: 500, color: '#c0c0c0', letterSpacing: '0.04em' }}>{third.name}</span>
+          </div>
+        ) : null
+      })()}
       <div
-        className="flex items-center justify-center mb-0.5 rounded-sm"
+        className="flex items-center justify-center mb-2 rounded-sm"
         style={{ height: '16px', background: 'rgba(255,255,255,0.03)', border: '1px solid rgba(255,255,255,0.06)' }}
       >
         <span style={{ fontSize: '10px', fontWeight: 700, letterSpacing: '0.1em', color: '#666' }}>3RD PLACE</span>
