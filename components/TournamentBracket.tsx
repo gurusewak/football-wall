@@ -108,7 +108,7 @@ export function TournamentBracket({ brackets, year }: BracketProps) {
             {/* Attendance */}
             {hoveredMatch === match.id && (
               <motion.div initial={{ opacity: 0, height: 0 }} animate={{ opacity: 1, height: 'auto' }} className="text-xs text-muted-foreground pt-1 border-t border-border/40">
-                <div>👥 {match.attendance.toLocaleString()}</div>
+                <div>👥 {(match.attendance ?? 0).toLocaleString()}</div>
                 {match.goals.length > 0 && (
                   <div className="mt-1 space-y-0.5">
                     {match.goals.map((goal, idx) => (
@@ -197,7 +197,7 @@ export function TournamentBracket({ brackets, year }: BracketProps) {
                   </div>
                 </div>
               )}
-              <p className="text-xs text-muted-foreground">👥 {selectedMatch.attendance.toLocaleString()}</p>
+              <p className="text-xs text-muted-foreground">👥 {(selectedMatch.attendance ?? 0).toLocaleString()}</p>
             </div>
             <button
               onClick={() => setSelectedMatch(null)}

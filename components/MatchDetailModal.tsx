@@ -70,10 +70,10 @@ export function MatchDetailModal({ match, onClose }: MatchDetailModalProps) {
             <p className="text-sm">{formatVenue(match.venue, match.city)}</p>
           </div>
 
-          {match.attendance > 0 && (
+          {match.attendance != null && match.attendance > 0 && (
             <div>
               <p className="text-xs text-muted-foreground mb-1">ATTENDANCE</p>
-              <p className="text-sm">{match.attendance.toLocaleString()}</p>
+              <p className="text-sm">{(match.attendance ?? 0).toLocaleString()}</p>
             </div>
           )}
         </div>

@@ -47,17 +47,18 @@ export interface Card {
 
 export interface Match {
   id: string
-  stage: 'group' | 'r32' | 'r16' | 'qf' | 'sf' | 'final'
+  stage: 'group' | 'r32' | 'r16' | 'qf' | 'sf' | '3p' | 'final'
+  matchLabel?: string
   homeTeam: string
   awayTeam: string
-  homeScore: number
-  awayScore: number
+  homeScore: number | null
+  awayScore: number | null
   homeTeamId: string
   awayTeamId: string
   date: string
   venue: string
   city: string
-  attendance: number
+  attendance: number | null
   status: 'scheduled' | 'live' | 'completed'
   goals: Goal[]
   cards: Card[]
@@ -66,13 +67,16 @@ export interface Match {
 }
 
 export interface Bracket {
-  round: 'r32' | 'r16' | 'qf' | 'sf' | 'final'
+  round: 'r32' | 'r16' | 'qf' | 'sf' | '3p' | 'final'
   matches: Match[]
 }
+
+export type Group = GroupStanding
 
 export interface Tournament {
   name: string
   year: number
+  format?: number
   groups: GroupStanding[]
   knockoutBracket: Bracket[]
   players: Player[]

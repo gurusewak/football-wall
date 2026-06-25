@@ -290,7 +290,7 @@ export function WallChartBracket({ tournament }: WallChartBracketProps) {
                   </div>
                 </div>
               )}
-              <p className="text-xs text-muted-foreground">👥 {selectedMatch.attendance.toLocaleString()}</p>
+              <p className="text-xs text-muted-foreground">👥 {(selectedMatch.attendance ?? 0).toLocaleString()}</p>
             </div>
             <button
               onClick={() => setSelectedMatch(null)}

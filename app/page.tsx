@@ -1,235 +1,326 @@
 'use client'
 
 import { useEffect, useState, useMemo } from 'react'
-import { Tournament, Tournaments } from '@/lib/types'
-import { GroupCard } from '@/components/GroupCard'
-import { WallChartBracket } from '@/components/WallChartBracket'
-import { RefreshBadge } from '@/components/RefreshBadge'
 import { motion } from 'framer-motion'
+import { Tournament, Tournaments } from '@/lib/types'
+import { CompactGroupTable } from '@/components/CompactGroupTable'
+import { KnockoutPosterBracket } from '@/components/KnockoutPosterBracket'
 
-export default function Page() {
-  const [allTournaments, setAllTournaments] = useState<Tournaments | null>(null)
-  const [selectedYear, setSelectedYear] = useState<number | null>(null)
-  const [loading, setLoading] = useState(true)
-  const [activeTab, setActiveTab] = useState<'bracket' | 'groups' | 'stats'>('bracket')
+// ─── Refresh badge ────────────────────────────────────────────────────────────
+function RefreshStatusBadge({ lastUpdated }: { lastUpdated: string }) {
+  const formatted = useMemo(() => {
+    const d = new Date(lastUpdated)
+    return d.toLocaleDateString('en-US', { month: 'short', day: 'numeric' }) +
+      ', ' + d.toLocaleTimeString('en-US', { hour: '2-digit', minute: '2-digit' })
+  }, [lastUpdated])
 
-  useEffect(() => {
-    const loadTournaments = async () => {
-      try {
-        const response = await fetch('/data/world-cups.json')
-        const data = await response.json()
-        setAllTournaments(data)
-        setSelectedYear(data.latestYear)
-      } catch (error) {
-        console.error('Error loading tournament data:', error)
-      } finally {
-        setLoading(false)
-      }
-    }
+  return (
+    <div
+      className="flex items-center gap-1.5 px-2.5 py-1 rounded-full"
+      style={{
+        background: 'rgba(10,14,22,0.8)',
+        border: '1px solid rgba(30,40,60,0.8)',
+        backdropFilter: 'blur(8px)',
+      }}
+    >
+      <span className="w-1.5 h-1.5 rounded-full flex-shrink-0" style={{ background: '#22c55e', boxShadow: '0 0 4px #22c55e' }} />
+      <span className="text-[9px]" style={{ color: '#475569' }}>
+        Updates hourly · Last updated {formatted}
+      </span>
+    </div>
+  )
+}
 
-    loadTournaments()
-  }, [])
-
-  const tournament = useMemo(() => {
-    if (!allTournaments || !selectedYear) return null
-    return allTournaments.tournaments.find((t) => t.year === selectedYear) || null
-  }, [allTournaments, selectedYear])
-
-  const tournamentStats = useMemo(() => {
-    if (!tournament) return null
-    return {
-      topScorers: [...tournament.players].sort((a, b) => b.goals - a.goals).slice(0, 5),
-      mostAssists: [...tournament.players].sort((a, b) => b.assists - a.assists).slice(0, 5),
-      mostYellowCards: [...tournament.players].sort((a, b) => b.yellowCards - a.yellowCards).slice(0, 5),
-      mostRedCards: [...tournament.players].sort((a, b) => b.redCards - a.redCards).slice(0, 5),
-      playerOfMatch: [...tournament.players].sort((a, b) => b.playerOfMatch - a.playerOfMatch).slice(0, 3),
-    }
-  }, [tournament])
-
-  if (loading) {
-    return (
-      <div className="min-h-screen bg-background pt-8">
-        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-          <motion.div animate={{ opacity: [0.5, 1] }} transition={{ repeat: Infinity, duration: 1.5 }} className="h-32 bg-card/50 rounded-lg" />
-        </div>
+// ─── Poster title ─────────────────────────────────────────────────────────────
+function PosterTitle({ year, format }: { year: number; format: number }) {
+  return (
+    <div className="flex flex-col items-center gap-0">
+      <div className="flex items-baseline gap-3">
+        <motion.h1
+          initial={{ opacity: 0, y: -8 }}
+          animate={{ opacity: 1, y: 0 }}
+          transition={{ duration: 0.5 }}
+          className="font-bold tracking-tight"
+          style={{
+            fontSize: '26px',
+            letterSpacing: '-0.01em',
+            background: 'linear-gradient(180deg, #f1f5f9 0%, #94a3b8 100%)',
+            WebkitBackgroundClip: 'text',
+            WebkitTextFillColor: 'transparent',
+          }}
+        >
+          FOOTBALL WORLD CUP
+        </motion.h1>
+        <motion.span
+          initial={{ opacity: 0 }}
+          animate={{ opacity: 1 }}
+          transition={{ duration: 0.5, delay: 0.1 }}
+          className="font-bold"
+          style={{
+            fontSize: '32px',
+            letterSpacing: '-0.02em',
+            background: 'linear-gradient(180deg, #60a5fa 0%, #2563eb 100%)',
+            WebkitBackgroundClip: 'text',
+            WebkitTextFillColor: 'transparent',
+          }}
+        >
+          {year}
+        </motion.span>
       </div>
-    )
-  }
+      <motion.p
+        initial={{ opacity: 0 }}
+        animate={{ opacity: 1 }}
+        transition={{ delay: 0.2 }}
+        className="text-[10px] tracking-[0.25em] uppercase"
+        style={{ color: '#334155' }}
+      >
+        Wall Chart · {format} Teams · Knockout Bracket
+      </motion.p>
+    </div>
+  )
+}
 
-  if (!allTournaments || !tournament) {
+// ─── Stats panel ──────────────────────────────────────────────────────────────
+function StatsPanel({ tournament }: { tournament: Tournament }) {
+  const stats = useMemo(() => ({
+    topScorers: [...tournament.players].sort((a, b) => b.goals - a.goals).slice(0, 5),
+    mostAssists: [...tournament.players].sort((a, b) => b.assists - a.assists).slice(0, 5),
+    yellowCards: [...tournament.players].sort((a, b) => b.yellowCards - a.yellowCards).slice(0, 5),
+    mom: [...tournament.players].sort((a, b) => b.playerOfMatch - a.playerOfMatch).slice(0, 5),
+  }), [tournament.players])
+
+  function StatBlock({ title, items, valueKey }: { title: string; items: typeof stats.topScorers; valueKey: keyof typeof stats.topScorers[0] }) {
     return (
-      <div className="min-h-screen bg-background pt-8">
-        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 text-center text-muted-foreground">
-          <p>Failed to load tournament data</p>
+      <div
+        className="flex-1 rounded"
+        style={{ background: 'rgba(10,13,22,0.6)', border: '1px solid rgba(30,40,60,0.7)', minWidth: '140px' }}
+      >
+        <div className="px-3 py-1.5" style={{ borderBottom: '1px solid rgba(30,40,60,0.7)' }}>
+          <span className="text-[10px] font-bold tracking-widest uppercase" style={{ color: '#475569' }}>{title}</span>
+        </div>
+        <div className="px-3 py-1.5 space-y-1">
+          {items.map((p, i) => (
+            <div key={p.id} className="flex items-center justify-between gap-2">
+              <div className="flex items-center gap-1.5 min-w-0">
+                <span className="text-[9px] w-3 text-right flex-shrink-0" style={{ color: i === 0 ? '#93c5fd' : '#334155' }}>{i + 1}</span>
+                <span className="text-[10px] truncate" style={{ color: i === 0 ? '#e2e8f0' : '#94a3b8' }}>{p.name}</span>
+              </div>
+              <span className="text-[11px] font-bold flex-shrink-0" style={{ color: i === 0 ? '#60a5fa' : '#475569' }}>
+                {p[valueKey] as number}
+              </span>
+            </div>
+          ))}
         </div>
       </div>
     )
   }
 
   return (
-    <main className="min-h-screen bg-background pt-8 pb-16">
-      {/* Background gradient effect */}
-      <div className="fixed inset-0 bg-gradient-to-br from-primary/5 via-transparent to-accent/5 pointer-events-none" />
+    <motion.div
+      initial={{ opacity: 0, y: 12 }}
+      animate={{ opacity: 1, y: 0 }}
+      transition={{ delay: 0.4 }}
+      className="flex gap-3 flex-wrap"
+    >
+      <StatBlock title="Top Scorers" items={stats.topScorers} valueKey="goals" />
+      <StatBlock title="Most Assists" items={stats.mostAssists} valueKey="assists" />
+      <StatBlock title="Yellow Cards" items={stats.yellowCards} valueKey="yellowCards" />
+      <StatBlock title="Player of Match" items={stats.mom} valueKey="playerOfMatch" />
+    </motion.div>
+  )
+}
 
-      <div className="relative max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 space-y-8">
-        {/* Hero Section */}
-        <motion.section initial={{ opacity: 0, y: 20 }} animate={{ opacity: 1, y: 0 }} transition={{ duration: 0.6 }} className="text-center mb-8">
-          <h1 className="text-5xl md:text-6xl font-bold mb-6 bg-gradient-to-r from-accent via-primary to-accent bg-clip-text text-transparent">⚽ {tournament.name}</h1>
+// ─── Main page ────────────────────────────────────────────────────────────────
+export default function Page() {
+  const [allTournaments, setAllTournaments] = useState<Tournaments | null>(null)
+  const [selectedYear, setSelectedYear] = useState<number | null>(null)
+  const [activeTab, setActiveTab] = useState<'wallchart' | 'stats'>('wallchart')
+  const [loading, setLoading] = useState(true)
 
-          {/* World Cup Selector */}
-          <div className="flex justify-center gap-3">
-            <label className="text-sm font-medium text-muted-foreground">Select Year:</label>
-            <select
-              value={selectedYear || ''}
-              onChange={(e) => setSelectedYear(Number(e.target.value))}
-              className="px-4 py-2 rounded-lg bg-card/50 border border-accent/40 text-foreground hover:border-accent/60 transition-colors cursor-pointer"
-            >
-              {allTournaments.tournaments
-                .sort((a, b) => b.year - a.year)
-                .map((t) => (
-                  <option key={t.year} value={t.year}>
-                    {t.year} ({t.format} teams)
-                  </option>
-                ))}
-            </select>
+  useEffect(() => {
+    fetch('/data/world-cups.json')
+      .then(r => r.json())
+      .then((data: Tournaments) => {
+        setAllTournaments(data)
+        setSelectedYear(data.latestYear)
+      })
+      .catch(console.error)
+      .finally(() => setLoading(false))
+  }, [])
+
+  const tournament = useMemo(() => {
+    if (!allTournaments || !selectedYear) return null
+    return allTournaments.tournaments.find(t => t.year === selectedYear) ?? null
+  }, [allTournaments, selectedYear])
+
+  if (loading) {
+    return (
+      <main className="min-h-screen flex items-center justify-center">
+        <div className="flex flex-col items-center gap-3">
+          <div className="w-8 h-8 rounded-full border-2 border-blue-500/30 border-t-blue-500 animate-spin" />
+          <span className="text-[11px] tracking-widest uppercase" style={{ color: '#334155' }}>Loading bracket…</span>
+        </div>
+      </main>
+    )
+  }
+
+  if (!tournament) {
+    return (
+      <main className="min-h-screen flex items-center justify-center">
+        <p className="text-sm" style={{ color: '#475569' }}>Failed to load tournament data.</p>
+      </main>
+    )
+  }
+
+  const leftGroups = tournament.groups.slice(0, 6)
+  const rightGroups = tournament.groups.slice(6, 12)
+
+  return (
+    <main className="min-h-screen pb-12">
+      {/* ── Top bar ─────────────────────────────────────────────── */}
+      <div
+        className="sticky top-0 z-40 flex items-center justify-between px-6 py-2"
+        style={{
+          background: 'rgba(6,8,14,0.92)',
+          borderBottom: '1px solid rgba(30,40,60,0.7)',
+          backdropFilter: 'blur(12px)',
+        }}
+      >
+        {/* Logo */}
+        <div className="flex items-center gap-2">
+          <div
+            className="w-6 h-6 rounded-full flex items-center justify-center flex-shrink-0"
+            style={{ background: 'linear-gradient(135deg, #1d4ed8, #3b82f6)' }}
+          >
+            <span style={{ fontSize: '12px' }}>⚽</span>
           </div>
-        </motion.section>
+          <span className="text-[11px] font-bold tracking-wider" style={{ color: '#93c5fd' }}>FOOTBALL WC</span>
+        </div>
 
-        {/* Tabs */}
-        <motion.div initial={{ opacity: 0 }} animate={{ opacity: 1 }} transition={{ delay: 0.1 }} className="flex justify-center gap-2 flex-wrap">
-          {(['bracket', 'groups', 'stats'] as const).map((tab) => (
+        {/* Nav tabs */}
+        <div className="flex items-center gap-1">
+          {(['wallchart', 'stats'] as const).map(tab => (
             <button
               key={tab}
               onClick={() => setActiveTab(tab)}
-              className={`px-6 py-3 rounded-lg font-medium transition-all flex items-center gap-2 ${
-                activeTab === tab
-                  ? 'bg-accent text-background shadow-lg shadow-accent/50'
-                  : 'bg-card/40 text-foreground hover:bg-card/60 border border-border/40'
-              }`}
+              className="px-3 py-1 rounded text-[10px] font-semibold tracking-wider uppercase transition-all"
+              style={{
+                background: activeTab === tab ? 'rgba(59,130,246,0.2)' : 'transparent',
+                color: activeTab === tab ? '#60a5fa' : '#475569',
+                border: `1px solid ${activeTab === tab ? 'rgba(59,130,246,0.4)' : 'transparent'}`,
+              }}
             >
-              {tab === 'bracket' ? (
-                <>
-                  <svg className="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                    <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M9 19V6l12 6-12 7z" />
-                  </svg>
-                  Bracket
-                </>
-              ) : tab === 'groups' ? (
-                <>
-                  <svg className="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                    <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M7 12l3-3 3 3 4-4M8 21l4-4 4 4M3 4h18M4 4h16v12a1 1 0 01-1 1H5a1 1 0 01-1-1V4z" />
-                  </svg>
-                  Groups
-                </>
-              ) : (
-                <>
-                  <svg className="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                    <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M9 19h6m-3-3v3m3-9h.01M15 12a3 3 0 11-6 0 3 3 0 016 0z" />
-                  </svg>
-                  Stats
-                </>
-              )}
+              {tab === 'wallchart' ? 'Wall Chart' : 'Stats'}
             </button>
           ))}
-        </motion.div>
+        </div>
 
-        {/* Bracket Tab */}
-        {activeTab === 'bracket' && (
-          <motion.section initial={{ opacity: 0 }} animate={{ opacity: 1 }} transition={{ duration: 0.3 }}>
-            <div className="bg-card/30 border border-border/40 rounded-lg p-6 backdrop-blur">
-              <WallChartBracket tournament={tournament} />
-            </div>
-          </motion.section>
-        )}
-
-        {/* Groups Tab */}
-        {activeTab === 'groups' && (
-          <motion.section initial={{ opacity: 0 }} animate={{ opacity: 1 }} transition={{ duration: 0.3 }}>
-            <h2 className="text-3xl font-bold mb-6 text-accent">Group Stage</h2>
-            <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-4">
-              {tournament.groups.map((group, idx) => (
-                <GroupCard key={group.group} group={group} index={idx} />
+        {/* Year selector + badge */}
+        <div className="flex items-center gap-3">
+          <select
+            value={selectedYear ?? ''}
+            onChange={e => setSelectedYear(Number(e.target.value))}
+            className="text-[10px] px-2 py-1 rounded cursor-pointer"
+            style={{
+              background: 'rgba(10,14,22,0.9)',
+              border: '1px solid rgba(30,40,60,0.8)',
+              color: '#94a3b8',
+            }}
+          >
+            {allTournaments?.tournaments
+              .sort((a, b) => b.year - a.year)
+              .map(t => (
+                <option key={t.year} value={t.year}>{t.year} ({t.format ?? 32} teams)</option>
               ))}
-            </div>
-          </motion.section>
-        )}
-
-        {/* Stats Tab */}
-        {activeTab === 'stats' && tournamentStats && (
-          <motion.section initial={{ opacity: 0 }} animate={{ opacity: 1 }} transition={{ duration: 0.3 }} className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-5 gap-4">
-            {/* Top Scorers */}
-            <div className="bg-card/40 border border-border/40 rounded-lg p-4 backdrop-blur space-y-3">
-              <h3 className="font-bold text-accent flex items-center gap-2">
-                <span>⚽</span> Top Scorers
-              </h3>
-              {tournamentStats.topScorers.map((player, idx) => (
-                <div key={player.id} className="flex justify-between text-sm">
-                  <span className="truncate">{player.name}</span>
-                  <span className="font-bold text-accent">{player.goals}</span>
-                </div>
-              ))}
-            </div>
-
-            {/* Most Assists */}
-            <div className="bg-card/40 border border-border/40 rounded-lg p-4 backdrop-blur space-y-3">
-              <h3 className="font-bold text-accent flex items-center gap-2">
-                <span>🎯</span> Most Assists
-              </h3>
-              {tournamentStats.mostAssists.map((player, idx) => (
-                <div key={player.id} className="flex justify-between text-sm">
-                  <span className="truncate">{player.name}</span>
-                  <span className="font-bold text-accent">{player.assists}</span>
-                </div>
-              ))}
-            </div>
-
-            {/* Yellow Cards */}
-            <div className="bg-card/40 border border-border/40 rounded-lg p-4 backdrop-blur space-y-3">
-              <h3 className="font-bold text-accent flex items-center gap-2">
-                <span>🟨</span> Yellow Cards
-              </h3>
-              {tournamentStats.mostYellowCards.map((player, idx) => (
-                <div key={player.id} className="flex justify-between text-sm">
-                  <span className="truncate">{player.name}</span>
-                  <span className="font-bold text-accent">{player.yellowCards}</span>
-                </div>
-              ))}
-            </div>
-
-            {/* Red Cards */}
-            <div className="bg-card/40 border border-border/40 rounded-lg p-4 backdrop-blur space-y-3">
-              <h3 className="font-bold text-accent flex items-center gap-2">
-                <span>🟥</span> Red Cards
-              </h3>
-              {tournamentStats.mostRedCards.map((player, idx) => (
-                <div key={player.id} className="flex justify-between text-sm">
-                  <span className="truncate">{player.name}</span>
-                  <span className="font-bold text-accent">{player.redCards}</span>
-                </div>
-              ))}
-            </div>
-
-            {/* Player of Match */}
-            <div className="bg-card/40 border border-border/40 rounded-lg p-4 backdrop-blur space-y-3">
-              <h3 className="font-bold text-accent flex items-center gap-2">
-                <span>👑</span> Player of Match
-              </h3>
-              {tournamentStats.playerOfMatch.map((player, idx) => (
-                <div key={player.id} className="flex justify-between text-sm">
-                  <span className="truncate">{player.name}</span>
-                  <span className="font-bold text-accent">{player.playerOfMatch}</span>
-                </div>
-              ))}
-            </div>
-          </motion.section>
-        )}
-
+          </select>
+          <RefreshStatusBadge lastUpdated={tournament.lastUpdated} />
+        </div>
       </div>
 
-      {/* Updated Badge - Bottom Right */}
-      <div className="fixed bottom-4 right-4 z-50">
-        <RefreshBadge lastUpdated={tournament.lastUpdated} />
+      {/* ── Poster header ───────────────────────────────────────── */}
+      <div className="flex items-center justify-center py-4">
+        <PosterTitle year={tournament.year} format={tournament.format ?? 48} />
       </div>
+
+      {/* ── Main content ────────────────────────────────────────── */}
+      {activeTab === 'wallchart' && (
+        <div
+          className="poster-scroll mx-auto overflow-x-auto"
+          style={{ maxWidth: '100vw' }}
+        >
+          {/* Poster card */}
+          <motion.div
+            initial={{ opacity: 0 }}
+            animate={{ opacity: 1 }}
+            transition={{ duration: 0.5 }}
+            className="relative mx-auto rounded-xl"
+            style={{
+              minWidth: '1480px',
+              width: 'max-content',
+              background: 'rgba(8,10,18,0.75)',
+              border: '1px solid rgba(30,40,60,0.6)',
+              boxShadow: '0 0 80px rgba(0,0,0,0.8), 0 0 0 1px rgba(30,40,60,0.3)',
+              backdropFilter: 'blur(4px)',
+              padding: '16px 12px',
+            }}
+          >
+            {/* Subtle top shimmer line */}
+            <div
+              className="absolute top-0 left-12 right-12 h-px rounded-full"
+              style={{ background: 'linear-gradient(90deg, transparent, rgba(96,165,250,0.3), transparent)' }}
+            />
+
+            <div className="flex gap-2 items-start">
+              {/* LEFT GROUPS (A–F) */}
+              <div className="flex-shrink-0 flex flex-col gap-1.5" style={{ width: '136px' }}>
+                {leftGroups.map((group, idx) => (
+                  <CompactGroupTable
+                    key={group.group}
+                    group={group}
+                    side="left"
+                    animDelay={idx * 0.05}
+                  />
+                ))}
+              </div>
+
+              {/* BRACKET CENTER */}
+              <div className="flex-1 overflow-hidden">
+                <KnockoutPosterBracket knockoutBracket={tournament.knockoutBracket} />
+              </div>
+
+              {/* RIGHT GROUPS (G–L) */}
+              <div className="flex-shrink-0 flex flex-col gap-1.5" style={{ width: '136px' }}>
+                {rightGroups.map((group, idx) => (
+                  <CompactGroupTable
+                    key={group.group}
+                    group={group}
+                    side="right"
+                    animDelay={idx * 0.05}
+                  />
+                ))}
+              </div>
+            </div>
+
+            {/* Bottom shimmer */}
+            <div
+              className="absolute bottom-0 left-12 right-12 h-px rounded-full"
+              style={{ background: 'linear-gradient(90deg, transparent, rgba(96,165,250,0.15), transparent)' }}
+            />
+          </motion.div>
+
+          {/* Scroll hint on small viewports */}
+          <p className="text-center mt-2 text-[9px] tracking-widest" style={{ color: '#1e293b' }}>
+            ← SCROLL HORIZONTALLY FOR FULL BRACKET →
+          </p>
+        </div>
+      )}
+
+      {/* ── Stats tab ───────────────────────────────────────────── */}
+      {activeTab === 'stats' && (
+        <div className="max-w-4xl mx-auto px-6 py-4">
+          <StatsPanel tournament={tournament} />
+        </div>
+      )}
     </main>
   )
 }
