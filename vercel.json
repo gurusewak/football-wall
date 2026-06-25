@@ -1,7 +1,4 @@
 {
-  "projectSettings": {
-    "framework": "nextjs"
-  },
   "crons": [
     {
       "path": "/api/cron/worldcup-sync",
