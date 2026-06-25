@@ -290,7 +290,7 @@ export default function WorldCupApp({ initialYear }: { initialYear?: number }) {
           className="flex items-center gap-2 cursor-pointer"
           style={{ background: 'none', border: 'none', padding: 0 }}
           onClick={() => {
-            if (latestYear) changeYear(latestYear)
+            if (latestYear && latestYear !== selectedYear) changeYear(latestYear)
             window.scrollTo({ top: 0, behavior: 'smooth' })
           }}
         >
