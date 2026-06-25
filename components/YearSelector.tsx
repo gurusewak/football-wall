@@ -58,25 +58,25 @@ export function YearSelector({
         className="text-[12px] px-2.5 py-1.5 rounded cursor-pointer outline-none flex items-center gap-1.5"
         style={{
           background: 'rgba(10,10,10,0.95)',
-          border: '1px solid rgba(255,255,255,0.1)',
-          color: '#999',
+          border: '1px solid rgba(255,255,255,0.18)',
+          color: '#d8d8d8',
           userSelect: 'none',
         }}
       >
         {selected ? (
           <>
             <span>{selected.year}</span>
-            <span style={{ color: '#555' }}>·</span>
+            <span style={{ color: '#666' }}>·</span>
             <span>{selected.host}</span>
             {selected.winner ? (
               <>
-                <span style={{ color: '#555' }}>·</span>
+                <span style={{ color: '#666' }}>·</span>
                 <span>{selected.winner}</span>
                 <TrophyImg />
               </>
             ) : selected.year === 2026 ? (
               <>
-                <span style={{ color: '#555' }}>·</span>
+                <span style={{ color: '#666' }}>·</span>
                 <span style={{ color: '#666' }}>In Progress</span>
               </>
             ) : null}
@@ -84,7 +84,7 @@ export function YearSelector({
         ) : (
           <span>Select year</span>
         )}
-        <span style={{ marginLeft: 4, color: '#555', fontSize: 10 }}>▾</span>
+        <span style={{ marginLeft: 4, color: '#888', fontSize: 10 }}>▾</span>
       </button>
 
       <AnimatePresence>
