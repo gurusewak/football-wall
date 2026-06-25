@@ -1,7 +1,6 @@
 'use client'
 
 import { useEffect, useRef, useLayoutEffect, useState, useCallback } from 'react'
-import { useRouter } from 'next/navigation'
 import { motion, AnimatePresence } from 'framer-motion'
 import { Tournament } from '@/lib/types'
 import { CompactGroupTable } from '@/components/CompactGroupTable'
@@ -23,9 +22,8 @@ interface YearEntry {
 
 type Tab = 'brackets' | 'groups' | 'stats'
 
-// ── Poster layout ─────────────────────────────────────────────────────────────
+// ── Poster layout — full-size, always scrollable ──────────────────────────────
 const GROUP_COL_W = 134
-const MIN_ZOOM = 0.55
 
 function WallChartPoster({ tournament, simKey, onSimulate, onMatchClick }: {
   tournament: Tournament
@@ -33,36 +31,22 @@ function WallChartPoster({ tournament, simKey, onSimulate, onMatchClick }: {
   onSimulate: () => void
   onMatchClick: (id: string) => void
 }) {
-  const containerRef = useRef<HTMLDivElement>(null)
-  const [zoom, setZoom] = useState(1)
-
   const is48 = !!tournament.knockoutBracket.find(b => b.round === 'r32')
   const bracketW = is48 ? 1404 : 1088
   const NATURAL_W = GROUP_COL_W + 10 + bracketW + 10 + GROUP_COL_W + 20
 
-  useLayoutEffect(() => {
-    if (!containerRef.current) return
-    const measure = () => {
-      const w = containerRef.current!.clientWidth
-      if (w > 0) setZoom(Math.min(1, Math.max(MIN_ZOOM, w / NATURAL_W)))
-    }
-    const ro = new ResizeObserver(measure)
-    ro.observe(containerRef.current)
-    measure()
-    return () => ro.disconnect()
-  }, [NATURAL_W])
-
   const leftGroups  = tournament.groups.slice(0, Math.ceil(tournament.groups.length / 2))
   const rightGroups = tournament.groups.slice(Math.ceil(tournament.groups.length / 2))
-  const needsScroll = zoom < 1
 
   return (
+    // Full-size bracket — always scrollable, never shrunk
     <div
-      ref={containerRef}
       className="w-full"
-      style={{ overflowX: needsScroll ? 'auto' : 'hidden', WebkitOverflowScrolling: 'touch' } as React.CSSProperties}
+      style={{ overflowX: 'auto', WebkitOverflowScrolling: 'touch' } as React.CSSProperties}
     >
-      <div style={{ zoom, width: NATURAL_W, margin: '0 auto' }}>
+      <div style={{ width: NATURAL_W, margin: '0 auto' }}>
+
+        {/* Simulate button */}
         <div style={{ paddingLeft: '10px', paddingBottom: '8px' }}>
           <motion.button
             initial={{ opacity: 0, y: -4 }}
@@ -115,22 +99,22 @@ function WallChartPoster({ tournament, simKey, onSimulate, onMatchClick }: {
 
 // ── Main app component ────────────────────────────────────────────────────────
 export default function WorldCupApp({ initialYear }: { initialYear?: number }) {
-  const router = useRouter()
-
-  const [yearIndex, setYearIndex]       = useState<YearEntry[] | null>(null)
-  const [selectedYear, setSelectedYear] = useState<number | null>(initialYear ?? null)
-  const [tournament, setTournament]     = useState<Tournament | null>(null)
-  const [cache, setCache]               = useState<Map<number, Tournament>>(new Map())
-  const [loading, setLoading]           = useState(true)
-  const [tab, setTab]                   = useState<Tab>('brackets')
-  const [simKey, setSimKey]             = useState(0)
-  const [dataSource, setDataSource]     = useState<'json' | 'json+api' | null>(null)
-  const [apiUpdatedAt, setApiUpdatedAt] = useState<string | null>(null)
-  const [now, setNow]                   = useState<number | null>(null)
+  const [yearIndex, setYearIndex]             = useState<YearEntry[] | null>(null)
+  const [latestYear, setLatestYear]           = useState<number | null>(null)
+  const [selectedYear, setSelectedYear]       = useState<number | null>(initialYear ?? null)
+  const [tournament, setTournament]           = useState<Tournament | null>(null)
+  const [cache, setCache]                     = useState<Map<number, Tournament>>(new Map())
+  const [loading, setLoading]                 = useState(true)
+  const [tab, setTab]                         = useState<Tab>('brackets')
+  const [simKey, setSimKey]                   = useState(0)
+  const [dataSource, setDataSource]           = useState<'json' | 'json+api' | null>(null)
+  const [apiUpdatedAt, setApiUpdatedAt]       = useState<string | null>(null)
+  const [now, setNow]                         = useState<number | null>(null)
   const [selectedMatchId, setSelectedMatchId] = useState<string | null>(null)
 
   useEffect(() => { setNow(Date.now()) }, [])
 
+  // ── Year index fetch ──────────────────────────────────────────────────────
   useEffect(() => {
     Promise.all([
       fetch('/api/worldcup/index').then(r => r.json()),
@@ -152,15 +136,35 @@ export default function WorldCupApp({ initialYear }: { initialYear?: number }) {
         file: e.file,
       }))
       setYearIndex(normalized)
+      setLatestYear(idx.latestYear)
 
       if (!initialYear) {
-        // No year from URL — use latest and silently update URL bar (no navigation/remount)
+        // No year in URL — load latest and update URL bar without navigation
         setSelectedYear(idx.latestYear)
         window.history.replaceState({}, '', '/' + idx.latestYear)
       }
     }).catch(console.error)
-  }, []) // intentionally omits initialYear — only runs once on mount
+  }, []) // eslint-disable-line react-hooks/exhaustive-deps
 
+  // ── Browser back/forward: sync state from URL ─────────────────────────────
+  useEffect(() => {
+    const handlePopState = () => {
+      const m = window.location.pathname.match(/^\/(\d{4})$/)
+      if (m) {
+        const y = parseInt(m[1], 10)
+        if (y >= 1998 && y <= 2030) {
+          setSelectedYear(y)
+          setTab('brackets')
+          setSimKey(0)
+          setSelectedMatchId(null)
+        }
+      }
+    }
+    window.addEventListener('popstate', handlePopState)
+    return () => window.removeEventListener('popstate', handlePopState)
+  }, [])
+
+  // ── Tournament data fetch ─────────────────────────────────────────────────
   useEffect(() => {
     if (!selectedYear || !yearIndex) return
     if (!yearIndex.find(e => e.year === selectedYear)) return
@@ -201,14 +205,16 @@ export default function WorldCupApp({ initialYear }: { initialYear?: number }) {
       .finally(() => setLoading(false))
   }, [selectedYear, yearIndex])
 
+  // ── Year change — pure state update + URL pushState (no remount) ──────────
   const changeYear = useCallback((y: number) => {
     setSelectedYear(y)
     setTab('brackets')
     setSimKey(0)
     setSelectedMatchId(null)
-    // Push to history so back button works; triggers remount via [year] route
-    router.push('/' + y)
-  }, [router])
+    // pushState instead of router.push: updates URL + history without Next.js navigation
+    // This keeps the component mounted → smooth transition, no flicker
+    window.history.pushState({}, '', '/' + y)
+  }, [])
 
   const openMatch = useCallback((id: string) => setSelectedMatchId(id), [])
 
@@ -224,22 +230,19 @@ export default function WorldCupApp({ initialYear }: { initialYear?: number }) {
   }
 
   return (
-    <main className="min-h-screen pb-16 overflow-x-hidden">
+    <main className="min-h-screen pb-16">
 
       {/* ── Sticky header ── */}
       <div
         className="sticky top-0 z-40 flex items-center justify-between px-5 py-2.5"
         style={{ background: 'rgba(5,5,5,0.94)', borderBottom: '1px solid rgba(255,255,255,0.06)', backdropFilter: 'blur(14px)' }}
       >
+        {/* Logo — always navigates to latest year */}
         <button
           className="flex items-center gap-2 cursor-pointer"
           style={{ background: 'none', border: 'none', padding: 0 }}
           onClick={() => {
-            const latest = yearIndex?.[0]?.year
-            if (latest) {
-              // Navigate to latest year via router (proper history entry)
-              router.push('/' + latest)
-            }
+            if (latestYear) changeYear(latestYear)
             window.scrollTo({ top: 0, behavior: 'smooth' })
           }}
         >
@@ -274,29 +277,32 @@ export default function WorldCupApp({ initialYear }: { initialYear?: number }) {
 
       {/* ── Title ── */}
       <div className="flex flex-col items-center pt-6 pb-4">
-        <motion.div
-          key={selectedYear}
-          initial={{ opacity: 0, y: -8 }}
-          animate={{ opacity: 1, y: 0 }}
-          transition={{ duration: 0.4 }}
-          className="flex flex-col items-center gap-1"
-        >
-          <h1
-            className="font-bold tracking-tight text-center"
-            style={{ fontSize: '22px', letterSpacing: '0.04em', background: 'linear-gradient(180deg, #d0d0d0 0%, #666 100%)', WebkitBackgroundClip: 'text', WebkitTextFillColor: 'transparent' }}
+        <AnimatePresence mode="wait">
+          <motion.div
+            key={selectedYear}
+            initial={{ opacity: 0, y: -10 }}
+            animate={{ opacity: 1, y: 0 }}
+            exit={{ opacity: 0, y: 10 }}
+            transition={{ duration: 0.3 }}
+            className="flex flex-col items-center gap-1"
           >
-            FOOTBALL WORLD CUP
-          </h1>
-          <span
-            className="font-bold tabular-nums"
-            style={{ fontSize: '52px', lineHeight: 1, letterSpacing: '-0.03em', background: 'linear-gradient(180deg, #ffffff 0%, #888 100%)', WebkitBackgroundClip: 'text', WebkitTextFillColor: 'transparent' }}
-          >
-            {selectedYear}
-          </span>
-          <p className="text-[12px] tracking-[0.2em] uppercase mt-1" style={{ color: '#666' }}>
-            {tournament.host} · {tournament.format ?? 32} Teams{tournament.winner ? ` · Winner: ${tournament.winner}` : ' · In Progress'}
-          </p>
-        </motion.div>
+            <h1
+              className="font-bold tracking-tight text-center"
+              style={{ fontSize: '22px', letterSpacing: '0.04em', background: 'linear-gradient(180deg, #d0d0d0 0%, #666 100%)', WebkitBackgroundClip: 'text', WebkitTextFillColor: 'transparent' }}
+            >
+              FOOTBALL WORLD CUP
+            </h1>
+            <span
+              className="font-bold tabular-nums"
+              style={{ fontSize: '52px', lineHeight: 1, letterSpacing: '-0.03em', background: 'linear-gradient(180deg, #ffffff 0%, #888 100%)', WebkitBackgroundClip: 'text', WebkitTextFillColor: 'transparent' }}
+            >
+              {selectedYear}
+            </span>
+            <p className="text-[12px] tracking-[0.2em] uppercase mt-1" style={{ color: '#666' }}>
+              {tournament.host} · {tournament.format ?? 32} Teams{tournament.winner ? ` · Winner: ${tournament.winner}` : ' · In Progress'}
+            </p>
+          </motion.div>
+        </AnimatePresence>
       </div>
 
       {/* ── Tab bar ── */}
@@ -321,7 +327,7 @@ export default function WorldCupApp({ initialYear }: { initialYear?: number }) {
       {/* ── Content ── */}
       <AnimatePresence mode="wait">
         {tab === 'brackets' && (
-          <motion.div key="brackets" initial={{ opacity: 0, y: 6 }} animate={{ opacity: 1, y: 0 }} exit={{ opacity: 0 }} transition={{ duration: 0.2 }}>
+          <motion.div key="brackets" initial={{ opacity: 0 }} animate={{ opacity: 1 }} exit={{ opacity: 0 }} transition={{ duration: 0.2 }}>
             <WallChartPoster
               tournament={tournament}
               simKey={simKey}
