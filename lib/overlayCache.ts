@@ -3,7 +3,7 @@ import fs from 'fs'
 import { ApiFetchedData } from './apiFootball'
 
 const CACHE_FILE_PATH = '/tmp/wc-api-overlay-2026.json'
-const API_REFRESH_INTERVAL_MS = 2 * 60 * 60 * 1000  // 2 hours
+const API_REFRESH_INTERVAL_MS = 60 * 60 * 1000  // 1 hour (matches cron schedule)
 
 export function readOverlayCache(): ApiFetchedData | null {
   try {
