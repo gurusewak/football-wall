@@ -8,6 +8,7 @@ import { PosterMatchBox } from './PosterMatchBox'
 interface Props {
   knockoutBracket: Bracket[]
   simKey?: number
+  onMatchClick?: (matchId: string) => void
 }
 
 // ─── Layout constants ─────────────────────────────────────────────────────────
@@ -84,7 +85,7 @@ function sfToFinal(sfColX: number, sfCY: number, finalColX: number, fromRight: b
 }
 
 // ─── Main component ───────────────────────────────────────────────────────────
-export function KnockoutPosterBracket({ knockoutBracket, simKey = 0 }: Props) {
+export function KnockoutPosterBracket({ knockoutBracket, simKey = 0, onMatchClick }: Props) {
   const rounds = useMemo(() => {
     const m: Record<string, Match[]> = {}
     knockoutBracket.forEach(b => { m[b.round] = b.matches })
@@ -93,12 +94,12 @@ export function KnockoutPosterBracket({ knockoutBracket, simKey = 0 }: Props) {
 
   const is48 = !!rounds['r32']
 
-  if (is48) return <Bracket48 rounds={rounds} simKey={simKey} />
-  return <Bracket32 rounds={rounds} simKey={simKey} />
+  if (is48) return <Bracket48 rounds={rounds} simKey={simKey} onMatchClick={onMatchClick} />
+  return <Bracket32 rounds={rounds} simKey={simKey} onMatchClick={onMatchClick} />
 }
 
 // ─── 48-team bracket ──────────────────────────────────────────────────────────
-function Bracket48({ rounds, simKey }: { rounds: Record<string, Match[]>; simKey: number }) {
+function Bracket48({ rounds, simKey, onMatchClick }: { rounds: Record<string, Match[]>; simKey: number; onMatchClick?: (id: string) => void }) {
   const r32 = rounds['r32'] || []
   const r16 = rounds['r16'] || []
   const qf  = rounds['qf']  || []
@@ -164,25 +165,25 @@ function Bracket48({ rounds, simKey }: { rounds: Record<string, Match[]>; simKey
           {svgPaths.map((d, i) => <path key={i} d={d} className="bracket-line" />)}
         </svg>
 
-        <MatchCol matches={r32L} colX={COL_X_48[0]} cyList={R32_CY_48} matchH={MATCH_H_48} side="left"  delay={0}             simKey={simKey} delayMap={r32Delays} enterX={simKey > 0 ? -110 : undefined} />
-        <MatchCol matches={r16L} colX={COL_X_48[1]} cyList={R16_CY_48} matchH={MATCH_H_48} side="left"  delay={r16BaseDelay}   simKey={simKey} enterX={simKey > 0 ? -110 : undefined} />
-        <MatchCol matches={qfL}  colX={COL_X_48[2]} cyList={QF_CY_48}  matchH={MATCH_H_48} side="left"  delay={qfBaseDelay}    simKey={simKey} enterX={simKey > 0 ? -110 : undefined} />
-        {sfL && <SingleMatch match={sfL} colX={COL_X_48[3]} cy={SF_CY_48} matchH={MATCH_H_48} side="left"  delay={sfBaseDelay}  simKey={simKey} enterX={simKey > 0 ? -110 : undefined} />}
+        <MatchCol matches={r32L} colX={COL_X_48[0]} cyList={R32_CY_48} matchH={MATCH_H_48} side="left"  delay={0}             simKey={simKey} delayMap={r32Delays} enterX={simKey > 0 ? -110 : undefined} onMatchClick={onMatchClick} />
+        <MatchCol matches={r16L} colX={COL_X_48[1]} cyList={R16_CY_48} matchH={MATCH_H_48} side="left"  delay={r16BaseDelay}   simKey={simKey} enterX={simKey > 0 ? -110 : undefined} onMatchClick={onMatchClick} />
+        <MatchCol matches={qfL}  colX={COL_X_48[2]} cyList={QF_CY_48}  matchH={MATCH_H_48} side="left"  delay={qfBaseDelay}    simKey={simKey} enterX={simKey > 0 ? -110 : undefined} onMatchClick={onMatchClick} />
+        {sfL && <SingleMatch match={sfL} colX={COL_X_48[3]} cy={SF_CY_48} matchH={MATCH_H_48} side="left"  delay={sfBaseDelay}  simKey={simKey} enterX={simKey > 0 ? -110 : undefined} onMatchClick={onMatchClick} />}
 
-        <FinalBox match={final} colX={COL_X_48[4]} cy={FINAL_CY_48} delay={finalBaseDelay} simKey={simKey} />
-        {third && <ThirdBox match={third} colX={COL_X_48[4]} cy={THIRD_CY_48} matchH={MATCH_H_48} delay={finalBaseDelay + 0.03} simKey={simKey} />}
+        <FinalBox match={final} colX={COL_X_48[4]} cy={FINAL_CY_48} delay={finalBaseDelay} simKey={simKey} onMatchClick={onMatchClick} />
+        {third && <ThirdBox match={third} colX={COL_X_48[4]} cy={THIRD_CY_48} matchH={MATCH_H_48} delay={finalBaseDelay + 0.03} simKey={simKey} onMatchClick={onMatchClick} />}
 
-        {sfR && <SingleMatch match={sfR} colX={COL_X_48[5]} cy={SF_CY_48} matchH={MATCH_H_48} side="right" delay={sfBaseDelay}  simKey={simKey} enterX={simKey > 0 ? 110 : undefined} />}
-        <MatchCol matches={qfR}  colX={COL_X_48[6]} cyList={QF_CY_48}  matchH={MATCH_H_48} side="right" delay={qfBaseDelay}    simKey={simKey} enterX={simKey > 0 ? 110 : undefined} />
-        <MatchCol matches={r16R} colX={COL_X_48[7]} cyList={R16_CY_48} matchH={MATCH_H_48} side="right" delay={r16BaseDelay}   simKey={simKey} enterX={simKey > 0 ? 110 : undefined} />
-        <MatchCol matches={r32R} colX={COL_X_48[8]} cyList={R32_CY_48} matchH={MATCH_H_48} side="right" delay={0}             simKey={simKey} delayMap={r32Delays} enterX={simKey > 0 ? 110 : undefined} />
+        {sfR && <SingleMatch match={sfR} colX={COL_X_48[5]} cy={SF_CY_48} matchH={MATCH_H_48} side="right" delay={sfBaseDelay}  simKey={simKey} enterX={simKey > 0 ? 110 : undefined} onMatchClick={onMatchClick} />}
+        <MatchCol matches={qfR}  colX={COL_X_48[6]} cyList={QF_CY_48}  matchH={MATCH_H_48} side="right" delay={qfBaseDelay}    simKey={simKey} enterX={simKey > 0 ? 110 : undefined} onMatchClick={onMatchClick} />
+        <MatchCol matches={r16R} colX={COL_X_48[7]} cyList={R16_CY_48} matchH={MATCH_H_48} side="right" delay={r16BaseDelay}   simKey={simKey} enterX={simKey > 0 ? 110 : undefined} onMatchClick={onMatchClick} />
+        <MatchCol matches={r32R} colX={COL_X_48[8]} cyList={R32_CY_48} matchH={MATCH_H_48} side="right" delay={0}             simKey={simKey} delayMap={r32Delays} enterX={simKey > 0 ? 110 : undefined} onMatchClick={onMatchClick} />
       </div>
     </div>
   )
 }
 
 // ─── 32-team bracket ──────────────────────────────────────────────────────────
-function Bracket32({ rounds, simKey }: { rounds: Record<string, Match[]>; simKey: number }) {
+function Bracket32({ rounds, simKey, onMatchClick }: { rounds: Record<string, Match[]>; simKey: number; onMatchClick?: (id: string) => void }) {
   const r16 = rounds['r16'] || []
   const qf  = rounds['qf']  || []
   const sf  = rounds['sf']  || []
@@ -241,16 +242,16 @@ function Bracket32({ rounds, simKey }: { rounds: Record<string, Match[]>; simKey
           {svgPaths.map((d, i) => <path key={i} d={d} className="bracket-line" />)}
         </svg>
 
-        <MatchCol matches={r16L} colX={COL_X_32[0]} cyList={R16_CY_32} matchH={MATCH_H_32} side="left"  delay={0}           simKey={simKey} delayMap={r16Delays} enterX={simKey > 0 ? -110 : undefined} />
-        <MatchCol matches={qfL}  colX={COL_X_32[1]} cyList={QF_CY_32}  matchH={MATCH_H_32} side="left"  delay={qfBaseDelay}  simKey={simKey} enterX={simKey > 0 ? -110 : undefined} />
-        {sfL && <SingleMatch match={sfL} colX={COL_X_32[2]} cy={SF_CY_32} matchH={MATCH_H_32} side="left"  delay={sfBaseDelay} simKey={simKey} enterX={simKey > 0 ? -110 : undefined} />}
+        <MatchCol matches={r16L} colX={COL_X_32[0]} cyList={R16_CY_32} matchH={MATCH_H_32} side="left"  delay={0}           simKey={simKey} delayMap={r16Delays} enterX={simKey > 0 ? -110 : undefined} onMatchClick={onMatchClick} />
+        <MatchCol matches={qfL}  colX={COL_X_32[1]} cyList={QF_CY_32}  matchH={MATCH_H_32} side="left"  delay={qfBaseDelay}  simKey={simKey} enterX={simKey > 0 ? -110 : undefined} onMatchClick={onMatchClick} />
+        {sfL && <SingleMatch match={sfL} colX={COL_X_32[2]} cy={SF_CY_32} matchH={MATCH_H_32} side="left"  delay={sfBaseDelay} simKey={simKey} enterX={simKey > 0 ? -110 : undefined} onMatchClick={onMatchClick} />}
 
-        <FinalBox match={final} colX={COL_X_32[3]} cy={FINAL_CY_32} delay={finalBaseDelay} simKey={simKey} />
-        {third && <ThirdBox match={third} colX={COL_X_32[3]} cy={THIRD_CY_32} matchH={MATCH_H_32} delay={finalBaseDelay + 0.03} simKey={simKey} />}
+        <FinalBox match={final} colX={COL_X_32[3]} cy={FINAL_CY_32} delay={finalBaseDelay} simKey={simKey} onMatchClick={onMatchClick} />
+        {third && <ThirdBox match={third} colX={COL_X_32[3]} cy={THIRD_CY_32} matchH={MATCH_H_32} delay={finalBaseDelay + 0.03} simKey={simKey} onMatchClick={onMatchClick} />}
 
-        {sfR && <SingleMatch match={sfR} colX={COL_X_32[4]} cy={SF_CY_32} matchH={MATCH_H_32} side="right" delay={sfBaseDelay} simKey={simKey} enterX={simKey > 0 ? 110 : undefined} />}
-        <MatchCol matches={qfR}  colX={COL_X_32[5]} cyList={QF_CY_32}  matchH={MATCH_H_32} side="right" delay={qfBaseDelay}  simKey={simKey} enterX={simKey > 0 ? 110 : undefined} />
-        <MatchCol matches={r16R} colX={COL_X_32[6]} cyList={R16_CY_32} matchH={MATCH_H_32} side="right" delay={0}           simKey={simKey} delayMap={r16Delays} enterX={simKey > 0 ? 110 : undefined} />
+        {sfR && <SingleMatch match={sfR} colX={COL_X_32[4]} cy={SF_CY_32} matchH={MATCH_H_32} side="right" delay={sfBaseDelay} simKey={simKey} enterX={simKey > 0 ? 110 : undefined} onMatchClick={onMatchClick} />}
+        <MatchCol matches={qfR}  colX={COL_X_32[5]} cyList={QF_CY_32}  matchH={MATCH_H_32} side="right" delay={qfBaseDelay}  simKey={simKey} enterX={simKey > 0 ? 110 : undefined} onMatchClick={onMatchClick} />
+        <MatchCol matches={r16R} colX={COL_X_32[6]} cyList={R16_CY_32} matchH={MATCH_H_32} side="right" delay={0}           simKey={simKey} delayMap={r16Delays} enterX={simKey > 0 ? 110 : undefined} onMatchClick={onMatchClick} />
       </div>
     </div>
   )
@@ -283,7 +284,7 @@ function MatchCaption({ match }: { match: Match | null }) {
   )
 }
 
-function MatchCol({ matches, colX, cyList, matchH, side, delay, simKey, delayMap, enterX }: {
+function MatchCol({ matches, colX, cyList, matchH, side, delay, simKey, delayMap, enterX, onMatchClick }: {
   matches: (Match | null)[]
   colX: number
   cyList: number[]
@@ -293,6 +294,7 @@ function MatchCol({ matches, colX, cyList, matchH, side, delay, simKey, delayMap
   simKey: number
   delayMap?: Map<string, number>
   enterX?: number
+  onMatchClick?: (id: string) => void
 }) {
   return (
     <>
@@ -316,7 +318,7 @@ function MatchCol({ matches, colX, cyList, matchH, side, delay, simKey, delayMap
             style={{ left: colX, top: cy - matchH / 2 - CAPTION_H, width: COL_W }}
           >
             <MatchCaption match={match} />
-            <PosterMatchBox match={match} size="sm" showLabel={false} popoverSide={side === 'left' ? 'right' : 'left'} />
+            <PosterMatchBox match={match} size="sm" showLabel={false} popoverSide={side === 'left' ? 'right' : 'left'} onMatchClick={onMatchClick} />
           </motion.div>
         )
       })}
@@ -324,8 +326,8 @@ function MatchCol({ matches, colX, cyList, matchH, side, delay, simKey, delayMap
   )
 }
 
-function SingleMatch({ match, colX, cy, matchH, side, delay, simKey, enterX }: {
-  match: Match | null; colX: number; cy: number; matchH: number; side: 'left' | 'right'; delay: number; simKey: number; enterX?: number
+function SingleMatch({ match, colX, cy, matchH, side, delay, simKey, enterX, onMatchClick }: {
+  match: Match | null; colX: number; cy: number; matchH: number; side: 'left' | 'right'; delay: number; simKey: number; enterX?: number; onMatchClick?: (id: string) => void
 }) {
   const initAnim = enterX !== undefined ? { opacity: 0, x: enterX, y: 0 } : { opacity: 0, x: 0, y: 6 }
   return (
@@ -338,7 +340,7 @@ function SingleMatch({ match, colX, cy, matchH, side, delay, simKey, enterX }: {
       style={{ left: colX, top: cy - matchH / 2 - CAPTION_H, width: COL_W }}
     >
       <MatchCaption match={match} />
-      <PosterMatchBox match={match} size="sm" showLabel popoverSide={side === 'left' ? 'right' : 'left'} />
+      <PosterMatchBox match={match} size="sm" showLabel popoverSide={side === 'left' ? 'right' : 'left'} onMatchClick={onMatchClick} />
     </motion.div>
   )
 }
@@ -346,7 +348,7 @@ function SingleMatch({ match, colX, cy, matchH, side, delay, simKey, enterX }: {
 const TROPHY_H = 88   // trophy height + gap before match box
 const FINAL_H  = 72   // lg boxH
 
-function FinalBox({ match, colX, cy, delay, simKey }: { match: Match | null; colX: number; cy: number; delay: number; simKey: number }) {
+function FinalBox({ match, colX, cy, delay, simKey, onMatchClick }: { match: Match | null; colX: number; cy: number; delay: number; simKey: number; onMatchClick?: (id: string) => void }) {
   return (
     <motion.div
       key={`${simKey}-final`}
@@ -369,12 +371,12 @@ function FinalBox({ match, colX, cy, delay, simKey }: { match: Match | null; col
       {/* Match caption */}
       <MatchCaption match={match} />
       {/* Final match box */}
-      <PosterMatchBox match={match} size="lg" showLabel={false} popoverSide="top" />
+      <PosterMatchBox match={match} size="lg" showLabel={false} popoverSide="top" onMatchClick={onMatchClick} />
     </motion.div>
   )
 }
 
-function ThirdBox({ match, colX, cy, matchH, delay, simKey }: { match: Match | null; colX: number; cy: number; matchH: number; delay: number; simKey: number }) {
+function ThirdBox({ match, colX, cy, matchH, delay, simKey, onMatchClick }: { match: Match | null; colX: number; cy: number; matchH: number; delay: number; simKey: number; onMatchClick?: (id: string) => void }) {
   return (
     <motion.div
       key={`${simKey}-third`}
@@ -391,7 +393,7 @@ function ThirdBox({ match, colX, cy, matchH, delay, simKey }: { match: Match | n
         <span style={{ fontSize: '10px', fontWeight: 700, letterSpacing: '0.1em', color: '#666' }}>3RD PLACE</span>
       </div>
       <MatchCaption match={match} />
-      <PosterMatchBox match={match} size="sm" showLabel={false} popoverSide="top" />
+      <PosterMatchBox match={match} size="sm" showLabel={false} popoverSide="top" onMatchClick={onMatchClick} />
     </motion.div>
   )
 }

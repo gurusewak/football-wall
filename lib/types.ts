@@ -110,6 +110,30 @@ export interface AwardStanding {
   verified: boolean
 }
 
+export interface MatchStatEntry {
+  type: string
+  value: number | string | null
+}
+
+export interface TeamStatBlock {
+  teamId: string
+  teamName: string
+  statistics: MatchStatEntry[]
+}
+
+export interface MatchStatistics {
+  matchId: string
+  home: TeamStatBlock
+  away: TeamStatBlock
+}
+
+export interface MatchPOTM {
+  matchId: string
+  playerName: string
+  playerId?: string
+  playerTeamId?: string
+}
+
 export interface Tournament {
   name: string
   year: number
@@ -128,6 +152,8 @@ export interface Tournament {
   facts?: TournamentFact[]
   awards?: Award[]
   awardStandings?: AwardStanding[]
+  matchStatistics?: MatchStatistics[]
+  playerOfTheMatch?: MatchPOTM[]
 }
 
 export interface SimulationState {

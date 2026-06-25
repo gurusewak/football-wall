@@ -8,6 +8,7 @@ import { KnockoutPosterBracket } from '@/components/KnockoutPosterBracket'
 import { GroupsPanel } from '@/components/GroupsPanel'
 import { StatsPanel } from '@/components/StatsPanel'
 import { YearSelector } from '@/components/YearSelector'
+import { MatchDetailModal } from '@/components/MatchDetailModal'
 import { normalizeTournament } from '@/lib/worldCupData'
 
 // ── Types ─────────────────────────────────────────────────────────────────────
@@ -27,10 +28,11 @@ const GROUP_COL_W = 134
 // Minimum readable zoom — below this the poster scrolls horizontally
 const MIN_ZOOM = 0.55
 
-function WallChartPoster({ tournament, simKey, onSimulate }: {
+function WallChartPoster({ tournament, simKey, onSimulate, onMatchClick }: {
   tournament: Tournament
   simKey: number
   onSimulate: () => void
+  onMatchClick: (id: string) => void
 }) {
   const containerRef = useRef<HTMLDivElement>(null)
   const [zoom, setZoom] = useState(1)
@@ -109,7 +111,7 @@ function WallChartPoster({ tournament, simKey, onSimulate }: {
               ))}
             </div>
             <div className="flex-1 overflow-visible">
-              <KnockoutPosterBracket knockoutBracket={tournament.knockoutBracket} simKey={simKey} />
+              <KnockoutPosterBracket knockoutBracket={tournament.knockoutBracket} simKey={simKey} onMatchClick={onMatchClick} />
             </div>
             <div className="flex-shrink-0 flex flex-col gap-1.5" style={{ width: GROUP_COL_W }}>
               {rightGroups.map((g, idx) => (
@@ -137,6 +139,7 @@ export default function Page() {
   const [dataSource, setDataSource]     = useState<'json' | 'json+api' | null>(null)
   const [apiUpdatedAt, setApiUpdatedAt] = useState<string | null>(null)
   const [now, setNow]                   = useState<number | null>(null)
+  const [selectedMatchId, setSelectedMatchId] = useState<string | null>(null)
 
   // Populate `now` only on the client to avoid SSR/hydration mismatch with Date.now()
   useEffect(() => { setNow(Date.now()) }, [])
@@ -216,7 +219,10 @@ export default function Page() {
     setSelectedYear(y)
     setTab('brackets')
     setSimKey(0)
+    setSelectedMatchId(null)
   }, [])
+
+  const openMatch = useCallback((id: string) => setSelectedMatchId(id), [])
 
   if (loading || !tournament) {
     return (
@@ -333,12 +339,13 @@ export default function Page() {
               tournament={tournament}
               simKey={simKey}
               onSimulate={() => setSimKey(k => k + 1)}
+              onMatchClick={openMatch}
             />
           </motion.div>
         )}
         {tab === 'groups' && (
           <motion.div key="groups" initial={{ opacity: 0, y: 6 }} animate={{ opacity: 1, y: 0 }} exit={{ opacity: 0 }} transition={{ duration: 0.2 }} className="max-w-5xl mx-auto px-3 sm:px-6">
-            <GroupsPanel tournament={tournament} />
+            <GroupsPanel tournament={tournament} onMatchClick={openMatch} />
           </motion.div>
         )}
         {tab === 'stats' && (
@@ -347,6 +354,13 @@ export default function Page() {
           </motion.div>
         )}
       </AnimatePresence>
+
+      {/* ── Match detail modal ── */}
+      <MatchDetailModal
+        matchId={selectedMatchId}
+        tournament={tournament}
+        onClose={() => setSelectedMatchId(null)}
+      />
 
       {/* ── Footer ── */}
       <div className="mt-12 pb-4 flex items-center justify-center gap-4">

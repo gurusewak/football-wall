@@ -156,7 +156,7 @@ function TeamRow({
 
 // ── Match row ─────────────────────────────────────────────────────────────────
 
-function MatchRow({ match }: { match: Match }) {
+function MatchRow({ match, onMatchClick }: { match: Match; onMatchClick?: (id: string) => void }) {
   const homeFlag = teamFlagEmoji(match.homeTeam)
   const awayFlag = teamFlagEmoji(match.awayTeam)
   const isPlayed = match.status === 'completed' || (match.homeScore !== null && match.awayScore !== null)
@@ -170,7 +170,8 @@ function MatchRow({ match }: { match: Match }) {
   return (
     <div
       className="px-4 py-3"
-      style={{ borderBottom: '1px solid rgba(255,255,255,0.05)' }}
+      style={{ borderBottom: '1px solid rgba(255,255,255,0.05)', cursor: (isPlayed || onMatchClick) ? 'pointer' : 'default' }}
+      onClick={() => onMatchClick && onMatchClick(match.id)}
     >
       {/* Top row: date + label + venue + badges */}
       <div className="flex items-center gap-2 mb-2">
@@ -258,10 +259,12 @@ function GroupDetail({
   group,
   matches,
   onBack,
+  onMatchClick,
 }: {
   group: GroupStanding
   matches: Match[]
   onBack: () => void
+  onMatchClick?: (id: string) => void
 }) {
   const groupMatches = matches.filter(
     m => m.group === group.group || m.stage === 'group'
@@ -356,7 +359,7 @@ function GroupDetail({
           </div>
         ) : (
           groupMatches.map(match => (
-            <MatchRow key={match.id} match={match} />
+            <MatchRow key={match.id} match={match} onMatchClick={onMatchClick} />
           ))
         )}
       </div>
@@ -505,7 +508,7 @@ function GroupCard({
 
 // ── Main export ───────────────────────────────────────────────────────────────
 
-export function GroupsPanel({ tournament }: { tournament: Tournament }) {
+export function GroupsPanel({ tournament, onMatchClick }: { tournament: Tournament; onMatchClick?: (id: string) => void }) {
   const [selectedGroup, setSelectedGroup] = useState<string | null>(null)
 
   // Collect all matches: from tournament.matches if present, or from group.matches
@@ -529,6 +532,7 @@ export function GroupsPanel({ tournament }: { tournament: Tournament }) {
             group={group}
             matches={allMatches}
             onBack={() => setSelectedGroup(null)}
+            onMatchClick={onMatchClick}
           />
         </AnimatePresence>
       )

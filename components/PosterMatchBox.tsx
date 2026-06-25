@@ -10,6 +10,7 @@ interface PosterMatchBoxProps {
   size?: 'sm' | 'md' | 'lg'
   showLabel?: boolean
   popoverSide?: 'left' | 'right' | 'top'
+  onMatchClick?: (matchId: string) => void
 }
 
 function flagEmoji(code: string): string {
@@ -159,7 +160,7 @@ function MatchPopover({ match, side }: { match: Match; side: 'left' | 'right' | 
 }
 
 // ─── Main component ───────────────────────────────────────────────────────────
-export function PosterMatchBox({ match, size = 'sm', showLabel = true, popoverSide = 'right' }: PosterMatchBoxProps) {
+export function PosterMatchBox({ match, size = 'sm', showLabel = true, popoverSide = 'right', onMatchClick }: PosterMatchBoxProps) {
   const [hovered, setHovered] = useState(false)
 
   const boxH = size === 'lg' ? 72 : size === 'md' ? 64 : 56
@@ -203,6 +204,7 @@ export function PosterMatchBox({ match, size = 'sm', showLabel = true, popoverSi
       style={{ width: '100%', height: `${boxH}px`, background: bgColor, border: `1px solid ${borderColor}`, transition: 'background 0.18s, border-color 0.18s' }}
       onMouseEnter={() => setHovered(true)}
       onMouseLeave={() => setHovered(false)}
+      onClick={() => onMatchClick && match && onMatchClick(match.id)}
     >
       {/* Label bar */}
       {showLabel && match.matchLabel && (

@@ -1,4 +1,4 @@
-import { Tournament, GroupStanding, Bracket, Match, Team, Award, AwardStanding } from './types'
+import { Tournament, GroupStanding, Bracket, Match, Team, Award, AwardStanding, MatchStatistics, MatchPOTM } from './types'
 
 function normalizeFlagCode(code: string): string {
   if (!code) return 'UN'
@@ -172,6 +172,29 @@ function normalizeV2(raw: any): Tournament {
       verified: s.verified ?? false,
     }))
 
+  // Match statistics (team-level: possession, shots, passes, etc.)
+  const matchStatistics: MatchStatistics[] = (raw.teamMatchStatistics ?? []).map((ms: any) => ({
+    matchId: ms.matchId,
+    home: {
+      teamId: ms.home?.teamId ?? '',
+      teamName: ms.home?.teamName ?? '',
+      statistics: (ms.home?.statistics ?? []).map((s: any) => ({ type: s.type, value: s.value ?? null })),
+    },
+    away: {
+      teamId: ms.away?.teamId ?? '',
+      teamName: ms.away?.teamName ?? '',
+      statistics: (ms.away?.statistics ?? []).map((s: any) => ({ type: s.type, value: s.value ?? null })),
+    },
+  }))
+
+  // Player of the match per game
+  const playerOfTheMatch: MatchPOTM[] = (raw.playerOfTheMatch ?? []).map((p: any) => ({
+    matchId: p.matchId,
+    playerName: p.playerName ?? p.player ?? '',
+    playerId: p.playerId ?? undefined,
+    playerTeamId: p.playerTeamId ?? p.teamId ?? undefined,
+  })).filter((p: MatchPOTM) => p.playerName)
+
   return {
     name: raw.name,
     year: raw.year,
@@ -190,6 +213,8 @@ function normalizeV2(raw: any): Tournament {
     facts: facts.length > 0 ? facts : undefined,
     awards: awards.length > 0 ? awards : undefined,
     awardStandings: awardStandings.length > 0 ? awardStandings : undefined,
+    matchStatistics: matchStatistics.length > 0 ? matchStatistics : undefined,
+    playerOfTheMatch: playerOfTheMatch.length > 0 ? playerOfTheMatch : undefined,
   }
 }
 
