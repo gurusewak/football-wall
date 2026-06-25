@@ -1,0 +1,106 @@
+{
+  "name": "Football World Cup 2018",
+  "year": 2018,
+  "host": "Russia",
+  "winner": "France",
+  "format": 32,
+  "lastUpdated": "2018-07-15T17:00:00Z",
+  "groups": [
+    { "group": "A", "teams": [
+      { "id": "uru18", "name": "Uruguay",      "flagCode": "UY", "group": "A", "played": 3, "wins": 3, "draws": 0, "losses": 0, "goalsFor": 5, "goalsAgainst": 0, "goalDifference": 5, "points": 9 },
+      { "id": "rus18", "name": "Russia",       "flagCode": "RU", "group": "A", "played": 3, "wins": 2, "draws": 0, "losses": 1, "goalsFor": 8, "goalsAgainst": 4, "goalDifference": 4, "points": 6 },
+      { "id": "ksa18", "name": "Saudi Arabia", "flagCode": "SA", "group": "A", "played": 3, "wins": 1, "draws": 0, "losses": 2, "goalsFor": 2, "goalsAgainst": 7, "goalDifference": -5, "points": 3 },
+      { "id": "egy18", "name": "Egypt",        "flagCode": "EG", "group": "A", "played": 3, "wins": 0, "draws": 0, "losses": 3, "goalsFor": 2, "goalsAgainst": 6, "goalDifference": -4, "points": 0 }
+    ]},
+    { "group": "B", "teams": [
+      { "id": "esp18", "name": "Spain",        "flagCode": "ES", "group": "B", "played": 3, "wins": 1, "draws": 2, "losses": 0, "goalsFor": 6, "goalsAgainst": 5, "goalDifference": 1, "points": 5 },
+      { "id": "por18", "name": "Portugal",     "flagCode": "PT", "group": "B", "played": 3, "wins": 1, "draws": 2, "losses": 0, "goalsFor": 4, "goalsAgainst": 4, "goalDifference": 0, "points": 5 },
+      { "id": "ira18", "name": "Iran",         "flagCode": "IR", "group": "B", "played": 3, "wins": 1, "draws": 1, "losses": 1, "goalsFor": 2, "goalsAgainst": 2, "goalDifference": 0, "points": 4 },
+      { "id": "mor18", "name": "Morocco",      "flagCode": "MA", "group": "B", "played": 3, "wins": 0, "draws": 1, "losses": 2, "goalsFor": 2, "goalsAgainst": 3, "goalDifference": -1, "points": 1 }
+    ]},
+    { "group": "C", "teams": [
+      { "id": "fra18", "name": "France",       "flagCode": "FR", "group": "C", "played": 3, "wins": 2, "draws": 1, "losses": 0, "goalsFor": 3, "goalsAgainst": 1, "goalDifference": 2, "points": 7 },
+      { "id": "den18", "name": "Denmark",      "flagCode": "DK", "group": "C", "played": 3, "wins": 1, "draws": 2, "losses": 0, "goalsFor": 2, "goalsAgainst": 1, "goalDifference": 1, "points": 5 },
+      { "id": "per18", "name": "Peru",         "flagCode": "PE", "group": "C", "played": 3, "wins": 1, "draws": 0, "losses": 2, "goalsFor": 2, "goalsAgainst": 2, "goalDifference": 0, "points": 3 },
+      { "id": "aus18", "name": "Australia",    "flagCode": "AU", "group": "C", "played": 3, "wins": 0, "draws": 1, "losses": 2, "goalsFor": 2, "goalsAgainst": 5, "goalDifference": -3, "points": 1 }
+    ]},
+    { "group": "D", "teams": [
+      { "id": "cro18", "name": "Croatia",      "flagCode": "HR", "group": "D", "played": 3, "wins": 3, "draws": 0, "losses": 0, "goalsFor": 7, "goalsAgainst": 1, "goalDifference": 6, "points": 9 },
+      { "id": "arg18", "name": "Argentina",    "flagCode": "AR", "group": "D", "played": 3, "wins": 1, "draws": 1, "losses": 1, "goalsFor": 3, "goalsAgainst": 5, "goalDifference": -2, "points": 4 },
+      { "id": "nig18", "name": "Nigeria",      "flagCode": "NG", "group": "D", "played": 3, "wins": 1, "draws": 0, "losses": 2, "goalsFor": 3, "goalsAgainst": 4, "goalDifference": -1, "points": 3 },
+      { "id": "isl18", "name": "Iceland",      "flagCode": "IS", "group": "D", "played": 3, "wins": 0, "draws": 1, "losses": 2, "goalsFor": 2, "goalsAgainst": 5, "goalDifference": -3, "points": 1 }
+    ]},
+    { "group": "E", "teams": [
+      { "id": "bra18", "name": "Brazil",       "flagCode": "BR", "group": "E", "played": 3, "wins": 2, "draws": 1, "losses": 0, "goalsFor": 8, "goalsAgainst": 3, "goalDifference": 5, "points": 7 },
+      { "id": "sui18", "name": "Switzerland",  "flagCode": "CH", "group": "E", "played": 3, "wins": 1, "draws": 2, "losses": 0, "goalsFor": 5, "goalsAgainst": 4, "goalDifference": 1, "points": 5 },
+      { "id": "srb18", "name": "Serbia",       "flagCode": "RS", "group": "E", "played": 3, "wins": 1, "draws": 0, "losses": 2, "goalsFor": 2, "goalsAgainst": 4, "goalDifference": -2, "points": 3 },
+      { "id": "crc18", "name": "Costa Rica",   "flagCode": "CR", "group": "E", "played": 3, "wins": 0, "draws": 1, "losses": 2, "goalsFor": 3, "goalsAgainst": 7, "goalDifference": -4, "points": 1 }
+    ]},
+    { "group": "F", "teams": [
+      { "id": "swe18", "name": "Sweden",       "flagCode": "SE", "group": "F", "played": 3, "wins": 2, "draws": 0, "losses": 1, "goalsFor": 6, "goalsAgainst": 2, "goalDifference": 4, "points": 6 },
+      { "id": "mex18", "name": "Mexico",       "flagCode": "MX", "group": "F", "played": 3, "wins": 2, "draws": 0, "losses": 1, "goalsFor": 3, "goalsAgainst": 4, "goalDifference": -1, "points": 6 },
+      { "id": "kor18", "name": "South Korea",  "flagCode": "KR", "group": "F", "played": 3, "wins": 1, "draws": 0, "losses": 2, "goalsFor": 3, "goalsAgainst": 3, "goalDifference": 0, "points": 3 },
+      { "id": "ger18", "name": "Germany",      "flagCode": "DE", "group": "F", "played": 3, "wins": 1, "draws": 0, "losses": 2, "goalsFor": 2, "goalsAgainst": 4, "goalDifference": -2, "points": 3 }
+    ]},
+    { "group": "G", "teams": [
+      { "id": "bel18", "name": "Belgium",      "flagCode": "BE", "group": "G", "played": 3, "wins": 3, "draws": 0, "losses": 0, "goalsFor": 9, "goalsAgainst": 2, "goalDifference": 7, "points": 9 },
+      { "id": "eng18", "name": "England",      "flagCode": "GB", "group": "G", "played": 3, "wins": 2, "draws": 0, "losses": 1, "goalsFor": 8, "goalsAgainst": 3, "goalDifference": 5, "points": 6 },
+      { "id": "tun18", "name": "Tunisia",      "flagCode": "TN", "group": "G", "played": 3, "wins": 1, "draws": 0, "losses": 2, "goalsFor": 5, "goalsAgainst": 8, "goalDifference": -3, "points": 3 },
+      { "id": "pan18", "name": "Panama",       "flagCode": "PA", "group": "G", "played": 3, "wins": 0, "draws": 0, "losses": 3, "goalsFor": 2, "goalsAgainst": 11, "goalDifference": -9, "points": 0 }
+    ]},
+    { "group": "H", "teams": [
+      { "id": "col18", "name": "Colombia",     "flagCode": "CO", "group": "H", "played": 3, "wins": 2, "draws": 0, "losses": 1, "goalsFor": 6, "goalsAgainst": 2, "goalDifference": 4, "points": 6 },
+      { "id": "jpn18", "name": "Japan",        "flagCode": "JP", "group": "H", "played": 3, "wins": 1, "draws": 1, "losses": 1, "goalsFor": 6, "goalsAgainst": 6, "goalDifference": 0, "points": 4 },
+      { "id": "sen18", "name": "Senegal",      "flagCode": "SN", "group": "H", "played": 3, "wins": 1, "draws": 1, "losses": 1, "goalsFor": 4, "goalsAgainst": 4, "goalDifference": 0, "points": 4 },
+      { "id": "pol18", "name": "Poland",       "flagCode": "PL", "group": "H", "played": 3, "wins": 1, "draws": 0, "losses": 2, "goalsFor": 2, "goalsAgainst": 5, "goalDifference": -3, "points": 3 }
+    ]}
+  ],
+  "knockoutBracket": [
+    {
+      "round": "r16",
+      "matches": [
+        { "id": "2018-r16-1", "stage": "r16", "matchLabel": "M49", "homeTeam": "France",      "awayTeam": "Argentina",  "homeTeamId": "fra18", "awayTeamId": "arg18", "homeScore": 4, "awayScore": 3, "date": "2018-06-30T15:00:00Z", "venue": "Kazan Arena",                   "city": "Kazan",          "attendance": 42873, "status": "completed", "goals": [], "cards": [] },
+        { "id": "2018-r16-2", "stage": "r16", "matchLabel": "M50", "homeTeam": "Uruguay",     "awayTeam": "Portugal",   "homeTeamId": "uru18", "awayTeamId": "por18", "homeScore": 2, "awayScore": 1, "date": "2018-06-30T19:00:00Z", "venue": "Fisht Stadium",                 "city": "Sochi",          "attendance": 43921, "status": "completed", "goals": [], "cards": [] },
+        { "id": "2018-r16-3", "stage": "r16", "matchLabel": "M51", "homeTeam": "Spain",       "awayTeam": "Russia",     "homeTeamId": "esp18", "awayTeamId": "rus18", "homeScore": 1, "awayScore": 1, "date": "2018-07-01T15:00:00Z", "venue": "Luzhniki Stadium",              "city": "Moscow",         "attendance": 78011, "status": "completed", "goals": [], "cards": [] },
+        { "id": "2018-r16-4", "stage": "r16", "matchLabel": "M52", "homeTeam": "Croatia",     "awayTeam": "Denmark",    "homeTeamId": "cro18", "awayTeamId": "den18", "homeScore": 1, "awayScore": 1, "date": "2018-07-01T19:00:00Z", "venue": "Nizhny Novgorod Stadium",       "city": "Nizhny Novgorod","attendance": 43319, "status": "completed", "goals": [], "cards": [] },
+        { "id": "2018-r16-5", "stage": "r16", "matchLabel": "M53", "homeTeam": "Brazil",      "awayTeam": "Mexico",     "homeTeamId": "bra18", "awayTeamId": "mex18", "homeScore": 2, "awayScore": 0, "date": "2018-07-02T15:00:00Z", "venue": "Samara Arena",                  "city": "Samara",         "attendance": 41180, "status": "completed", "goals": [{"player":"Neymar","minute":51,"penalty":false,"ownGoal":false},{"player":"Roberto Firmino","minute":88,"penalty":false,"ownGoal":false}], "cards": [] },
+        { "id": "2018-r16-6", "stage": "r16", "matchLabel": "M54", "homeTeam": "Belgium",     "awayTeam": "Japan",      "homeTeamId": "bel18", "awayTeamId": "jpn18", "homeScore": 3, "awayScore": 2, "date": "2018-07-02T19:00:00Z", "venue": "Rostov Arena",                  "city": "Rostov-on-Don",  "attendance": 40745, "status": "completed", "goals": [], "cards": [] },
+        { "id": "2018-r16-7", "stage": "r16", "matchLabel": "M55", "homeTeam": "Sweden",      "awayTeam": "Switzerland","homeTeamId": "swe18", "awayTeamId": "sui18", "homeScore": 1, "awayScore": 0, "date": "2018-07-03T15:00:00Z", "venue": "Saint Petersburg Stadium",     "city": "St. Petersburg", "attendance": 64287, "status": "completed", "goals": [], "cards": [] },
+        { "id": "2018-r16-8", "stage": "r16", "matchLabel": "M56", "homeTeam": "Colombia",    "awayTeam": "England",    "homeTeamId": "col18", "awayTeamId": "eng18", "homeScore": 1, "awayScore": 1, "date": "2018-07-03T19:00:00Z", "venue": "Spartak Stadium",               "city": "Moscow",         "attendance": 44190, "status": "completed", "goals": [], "cards": [] }
+      ]
+    },
+    {
+      "round": "qf",
+      "matches": [
+        { "id": "2018-qf-1", "stage": "qf", "matchLabel": "QF1", "homeTeam": "Uruguay",   "awayTeam": "France",   "homeTeamId": "uru18", "awayTeamId": "fra18", "homeScore": 0, "awayScore": 2, "date": "2018-07-06T15:00:00Z", "venue": "Nizhny Novgorod Stadium",  "city": "Nizhny Novgorod", "attendance": 43319, "status": "completed", "goals": [], "cards": [] },
+        { "id": "2018-qf-2", "stage": "qf", "matchLabel": "QF2", "homeTeam": "Brazil",    "awayTeam": "Belgium",  "homeTeamId": "bra18", "awayTeamId": "bel18", "homeScore": 1, "awayScore": 2, "date": "2018-07-06T19:00:00Z", "venue": "Kazan Arena",              "city": "Kazan",           "attendance": 42873, "status": "completed", "goals": [], "cards": [] },
+        { "id": "2018-qf-3", "stage": "qf", "matchLabel": "QF3", "homeTeam": "Russia",    "awayTeam": "Croatia",  "homeTeamId": "rus18", "awayTeamId": "cro18", "homeScore": 2, "awayScore": 2, "date": "2018-07-07T15:00:00Z", "venue": "Fisht Stadium",            "city": "Sochi",           "attendance": 43952, "status": "completed", "goals": [], "cards": [] },
+        { "id": "2018-qf-4", "stage": "qf", "matchLabel": "QF4", "homeTeam": "Sweden",    "awayTeam": "England",  "homeTeamId": "swe18", "awayTeamId": "eng18", "homeScore": 0, "awayScore": 2, "date": "2018-07-07T19:00:00Z", "venue": "Samara Arena",             "city": "Samara",          "attendance": 41324, "status": "completed", "goals": [], "cards": [] }
+      ]
+    },
+    {
+      "round": "sf",
+      "matches": [
+        { "id": "2018-sf-1", "stage": "sf", "matchLabel": "SF1", "homeTeam": "France",   "awayTeam": "Belgium", "homeTeamId": "fra18", "awayTeamId": "bel18", "homeScore": 1, "awayScore": 0, "date": "2018-07-10T19:00:00Z", "venue": "Saint Petersburg Stadium", "city": "St. Petersburg", "attendance": 64286, "status": "completed", "goals": [{"player":"Samuel Umtiti","minute":51,"penalty":false,"ownGoal":false}], "cards": [] },
+        { "id": "2018-sf-2", "stage": "sf", "matchLabel": "SF2", "homeTeam": "Croatia",  "awayTeam": "England", "homeTeamId": "cro18", "awayTeamId": "eng18", "homeScore": 2, "awayScore": 1, "date": "2018-07-11T19:00:00Z", "venue": "Luzhniki Stadium",         "city": "Moscow",         "attendance": 78011, "status": "completed", "goals": [{"player":"Kieran Trippier","minute":5,"penalty":false,"ownGoal":false},{"player":"Ivan Perisic","minute":68,"penalty":false,"ownGoal":false},{"player":"Mandzukic","minute":109,"penalty":false,"ownGoal":false}], "cards": [] }
+      ]
+    },
+    {
+      "round": "3p",
+      "matches": [
+        { "id": "2018-3p-1", "stage": "3p", "matchLabel": "3RD", "homeTeam": "Belgium", "awayTeam": "England", "homeTeamId": "bel18", "awayTeamId": "eng18", "homeScore": 2, "awayScore": 0, "date": "2018-07-14T15:00:00Z", "venue": "Saint Petersburg Stadium", "city": "St. Petersburg", "attendance": 64406, "status": "completed", "goals": [], "cards": [] }
+      ]
+    },
+    {
+      "round": "final",
+      "matches": [
+        { "id": "2018-final", "stage": "final", "matchLabel": "FINAL", "homeTeam": "France", "awayTeam": "Croatia", "homeTeamId": "fra18", "awayTeamId": "cro18", "homeScore": 4, "awayScore": 2, "date": "2018-07-15T15:00:00Z", "venue": "Luzhniki Stadium", "city": "Moscow", "attendance": 78011, "status": "completed", "goals": [{"player":"Mandzukic","minute":18,"penalty":false,"ownGoal":true},{"player":"Perisic","minute":28,"penalty":false,"ownGoal":false},{"player":"Griezmann","minute":38,"penalty":true,"ownGoal":false},{"player":"Pogba","minute":59,"penalty":false,"ownGoal":false},{"player":"Mbappé","minute":65,"penalty":false,"ownGoal":false},{"player":"Mandzukic","minute":69,"penalty":false,"ownGoal":false}], "cards": [] }
+      ]
+    }
+  ],
+  "players": [
+    { "id": "mbappe18", "name": "Kylian Mbappé",  "country": "France",  "position": "FW", "goals": 4, "assists": 2, "yellowCards": 0, "redCards": 0, "playerOfMatch": 2 },
+    { "id": "griezm18", "name": "Antoine Griezmann","country": "France", "position": "FW", "goals": 3, "assists": 2, "yellowCards": 0, "redCards": 0, "playerOfMatch": 3 },
+    { "id": "kane18",   "name": "Harry Kane",      "country": "England", "position": "FW", "goals": 6, "assists": 0, "yellowCards": 1, "redCards": 0, "playerOfMatch": 2 }
+  ]
+}

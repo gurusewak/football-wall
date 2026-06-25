@@ -1,0 +1,126 @@
+{
+  "name": "2010 FIFA World Cup",
+  "year": 2010,
+  "host": "South Africa",
+  "winner": "Spain",
+  "format": 32,
+  "lastUpdated": "2010-07-11T17:00:00Z",
+  "groups": [
+    {
+      "group": "A",
+      "teams": [
+        { "id": "south-africa", "name": "South Africa", "flagCode": "ZA", "group": "A", "played": 3, "wins": 0, "draws": 0, "losses": 0, "goalsFor": 0, "goalsAgainst": 0, "goalDifference": 0, "points": 0 },
+        { "id": "mexico", "name": "Mexico", "flagCode": "MX", "group": "A", "played": 3, "wins": 0, "draws": 0, "losses": 0, "goalsFor": 0, "goalsAgainst": 0, "goalDifference": 0, "points": 0 },
+        { "id": "uruguay", "name": "Uruguay", "flagCode": "UY", "group": "A", "played": 3, "wins": 0, "draws": 0, "losses": 0, "goalsFor": 0, "goalsAgainst": 0, "goalDifference": 0, "points": 0 },
+        { "id": "france", "name": "France", "flagCode": "FR", "group": "A", "played": 3, "wins": 0, "draws": 0, "losses": 0, "goalsFor": 0, "goalsAgainst": 0, "goalDifference": 0, "points": 0 }
+      ]
+    },
+    {
+      "group": "B",
+      "teams": [
+        { "id": "argentina", "name": "Argentina", "flagCode": "AR", "group": "B", "played": 3, "wins": 0, "draws": 0, "losses": 0, "goalsFor": 0, "goalsAgainst": 0, "goalDifference": 0, "points": 0 },
+        { "id": "nigeria", "name": "Nigeria", "flagCode": "NG", "group": "B", "played": 3, "wins": 0, "draws": 0, "losses": 0, "goalsFor": 0, "goalsAgainst": 0, "goalDifference": 0, "points": 0 },
+        { "id": "south-korea", "name": "South Korea", "flagCode": "KR", "group": "B", "played": 3, "wins": 0, "draws": 0, "losses": 0, "goalsFor": 0, "goalsAgainst": 0, "goalDifference": 0, "points": 0 },
+        { "id": "greece", "name": "Greece", "flagCode": "GR", "group": "B", "played": 3, "wins": 0, "draws": 0, "losses": 0, "goalsFor": 0, "goalsAgainst": 0, "goalDifference": 0, "points": 0 }
+      ]
+    },
+    {
+      "group": "C",
+      "teams": [
+        { "id": "england", "name": "England", "flagCode": "GB-ENG", "group": "C", "played": 3, "wins": 0, "draws": 0, "losses": 0, "goalsFor": 0, "goalsAgainst": 0, "goalDifference": 0, "points": 0 },
+        { "id": "usa", "name": "USA", "flagCode": "US", "group": "C", "played": 3, "wins": 0, "draws": 0, "losses": 0, "goalsFor": 0, "goalsAgainst": 0, "goalDifference": 0, "points": 0 },
+        { "id": "algeria", "name": "Algeria", "flagCode": "DZ", "group": "C", "played": 3, "wins": 0, "draws": 0, "losses": 0, "goalsFor": 0, "goalsAgainst": 0, "goalDifference": 0, "points": 0 },
+        { "id": "slovenia", "name": "Slovenia", "flagCode": "SI", "group": "C", "played": 3, "wins": 0, "draws": 0, "losses": 0, "goalsFor": 0, "goalsAgainst": 0, "goalDifference": 0, "points": 0 }
+      ]
+    },
+    {
+      "group": "D",
+      "teams": [
+        { "id": "germany", "name": "Germany", "flagCode": "DE", "group": "D", "played": 3, "wins": 0, "draws": 0, "losses": 0, "goalsFor": 0, "goalsAgainst": 0, "goalDifference": 0, "points": 0 },
+        { "id": "australia", "name": "Australia", "flagCode": "AU", "group": "D", "played": 3, "wins": 0, "draws": 0, "losses": 0, "goalsFor": 0, "goalsAgainst": 0, "goalDifference": 0, "points": 0 },
+        { "id": "serbia", "name": "Serbia", "flagCode": "RS", "group": "D", "played": 3, "wins": 0, "draws": 0, "losses": 0, "goalsFor": 0, "goalsAgainst": 0, "goalDifference": 0, "points": 0 },
+        { "id": "ghana", "name": "Ghana", "flagCode": "GH", "group": "D", "played": 3, "wins": 0, "draws": 0, "losses": 0, "goalsFor": 0, "goalsAgainst": 0, "goalDifference": 0, "points": 0 }
+      ]
+    },
+    {
+      "group": "E",
+      "teams": [
+        { "id": "netherlands", "name": "Netherlands", "flagCode": "NL", "group": "E", "played": 3, "wins": 0, "draws": 0, "losses": 0, "goalsFor": 0, "goalsAgainst": 0, "goalDifference": 0, "points": 0 },
+        { "id": "denmark", "name": "Denmark", "flagCode": "DK", "group": "E", "played": 3, "wins": 0, "draws": 0, "losses": 0, "goalsFor": 0, "goalsAgainst": 0, "goalDifference": 0, "points": 0 },
+        { "id": "japan", "name": "Japan", "flagCode": "JP", "group": "E", "played": 3, "wins": 0, "draws": 0, "losses": 0, "goalsFor": 0, "goalsAgainst": 0, "goalDifference": 0, "points": 0 },
+        { "id": "cameroon", "name": "Cameroon", "flagCode": "CM", "group": "E", "played": 3, "wins": 0, "draws": 0, "losses": 0, "goalsFor": 0, "goalsAgainst": 0, "goalDifference": 0, "points": 0 }
+      ]
+    },
+    {
+      "group": "F",
+      "teams": [
+        { "id": "italy", "name": "Italy", "flagCode": "IT", "group": "F", "played": 3, "wins": 0, "draws": 0, "losses": 0, "goalsFor": 0, "goalsAgainst": 0, "goalDifference": 0, "points": 0 },
+        { "id": "paraguay", "name": "Paraguay", "flagCode": "PY", "group": "F", "played": 3, "wins": 0, "draws": 0, "losses": 0, "goalsFor": 0, "goalsAgainst": 0, "goalDifference": 0, "points": 0 },
+        { "id": "new-zealand", "name": "New Zealand", "flagCode": "NZ", "group": "F", "played": 3, "wins": 0, "draws": 0, "losses": 0, "goalsFor": 0, "goalsAgainst": 0, "goalDifference": 0, "points": 0 },
+        { "id": "slovakia", "name": "Slovakia", "flagCode": "SK", "group": "F", "played": 3, "wins": 0, "draws": 0, "losses": 0, "goalsFor": 0, "goalsAgainst": 0, "goalDifference": 0, "points": 0 }
+      ]
+    },
+    {
+      "group": "G",
+      "teams": [
+        { "id": "brazil", "name": "Brazil", "flagCode": "BR", "group": "G", "played": 3, "wins": 0, "draws": 0, "losses": 0, "goalsFor": 0, "goalsAgainst": 0, "goalDifference": 0, "points": 0 },
+        { "id": "north-korea", "name": "North Korea", "flagCode": "KP", "group": "G", "played": 3, "wins": 0, "draws": 0, "losses": 0, "goalsFor": 0, "goalsAgainst": 0, "goalDifference": 0, "points": 0 },
+        { "id": "ivory-coast", "name": "Ivory Coast", "flagCode": "CI", "group": "G", "played": 3, "wins": 0, "draws": 0, "losses": 0, "goalsFor": 0, "goalsAgainst": 0, "goalDifference": 0, "points": 0 },
+        { "id": "portugal", "name": "Portugal", "flagCode": "PT", "group": "G", "played": 3, "wins": 0, "draws": 0, "losses": 0, "goalsFor": 0, "goalsAgainst": 0, "goalDifference": 0, "points": 0 }
+      ]
+    },
+    {
+      "group": "H",
+      "teams": [
+        { "id": "spain", "name": "Spain", "flagCode": "ES", "group": "H", "played": 3, "wins": 0, "draws": 0, "losses": 0, "goalsFor": 0, "goalsAgainst": 0, "goalDifference": 0, "points": 0 },
+        { "id": "switzerland", "name": "Switzerland", "flagCode": "CH", "group": "H", "played": 3, "wins": 0, "draws": 0, "losses": 0, "goalsFor": 0, "goalsAgainst": 0, "goalDifference": 0, "points": 0 },
+        { "id": "honduras", "name": "Honduras", "flagCode": "HN", "group": "H", "played": 3, "wins": 0, "draws": 0, "losses": 0, "goalsFor": 0, "goalsAgainst": 0, "goalDifference": 0, "points": 0 },
+        { "id": "chile", "name": "Chile", "flagCode": "CL", "group": "H", "played": 3, "wins": 0, "draws": 0, "losses": 0, "goalsFor": 0, "goalsAgainst": 0, "goalDifference": 0, "points": 0 }
+      ]
+    }
+  ],
+  "knockoutBracket": [
+    {
+      "round": "r16",
+      "matches": [
+        { "id": "2010-r16-1", "stage": "r16", "matchLabel": "M49", "homeTeam": "Uruguay", "awayTeam": "South Korea", "homeTeamId": "uruguay", "awayTeamId": "south-korea", "homeScore": 2, "awayScore": 1, "date": "2010-06-26T14:30:00Z", "venue": "Nelson Mandela Bay Stadium", "city": "Port Elizabeth", "attendance": 30597, "status": "completed", "goals": [], "cards": [] },
+        { "id": "2010-r16-2", "stage": "r16", "matchLabel": "M50", "homeTeam": "USA", "awayTeam": "Ghana", "homeTeamId": "usa", "awayTeamId": "ghana", "homeScore": 1, "awayScore": 2, "date": "2010-06-26T18:30:00Z", "venue": "Royal Bafokeng Stadium", "city": "Rustenburg", "attendance": 34976, "status": "completed", "goals": [], "cards": [] },
+        { "id": "2010-r16-3", "stage": "r16", "matchLabel": "M51", "homeTeam": "Germany", "awayTeam": "England", "homeTeamId": "germany", "awayTeamId": "england", "homeScore": 4, "awayScore": 1, "date": "2010-06-27T14:30:00Z", "venue": "Free State Stadium", "city": "Bloemfontein", "attendance": 40510, "status": "completed", "goals": [], "cards": [] },
+        { "id": "2010-r16-4", "stage": "r16", "matchLabel": "M52", "homeTeam": "Argentina", "awayTeam": "Mexico", "homeTeamId": "argentina", "awayTeamId": "mexico", "homeScore": 3, "awayScore": 1, "date": "2010-06-27T18:30:00Z", "venue": "Soccer City", "city": "Johannesburg", "attendance": 84377, "status": "completed", "goals": [], "cards": [] },
+        { "id": "2010-r16-5", "stage": "r16", "matchLabel": "M53", "homeTeam": "Netherlands", "awayTeam": "Slovakia", "homeTeamId": "netherlands", "awayTeamId": "slovakia", "homeScore": 2, "awayScore": 1, "date": "2010-06-28T14:30:00Z", "venue": "Moses Mabhida Stadium", "city": "Durban", "attendance": 62010, "status": "completed", "goals": [], "cards": [] },
+        { "id": "2010-r16-6", "stage": "r16", "matchLabel": "M54", "homeTeam": "Brazil", "awayTeam": "Chile", "homeTeamId": "brazil", "awayTeamId": "chile", "homeScore": 3, "awayScore": 0, "date": "2010-06-28T18:30:00Z", "venue": "Ellis Park Stadium", "city": "Johannesburg", "attendance": 55686, "status": "completed", "goals": [], "cards": [] },
+        { "id": "2010-r16-7", "stage": "r16", "matchLabel": "M55", "homeTeam": "Paraguay", "awayTeam": "Japan", "homeTeamId": "paraguay", "awayTeamId": "japan", "homeScore": 0, "awayScore": 0, "date": "2010-06-29T14:30:00Z", "venue": "Loftus Versfeld Stadium", "city": "Pretoria", "attendance": 36742, "status": "completed", "goals": [], "cards": [] },
+        { "id": "2010-r16-8", "stage": "r16", "matchLabel": "M56", "homeTeam": "Spain", "awayTeam": "Portugal", "homeTeamId": "spain", "awayTeamId": "portugal", "homeScore": 1, "awayScore": 0, "date": "2010-06-29T18:30:00Z", "venue": "Cape Town Stadium", "city": "Cape Town", "attendance": 62955, "status": "completed", "goals": [], "cards": [] }
+      ]
+    },
+    {
+      "round": "qf",
+      "matches": [
+        { "id": "2010-qf-1", "stage": "qf", "matchLabel": "M57", "homeTeam": "Netherlands", "awayTeam": "Brazil", "homeTeamId": "netherlands", "awayTeamId": "brazil", "homeScore": 2, "awayScore": 1, "date": "2010-07-02T18:30:00Z", "venue": "Nelson Mandela Bay Stadium", "city": "Port Elizabeth", "attendance": 41832, "status": "completed", "goals": [], "cards": [] },
+        { "id": "2010-qf-2", "stage": "qf", "matchLabel": "M58", "homeTeam": "Uruguay", "awayTeam": "Ghana", "homeTeamId": "uruguay", "awayTeamId": "ghana", "homeScore": 1, "awayScore": 1, "date": "2010-07-02T14:30:00Z", "venue": "Soccer City", "city": "Johannesburg", "attendance": 84017, "status": "completed", "goals": [], "cards": [] },
+        { "id": "2010-qf-3", "stage": "qf", "matchLabel": "M59", "homeTeam": "Argentina", "awayTeam": "Germany", "homeTeamId": "argentina", "awayTeamId": "germany", "homeScore": 0, "awayScore": 4, "date": "2010-07-03T14:30:00Z", "venue": "Green Point Stadium", "city": "Cape Town", "attendance": 64100, "status": "completed", "goals": [], "cards": [] },
+        { "id": "2010-qf-4", "stage": "qf", "matchLabel": "M60", "homeTeam": "Paraguay", "awayTeam": "Spain", "homeTeamId": "paraguay", "awayTeamId": "spain", "homeScore": 0, "awayScore": 1, "date": "2010-07-03T18:30:00Z", "venue": "Ellis Park Stadium", "city": "Johannesburg", "attendance": 55359, "status": "completed", "goals": [], "cards": [] }
+      ]
+    },
+    {
+      "round": "sf",
+      "matches": [
+        { "id": "2010-sf-1", "stage": "sf", "matchLabel": "M61", "homeTeam": "Uruguay", "awayTeam": "Netherlands", "homeTeamId": "uruguay", "awayTeamId": "netherlands", "homeScore": 2, "awayScore": 3, "date": "2010-07-06T18:30:00Z", "venue": "Green Point Stadium", "city": "Cape Town", "attendance": 62479, "status": "completed", "goals": [], "cards": [] },
+        { "id": "2010-sf-2", "stage": "sf", "matchLabel": "M62", "homeTeam": "Germany", "awayTeam": "Spain", "homeTeamId": "germany", "awayTeamId": "spain", "homeScore": 0, "awayScore": 1, "date": "2010-07-07T18:30:00Z", "venue": "Moses Mabhida Stadium", "city": "Durban", "attendance": 59590, "status": "completed", "goals": [], "cards": [] }
+      ]
+    },
+    {
+      "round": "3p",
+      "matches": [
+        { "id": "2010-3p-1", "stage": "3p", "matchLabel": "M63", "homeTeam": "Uruguay", "awayTeam": "Germany", "homeTeamId": "uruguay", "awayTeamId": "germany", "homeScore": 2, "awayScore": 3, "date": "2010-07-10T14:30:00Z", "venue": "Nelson Mandela Bay Stadium", "city": "Port Elizabeth", "attendance": 36254, "status": "completed", "goals": [], "cards": [] }
+      ]
+    },
+    {
+      "round": "final",
+      "matches": [
+        { "id": "2010-final-1", "stage": "final", "matchLabel": "M64", "homeTeam": "Netherlands", "awayTeam": "Spain", "homeTeamId": "netherlands", "awayTeamId": "spain", "homeScore": 0, "awayScore": 1, "date": "2010-07-11T18:30:00Z", "venue": "Soccer City", "city": "Johannesburg", "attendance": 84490, "status": "completed", "goals": [], "cards": [] }
+      ]
+    }
+  ],
+  "players": []
+}

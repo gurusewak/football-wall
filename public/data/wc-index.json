@@ -1,0 +1,13 @@
+{
+  "latestYear": 2026,
+  "years": [
+    { "year": 2026, "host": "USA / Canada / Mexico", "winner": null, "format": 48, "file": "/data/wc-2026.json" },
+    { "year": 2022, "host": "Qatar", "winner": "Argentina", "format": 32, "file": "/data/wc-2022.json" },
+    { "year": 2018, "host": "Russia", "winner": "France", "format": 32, "file": "/data/wc-2018.json" },
+    { "year": 2014, "host": "Brazil", "winner": "Germany", "format": 32, "file": "/data/wc-2014.json" },
+    { "year": 2010, "host": "South Africa", "winner": "Spain", "format": 32, "file": "/data/wc-2010.json" },
+    { "year": 2006, "host": "Germany", "winner": "Italy", "format": 32, "file": "/data/wc-2006.json" },
+    { "year": 2002, "host": "South Korea / Japan", "winner": "Brazil", "format": 32, "file": "/data/wc-2002.json" },
+    { "year": 1998, "host": "France", "winner": "France", "format": 32, "file": "/data/wc-1998.json" }
+  ]
+}

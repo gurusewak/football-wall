@@ -1,0 +1,126 @@
+{
+  "name": "2002 FIFA World Cup",
+  "year": 2002,
+  "host": "South Korea / Japan",
+  "winner": "Brazil",
+  "format": 32,
+  "lastUpdated": "2002-06-30T17:00:00Z",
+  "groups": [
+    {
+      "group": "A",
+      "teams": [
+        { "id": "senegal", "name": "Senegal", "flagCode": "SN", "group": "A", "played": 3, "wins": 0, "draws": 0, "losses": 0, "goalsFor": 0, "goalsAgainst": 0, "goalDifference": 0, "points": 0 },
+        { "id": "denmark", "name": "Denmark", "flagCode": "DK", "group": "A", "played": 3, "wins": 0, "draws": 0, "losses": 0, "goalsFor": 0, "goalsAgainst": 0, "goalDifference": 0, "points": 0 },
+        { "id": "uruguay", "name": "Uruguay", "flagCode": "UY", "group": "A", "played": 3, "wins": 0, "draws": 0, "losses": 0, "goalsFor": 0, "goalsAgainst": 0, "goalDifference": 0, "points": 0 },
+        { "id": "france", "name": "France", "flagCode": "FR", "group": "A", "played": 3, "wins": 0, "draws": 0, "losses": 0, "goalsFor": 0, "goalsAgainst": 0, "goalDifference": 0, "points": 0 }
+      ]
+    },
+    {
+      "group": "B",
+      "teams": [
+        { "id": "spain", "name": "Spain", "flagCode": "ES", "group": "B", "played": 3, "wins": 0, "draws": 0, "losses": 0, "goalsFor": 0, "goalsAgainst": 0, "goalDifference": 0, "points": 0 },
+        { "id": "paraguay", "name": "Paraguay", "flagCode": "PY", "group": "B", "played": 3, "wins": 0, "draws": 0, "losses": 0, "goalsFor": 0, "goalsAgainst": 0, "goalDifference": 0, "points": 0 },
+        { "id": "south-africa", "name": "South Africa", "flagCode": "ZA", "group": "B", "played": 3, "wins": 0, "draws": 0, "losses": 0, "goalsFor": 0, "goalsAgainst": 0, "goalDifference": 0, "points": 0 },
+        { "id": "slovenia", "name": "Slovenia", "flagCode": "SI", "group": "B", "played": 3, "wins": 0, "draws": 0, "losses": 0, "goalsFor": 0, "goalsAgainst": 0, "goalDifference": 0, "points": 0 }
+      ]
+    },
+    {
+      "group": "C",
+      "teams": [
+        { "id": "brazil", "name": "Brazil", "flagCode": "BR", "group": "C", "played": 3, "wins": 0, "draws": 0, "losses": 0, "goalsFor": 0, "goalsAgainst": 0, "goalDifference": 0, "points": 0 },
+        { "id": "turkey", "name": "Turkey", "flagCode": "TR", "group": "C", "played": 3, "wins": 0, "draws": 0, "losses": 0, "goalsFor": 0, "goalsAgainst": 0, "goalDifference": 0, "points": 0 },
+        { "id": "costa-rica", "name": "Costa Rica", "flagCode": "CR", "group": "C", "played": 3, "wins": 0, "draws": 0, "losses": 0, "goalsFor": 0, "goalsAgainst": 0, "goalDifference": 0, "points": 0 },
+        { "id": "china", "name": "China", "flagCode": "CN", "group": "C", "played": 3, "wins": 0, "draws": 0, "losses": 0, "goalsFor": 0, "goalsAgainst": 0, "goalDifference": 0, "points": 0 }
+      ]
+    },
+    {
+      "group": "D",
+      "teams": [
+        { "id": "south-korea", "name": "South Korea", "flagCode": "KR", "group": "D", "played": 3, "wins": 0, "draws": 0, "losses": 0, "goalsFor": 0, "goalsAgainst": 0, "goalDifference": 0, "points": 0 },
+        { "id": "usa", "name": "USA", "flagCode": "US", "group": "D", "played": 3, "wins": 0, "draws": 0, "losses": 0, "goalsFor": 0, "goalsAgainst": 0, "goalDifference": 0, "points": 0 },
+        { "id": "portugal", "name": "Portugal", "flagCode": "PT", "group": "D", "played": 3, "wins": 0, "draws": 0, "losses": 0, "goalsFor": 0, "goalsAgainst": 0, "goalDifference": 0, "points": 0 },
+        { "id": "poland", "name": "Poland", "flagCode": "PL", "group": "D", "played": 3, "wins": 0, "draws": 0, "losses": 0, "goalsFor": 0, "goalsAgainst": 0, "goalDifference": 0, "points": 0 }
+      ]
+    },
+    {
+      "group": "E",
+      "teams": [
+        { "id": "germany", "name": "Germany", "flagCode": "DE", "group": "E", "played": 3, "wins": 0, "draws": 0, "losses": 0, "goalsFor": 0, "goalsAgainst": 0, "goalDifference": 0, "points": 0 },
+        { "id": "ireland", "name": "Republic of Ireland", "flagCode": "IE", "group": "E", "played": 3, "wins": 0, "draws": 0, "losses": 0, "goalsFor": 0, "goalsAgainst": 0, "goalDifference": 0, "points": 0 },
+        { "id": "cameroon", "name": "Cameroon", "flagCode": "CM", "group": "E", "played": 3, "wins": 0, "draws": 0, "losses": 0, "goalsFor": 0, "goalsAgainst": 0, "goalDifference": 0, "points": 0 },
+        { "id": "saudi-arabia", "name": "Saudi Arabia", "flagCode": "SA", "group": "E", "played": 3, "wins": 0, "draws": 0, "losses": 0, "goalsFor": 0, "goalsAgainst": 0, "goalDifference": 0, "points": 0 }
+      ]
+    },
+    {
+      "group": "F",
+      "teams": [
+        { "id": "sweden", "name": "Sweden", "flagCode": "SE", "group": "F", "played": 3, "wins": 0, "draws": 0, "losses": 0, "goalsFor": 0, "goalsAgainst": 0, "goalDifference": 0, "points": 0 },
+        { "id": "england", "name": "England", "flagCode": "GB-ENG", "group": "F", "played": 3, "wins": 0, "draws": 0, "losses": 0, "goalsFor": 0, "goalsAgainst": 0, "goalDifference": 0, "points": 0 },
+        { "id": "argentina", "name": "Argentina", "flagCode": "AR", "group": "F", "played": 3, "wins": 0, "draws": 0, "losses": 0, "goalsFor": 0, "goalsAgainst": 0, "goalDifference": 0, "points": 0 },
+        { "id": "nigeria", "name": "Nigeria", "flagCode": "NG", "group": "F", "played": 3, "wins": 0, "draws": 0, "losses": 0, "goalsFor": 0, "goalsAgainst": 0, "goalDifference": 0, "points": 0 }
+      ]
+    },
+    {
+      "group": "G",
+      "teams": [
+        { "id": "mexico", "name": "Mexico", "flagCode": "MX", "group": "G", "played": 3, "wins": 0, "draws": 0, "losses": 0, "goalsFor": 0, "goalsAgainst": 0, "goalDifference": 0, "points": 0 },
+        { "id": "croatia", "name": "Croatia", "flagCode": "HR", "group": "G", "played": 3, "wins": 0, "draws": 0, "losses": 0, "goalsFor": 0, "goalsAgainst": 0, "goalDifference": 0, "points": 0 },
+        { "id": "italy", "name": "Italy", "flagCode": "IT", "group": "G", "played": 3, "wins": 0, "draws": 0, "losses": 0, "goalsFor": 0, "goalsAgainst": 0, "goalDifference": 0, "points": 0 },
+        { "id": "ecuador", "name": "Ecuador", "flagCode": "EC", "group": "G", "played": 3, "wins": 0, "draws": 0, "losses": 0, "goalsFor": 0, "goalsAgainst": 0, "goalDifference": 0, "points": 0 }
+      ]
+    },
+    {
+      "group": "H",
+      "teams": [
+        { "id": "japan", "name": "Japan", "flagCode": "JP", "group": "H", "played": 3, "wins": 0, "draws": 0, "losses": 0, "goalsFor": 0, "goalsAgainst": 0, "goalDifference": 0, "points": 0 },
+        { "id": "belgium", "name": "Belgium", "flagCode": "BE", "group": "H", "played": 3, "wins": 0, "draws": 0, "losses": 0, "goalsFor": 0, "goalsAgainst": 0, "goalDifference": 0, "points": 0 },
+        { "id": "russia", "name": "Russia", "flagCode": "RU", "group": "H", "played": 3, "wins": 0, "draws": 0, "losses": 0, "goalsFor": 0, "goalsAgainst": 0, "goalDifference": 0, "points": 0 },
+        { "id": "tunisia", "name": "Tunisia", "flagCode": "TN", "group": "H", "played": 3, "wins": 0, "draws": 0, "losses": 0, "goalsFor": 0, "goalsAgainst": 0, "goalDifference": 0, "points": 0 }
+      ]
+    }
+  ],
+  "knockoutBracket": [
+    {
+      "round": "r16",
+      "matches": [
+        { "id": "2002-r16-1", "stage": "r16", "matchLabel": "M49", "homeTeam": "Denmark", "awayTeam": "England", "homeTeamId": "denmark", "awayTeamId": "england", "homeScore": 0, "awayScore": 3, "date": "2002-06-15T07:30:00Z", "venue": "Niigata Stadium", "city": "Niigata", "attendance": 40582, "status": "completed", "goals": [], "cards": [] },
+        { "id": "2002-r16-2", "stage": "r16", "matchLabel": "M50", "homeTeam": "Sweden", "awayTeam": "Senegal", "homeTeamId": "sweden", "awayTeamId": "senegal", "homeScore": 1, "awayScore": 2, "date": "2002-06-16T07:30:00Z", "venue": "Oita Stadium", "city": "Oita", "attendance": 39747, "status": "completed", "goals": [], "cards": [] },
+        { "id": "2002-r16-3", "stage": "r16", "matchLabel": "M51", "homeTeam": "Spain", "awayTeam": "Republic of Ireland", "homeTeamId": "spain", "awayTeamId": "ireland", "homeScore": 1, "awayScore": 1, "date": "2002-06-16T12:30:00Z", "venue": "Suwon World Cup Stadium", "city": "Suwon", "attendance": 38926, "status": "completed", "goals": [], "cards": [] },
+        { "id": "2002-r16-4", "stage": "r16", "matchLabel": "M52", "homeTeam": "South Korea", "awayTeam": "USA", "homeTeamId": "south-korea", "awayTeamId": "usa", "homeScore": 1, "awayScore": 0, "date": "2002-06-18T12:30:00Z", "venue": "Daejeon World Cup Stadium", "city": "Daejeon", "attendance": 38588, "status": "completed", "goals": [], "cards": [] },
+        { "id": "2002-r16-5", "stage": "r16", "matchLabel": "M53", "homeTeam": "Germany", "awayTeam": "Paraguay", "homeTeamId": "germany", "awayTeamId": "paraguay", "homeScore": 1, "awayScore": 0, "date": "2002-06-15T12:30:00Z", "venue": "Seogwipo World Cup Stadium", "city": "Seogwipo", "attendance": 25176, "status": "completed", "goals": [], "cards": [] },
+        { "id": "2002-r16-6", "stage": "r16", "matchLabel": "M54", "homeTeam": "Japan", "awayTeam": "Turkey", "homeTeamId": "japan", "awayTeamId": "turkey", "homeScore": 0, "awayScore": 1, "date": "2002-06-18T07:30:00Z", "venue": "Miyagi Stadium", "city": "Miyagi", "attendance": 45666, "status": "completed", "goals": [], "cards": [] },
+        { "id": "2002-r16-7", "stage": "r16", "matchLabel": "M55", "homeTeam": "Mexico", "awayTeam": "USA", "homeTeamId": "mexico", "awayTeamId": "usa", "homeScore": 0, "awayScore": 2, "date": "2002-06-17T07:30:00Z", "venue": "Jeonju World Cup Stadium", "city": "Jeonju", "attendance": 36380, "status": "completed", "goals": [], "cards": [] },
+        { "id": "2002-r16-8", "stage": "r16", "matchLabel": "M56", "homeTeam": "Brazil", "awayTeam": "Belgium", "homeTeamId": "brazil", "awayTeamId": "belgium", "homeScore": 2, "awayScore": 0, "date": "2002-06-17T12:30:00Z", "venue": "Kobe Wing Stadium", "city": "Kobe", "attendance": 40440, "status": "completed", "goals": [], "cards": [] }
+      ]
+    },
+    {
+      "round": "qf",
+      "matches": [
+        { "id": "2002-qf-1", "stage": "qf", "matchLabel": "M57", "homeTeam": "Germany", "awayTeam": "USA", "homeTeamId": "germany", "awayTeamId": "usa", "homeScore": 1, "awayScore": 0, "date": "2002-06-21T07:30:00Z", "venue": "Ulsan Munsu Football Stadium", "city": "Ulsan", "attendance": 37337, "status": "completed", "goals": [], "cards": [] },
+        { "id": "2002-qf-2", "stage": "qf", "matchLabel": "M58", "homeTeam": "South Korea", "awayTeam": "Spain", "homeTeamId": "south-korea", "awayTeamId": "spain", "homeScore": 0, "awayScore": 0, "date": "2002-06-22T07:30:00Z", "venue": "Gwangju World Cup Stadium", "city": "Gwangju", "attendance": 42114, "status": "completed", "goals": [], "cards": [] },
+        { "id": "2002-qf-3", "stage": "qf", "matchLabel": "M59", "homeTeam": "Brazil", "awayTeam": "England", "homeTeamId": "brazil", "awayTeamId": "england", "homeScore": 2, "awayScore": 1, "date": "2002-06-21T12:30:00Z", "venue": "Shizuoka Stadium Ecopa", "city": "Shizuoka", "attendance": 47436, "status": "completed", "goals": [], "cards": [] },
+        { "id": "2002-qf-4", "stage": "qf", "matchLabel": "M60", "homeTeam": "Turkey", "awayTeam": "Senegal", "homeTeamId": "turkey", "awayTeamId": "senegal", "homeScore": 1, "awayScore": 0, "date": "2002-06-22T12:30:00Z", "venue": "Osaka Nagai Stadium", "city": "Osaka", "attendance": 44233, "status": "completed", "goals": [], "cards": [] }
+      ]
+    },
+    {
+      "round": "sf",
+      "matches": [
+        { "id": "2002-sf-1", "stage": "sf", "matchLabel": "M61", "homeTeam": "Germany", "awayTeam": "South Korea", "homeTeamId": "germany", "awayTeamId": "south-korea", "homeScore": 1, "awayScore": 0, "date": "2002-06-25T12:30:00Z", "venue": "Seoul World Cup Stadium", "city": "Seoul", "attendance": 65256, "status": "completed", "goals": [], "cards": [] },
+        { "id": "2002-sf-2", "stage": "sf", "matchLabel": "M62", "homeTeam": "Brazil", "awayTeam": "Turkey", "homeTeamId": "brazil", "awayTeamId": "turkey", "homeScore": 1, "awayScore": 0, "date": "2002-06-26T12:30:00Z", "venue": "Saitama Stadium 2002", "city": "Saitama", "attendance": 61058, "status": "completed", "goals": [], "cards": [] }
+      ]
+    },
+    {
+      "round": "3p",
+      "matches": [
+        { "id": "2002-3p-1", "stage": "3p", "matchLabel": "M63", "homeTeam": "Turkey", "awayTeam": "South Korea", "homeTeamId": "turkey", "awayTeamId": "south-korea", "homeScore": 3, "awayScore": 2, "date": "2002-06-29T12:30:00Z", "venue": "Daegu World Cup Stadium", "city": "Daegu", "attendance": 63483, "status": "completed", "goals": [], "cards": [] }
+      ]
+    },
+    {
+      "round": "final",
+      "matches": [
+        { "id": "2002-final-1", "stage": "final", "matchLabel": "M64", "homeTeam": "Brazil", "awayTeam": "Germany", "homeTeamId": "brazil", "awayTeamId": "germany", "homeScore": 2, "awayScore": 0, "date": "2002-06-30T12:00:00Z", "venue": "International Stadium Yokohama", "city": "Yokohama", "attendance": 69029, "status": "completed", "goals": [], "cards": [] }
+      ]
+    }
+  ],
+  "players": []
+}

@@ -1,0 +1,132 @@
+{
+  "name": "Football World Cup 2022",
+  "year": 2022,
+  "host": "Qatar",
+  "winner": "Argentina",
+  "format": 32,
+  "lastUpdated": "2022-12-18T17:00:00Z",
+  "groups": [
+    {
+      "group": "A",
+      "teams": [
+        { "id": "ned22", "name": "Netherlands", "flagCode": "NL", "group": "A", "played": 3, "wins": 1, "draws": 2, "losses": 0, "goalsFor": 5, "goalsAgainst": 1, "goalDifference": 4, "points": 5 },
+        { "id": "sen22", "name": "Senegal",     "flagCode": "SN", "group": "A", "played": 3, "wins": 2, "draws": 0, "losses": 1, "goalsFor": 5, "goalsAgainst": 4, "goalDifference": 1, "points": 6 },
+        { "id": "ecu22", "name": "Ecuador",     "flagCode": "EC", "group": "A", "played": 3, "wins": 1, "draws": 1, "losses": 1, "goalsFor": 4, "goalsAgainst": 3, "goalDifference": 1, "points": 4 },
+        { "id": "qat22", "name": "Qatar",       "flagCode": "QA", "group": "A", "played": 3, "wins": 0, "draws": 0, "losses": 3, "goalsFor": 1, "goalsAgainst": 7, "goalDifference": -6, "points": 0 }
+      ]
+    },
+    {
+      "group": "B",
+      "teams": [
+        { "id": "eng22", "name": "England",     "flagCode": "GB", "group": "B", "played": 3, "wins": 2, "draws": 1, "losses": 0, "goalsFor": 9, "goalsAgainst": 2, "goalDifference": 7, "points": 7 },
+        { "id": "usa22", "name": "USA",          "flagCode": "US", "group": "B", "played": 3, "wins": 1, "draws": 2, "losses": 0, "goalsFor": 2, "goalsAgainst": 1, "goalDifference": 1, "points": 5 },
+        { "id": "ira22", "name": "Iran",         "flagCode": "IR", "group": "B", "played": 3, "wins": 1, "draws": 0, "losses": 2, "goalsFor": 4, "goalsAgainst": 7, "goalDifference": -3, "points": 3 },
+        { "id": "wal22", "name": "Wales",        "flagCode": "GB", "group": "B", "played": 3, "wins": 0, "draws": 1, "losses": 2, "goalsFor": 1, "goalsAgainst": 6, "goalDifference": -5, "points": 1 }
+      ]
+    },
+    {
+      "group": "C",
+      "teams": [
+        { "id": "arg22", "name": "Argentina",   "flagCode": "AR", "group": "C", "played": 3, "wins": 2, "draws": 0, "losses": 1, "goalsFor": 5, "goalsAgainst": 2, "goalDifference": 3, "points": 6 },
+        { "id": "pol22", "name": "Poland",       "flagCode": "PL", "group": "C", "played": 3, "wins": 1, "draws": 1, "losses": 1, "goalsFor": 2, "goalsAgainst": 2, "goalDifference": 0, "points": 4 },
+        { "id": "mex22", "name": "Mexico",       "flagCode": "MX", "group": "C", "played": 3, "wins": 1, "draws": 1, "losses": 1, "goalsFor": 2, "goalsAgainst": 3, "goalDifference": -1, "points": 4 },
+        { "id": "ksa22", "name": "Saudi Arabia", "flagCode": "SA", "group": "C", "played": 3, "wins": 1, "draws": 0, "losses": 2, "goalsFor": 3, "goalsAgainst": 5, "goalDifference": -2, "points": 3 }
+      ]
+    },
+    {
+      "group": "D",
+      "teams": [
+        { "id": "fra22", "name": "France",       "flagCode": "FR", "group": "D", "played": 3, "wins": 2, "draws": 0, "losses": 1, "goalsFor": 6, "goalsAgainst": 3, "goalDifference": 3, "points": 6 },
+        { "id": "aus22", "name": "Australia",    "flagCode": "AU", "group": "D", "played": 3, "wins": 1, "draws": 1, "losses": 1, "goalsFor": 3, "goalsAgainst": 4, "goalDifference": -1, "points": 4 },
+        { "id": "tun22", "name": "Tunisia",      "flagCode": "TN", "group": "D", "played": 3, "wins": 1, "draws": 1, "losses": 1, "goalsFor": 1, "goalsAgainst": 1, "goalDifference": 0, "points": 4 },
+        { "id": "den22", "name": "Denmark",      "flagCode": "DK", "group": "D", "played": 3, "wins": 0, "draws": 2, "losses": 1, "goalsFor": 1, "goalsAgainst": 3, "goalDifference": -2, "points": 2 }
+      ]
+    },
+    {
+      "group": "E",
+      "teams": [
+        { "id": "jpn22", "name": "Japan",        "flagCode": "JP", "group": "E", "played": 3, "wins": 2, "draws": 0, "losses": 1, "goalsFor": 4, "goalsAgainst": 3, "goalDifference": 1, "points": 6 },
+        { "id": "esp22", "name": "Spain",        "flagCode": "ES", "group": "E", "played": 3, "wins": 1, "draws": 1, "losses": 1, "goalsFor": 9, "goalsAgainst": 3, "goalDifference": 6, "points": 4 },
+        { "id": "ger22", "name": "Germany",      "flagCode": "DE", "group": "E", "played": 3, "wins": 1, "draws": 0, "losses": 2, "goalsFor": 6, "goalsAgainst": 5, "goalDifference": 1, "points": 3 },
+        { "id": "crc22", "name": "Costa Rica",   "flagCode": "CR", "group": "E", "played": 3, "wins": 1, "draws": 0, "losses": 2, "goalsFor": 3, "goalsAgainst": 11, "goalDifference": -8, "points": 3 }
+      ]
+    },
+    {
+      "group": "F",
+      "teams": [
+        { "id": "mar22", "name": "Morocco",      "flagCode": "MA", "group": "F", "played": 3, "wins": 2, "draws": 1, "losses": 0, "goalsFor": 4, "goalsAgainst": 1, "goalDifference": 3, "points": 7 },
+        { "id": "cro22", "name": "Croatia",      "flagCode": "HR", "group": "F", "played": 3, "wins": 1, "draws": 2, "losses": 0, "goalsFor": 4, "goalsAgainst": 1, "goalDifference": 3, "points": 5 },
+        { "id": "bel22", "name": "Belgium",      "flagCode": "BE", "group": "F", "played": 3, "wins": 1, "draws": 1, "losses": 1, "goalsFor": 1, "goalsAgainst": 2, "goalDifference": -1, "points": 4 },
+        { "id": "can22", "name": "Canada",       "flagCode": "CA", "group": "F", "played": 3, "wins": 0, "draws": 0, "losses": 3, "goalsFor": 2, "goalsAgainst": 7, "goalDifference": -5, "points": 0 }
+      ]
+    },
+    {
+      "group": "G",
+      "teams": [
+        { "id": "bra22", "name": "Brazil",       "flagCode": "BR", "group": "G", "played": 3, "wins": 2, "draws": 0, "losses": 1, "goalsFor": 3, "goalsAgainst": 1, "goalDifference": 2, "points": 6 },
+        { "id": "sui22", "name": "Switzerland",  "flagCode": "CH", "group": "G", "played": 3, "wins": 2, "draws": 0, "losses": 1, "goalsFor": 4, "goalsAgainst": 3, "goalDifference": 1, "points": 6 },
+        { "id": "cmr22", "name": "Cameroon",     "flagCode": "CM", "group": "G", "played": 3, "wins": 1, "draws": 1, "losses": 1, "goalsFor": 4, "goalsAgainst": 4, "goalDifference": 0, "points": 4 },
+        { "id": "srb22", "name": "Serbia",       "flagCode": "RS", "group": "G", "played": 3, "wins": 0, "draws": 1, "losses": 2, "goalsFor": 5, "goalsAgainst": 8, "goalDifference": -3, "points": 1 }
+      ]
+    },
+    {
+      "group": "H",
+      "teams": [
+        { "id": "por22", "name": "Portugal",     "flagCode": "PT", "group": "H", "played": 3, "wins": 2, "draws": 0, "losses": 1, "goalsFor": 6, "goalsAgainst": 4, "goalDifference": 2, "points": 6 },
+        { "id": "kor22", "name": "South Korea",  "flagCode": "KR", "group": "H", "played": 3, "wins": 1, "draws": 1, "losses": 1, "goalsFor": 4, "goalsAgainst": 4, "goalDifference": 0, "points": 4 },
+        { "id": "uru22", "name": "Uruguay",      "flagCode": "UY", "group": "H", "played": 3, "wins": 1, "draws": 1, "losses": 1, "goalsFor": 2, "goalsAgainst": 2, "goalDifference": 0, "points": 4 },
+        { "id": "gha22", "name": "Ghana",        "flagCode": "GH", "group": "H", "played": 3, "wins": 1, "draws": 0, "losses": 2, "goalsFor": 5, "goalsAgainst": 7, "goalDifference": -2, "points": 3 }
+      ]
+    }
+  ],
+  "knockoutBracket": [
+    {
+      "round": "r16",
+      "matches": [
+        { "id": "2022-r16-1", "stage": "r16", "matchLabel": "M49", "homeTeam": "Netherlands", "awayTeam": "USA",         "homeTeamId": "ned22", "awayTeamId": "usa22", "homeScore": 3, "awayScore": 1, "date": "2022-12-03T15:00:00Z", "venue": "Khalifa International Stadium", "city": "Al Rayyan",   "attendance": 43113, "status": "completed", "goals": [{"player":"Memphis Depay","minute":10,"penalty":false,"ownGoal":false},{"player":"Daley Blind","minute":45,"penalty":false,"ownGoal":false},{"player":"Pulisic","minute":76,"penalty":false,"ownGoal":false},{"player":"Denzel Dumfries","minute":81,"penalty":false,"ownGoal":false}], "cards": [] },
+        { "id": "2022-r16-2", "stage": "r16", "matchLabel": "M50", "homeTeam": "Argentina",   "awayTeam": "Australia",   "homeTeamId": "arg22", "awayTeamId": "aus22", "homeScore": 2, "awayScore": 1, "date": "2022-12-03T19:00:00Z", "venue": "Ahmad Bin Ali Stadium",         "city": "Al Rayyan",   "attendance": 45138, "status": "completed", "goals": [{"player":"Messi","minute":35,"penalty":false,"ownGoal":false},{"player":"Julián Álvarez","minute":57,"penalty":false,"ownGoal":false},{"player":"Goodwin","minute":77,"penalty":false,"ownGoal":false}], "cards": [] },
+        { "id": "2022-r16-3", "stage": "r16", "matchLabel": "M51", "homeTeam": "France",      "awayTeam": "Poland",      "homeTeamId": "fra22", "awayTeamId": "pol22", "homeScore": 3, "awayScore": 1, "date": "2022-12-04T15:00:00Z", "venue": "Al Thumama Stadium",            "city": "Doha",        "attendance": 40285, "status": "completed", "goals": [{"player":"Giroud","minute":44,"penalty":false,"ownGoal":false},{"player":"Mbappé","minute":74,"penalty":false,"ownGoal":false},{"player":"Mbappé","minute":91,"penalty":false,"ownGoal":false},{"player":"Lewandowski","minute":99,"penalty":true,"ownGoal":false}], "cards": [] },
+        { "id": "2022-r16-4", "stage": "r16", "matchLabel": "M52", "homeTeam": "England",     "awayTeam": "Senegal",     "homeTeamId": "eng22", "awayTeamId": "sen22", "homeScore": 3, "awayScore": 0, "date": "2022-12-04T19:00:00Z", "venue": "Al Bayt Stadium",               "city": "Al Khor",     "attendance": 68295, "status": "completed", "goals": [{"player":"Henderson","minute":38,"penalty":false,"ownGoal":false},{"player":"Kane","minute":45,"penalty":false,"ownGoal":false},{"player":"Saka","minute":57,"penalty":false,"ownGoal":false}], "cards": [] },
+        { "id": "2022-r16-5", "stage": "r16", "matchLabel": "M53", "homeTeam": "Japan",       "awayTeam": "Croatia",     "homeTeamId": "jpn22", "awayTeamId": "cro22", "homeScore": 1, "awayScore": 1, "date": "2022-12-05T15:00:00Z", "venue": "Al Janoub Stadium",             "city": "Al Wakrah",   "attendance": 43954, "status": "completed", "goals": [{"player":"Maeda","minute":43,"penalty":false,"ownGoal":false},{"player":"Perisic","minute":55,"penalty":false,"ownGoal":false}], "cards": [], "playerOfMatch": "Dominik Livakovic" },
+        { "id": "2022-r16-6", "stage": "r16", "matchLabel": "M54", "homeTeam": "Brazil",      "awayTeam": "South Korea", "homeTeamId": "bra22", "awayTeamId": "kor22", "homeScore": 4, "awayScore": 1, "date": "2022-12-05T19:00:00Z", "venue": "Stadium 974",                   "city": "Doha",        "attendance": 44024, "status": "completed", "goals": [{"player":"Vinicius Jr","minute":7,"penalty":false,"ownGoal":false},{"player":"Neymar","minute":13,"penalty":true,"ownGoal":false},{"player":"Richarlison","minute":29,"penalty":false,"ownGoal":false},{"player":"Lucas Paquetá","minute":36,"penalty":false,"ownGoal":false},{"player":"Paik","minute":76,"penalty":false,"ownGoal":false}], "cards": [] },
+        { "id": "2022-r16-7", "stage": "r16", "matchLabel": "M55", "homeTeam": "Morocco",     "awayTeam": "Spain",       "homeTeamId": "mar22", "awayTeamId": "esp22", "homeScore": 0, "awayScore": 0, "date": "2022-12-06T15:00:00Z", "venue": "Education City Stadium",        "city": "Al Rayyan",   "attendance": 44137, "status": "completed", "goals": [], "cards": [], "playerOfMatch": "Yassine Bounou" },
+        { "id": "2022-r16-8", "stage": "r16", "matchLabel": "M56", "homeTeam": "Portugal",    "awayTeam": "Switzerland", "homeTeamId": "por22", "awayTeamId": "sui22", "homeScore": 6, "awayScore": 1, "date": "2022-12-06T19:00:00Z", "venue": "Lusail Stadium",                "city": "Lusail",      "attendance": 88103, "status": "completed", "goals": [{"player":"Gonçalo Ramos","minute":17,"penalty":false,"ownGoal":false},{"player":"Pepe","minute":33,"penalty":false,"ownGoal":false},{"player":"Ramos","minute":51,"penalty":false,"ownGoal":false},{"player":"Shaqiri","minute":58,"penalty":false,"ownGoal":false},{"player":"Ramos","minute":62,"penalty":false,"ownGoal":false},{"player":"Rafael Leão","minute":67,"penalty":false,"ownGoal":false},{"player":"Horta","minute":90,"penalty":false,"ownGoal":false}], "cards": [] }
+      ]
+    },
+    {
+      "round": "qf",
+      "matches": [
+        { "id": "2022-qf-1", "stage": "qf", "matchLabel": "QF1", "homeTeam": "Croatia",     "awayTeam": "Brazil",    "homeTeamId": "cro22", "awayTeamId": "bra22", "homeScore": 1, "awayScore": 1, "date": "2022-12-09T15:00:00Z", "venue": "Education City Stadium", "city": "Al Rayyan", "attendance": 44325, "status": "completed", "goals": [{"player":"Neymar","minute":105,"penalty":false,"ownGoal":false},{"player":"Petkovic","minute":117,"penalty":false,"ownGoal":false}], "cards": [], "playerOfMatch": "Dominik Livakovic" },
+        { "id": "2022-qf-2", "stage": "qf", "matchLabel": "QF2", "homeTeam": "Netherlands", "awayTeam": "Argentina", "homeTeamId": "ned22", "awayTeamId": "arg22", "homeScore": 2, "awayScore": 2, "date": "2022-12-09T19:00:00Z", "venue": "Lusail Stadium",         "city": "Lusail",    "attendance": 88235, "status": "completed", "goals": [{"player":"Nahuel Molina","minute":35,"penalty":false,"ownGoal":false},{"player":"Messi","minute":73,"penalty":true,"ownGoal":false},{"player":"Wout Weghorst","minute":83,"penalty":false,"ownGoal":false},{"player":"Weghorst","minute":90,"penalty":false,"ownGoal":false}], "cards": [] },
+        { "id": "2022-qf-3", "stage": "qf", "matchLabel": "QF3", "homeTeam": "Morocco",     "awayTeam": "Portugal",  "homeTeamId": "mar22", "awayTeamId": "por22", "homeScore": 1, "awayScore": 0, "date": "2022-12-10T15:00:00Z", "venue": "Al Thumama Stadium",    "city": "Doha",      "attendance": 44198, "status": "completed", "goals": [{"player":"Youssef En-Nesyri","minute":42,"penalty":false,"ownGoal":false}], "cards": [] },
+        { "id": "2022-qf-4", "stage": "qf", "matchLabel": "QF4", "homeTeam": "France",      "awayTeam": "England",   "homeTeamId": "fra22", "awayTeamId": "eng22", "homeScore": 2, "awayScore": 1, "date": "2022-12-10T19:00:00Z", "venue": "Al Bayt Stadium",       "city": "Al Khor",   "attendance": 68295, "status": "completed", "goals": [{"player":"Aurélien Tchouaméni","minute":17,"penalty":false,"ownGoal":false},{"player":"Giroud","minute":78,"penalty":false,"ownGoal":false},{"player":"Kane","minute":54,"penalty":true,"ownGoal":false}], "cards": [] }
+      ]
+    },
+    {
+      "round": "sf",
+      "matches": [
+        { "id": "2022-sf-1", "stage": "sf", "matchLabel": "SF1", "homeTeam": "Argentina", "awayTeam": "Croatia", "homeTeamId": "arg22", "awayTeamId": "cro22", "homeScore": 3, "awayScore": 0, "date": "2022-12-13T19:00:00Z", "venue": "Lusail Stadium",   "city": "Lusail",    "attendance": 88966, "status": "completed", "goals": [{"player":"Messi","minute":34,"penalty":true,"ownGoal":false},{"player":"Julián Álvarez","minute":57,"penalty":false,"ownGoal":false},{"player":"Álvarez","minute":69,"penalty":false,"ownGoal":false}], "cards": [] },
+        { "id": "2022-sf-2", "stage": "sf", "matchLabel": "SF2", "homeTeam": "France",    "awayTeam": "Morocco", "homeTeamId": "fra22", "awayTeamId": "mar22", "homeScore": 2, "awayScore": 0, "date": "2022-12-14T19:00:00Z", "venue": "Al Bayt Stadium",  "city": "Al Khor",   "attendance": 68294, "status": "completed", "goals": [{"player":"Théo Hernández","minute":5,"penalty":false,"ownGoal":false},{"player":"Randal Kolo Muani","minute":79,"penalty":false,"ownGoal":false}], "cards": [] }
+      ]
+    },
+    {
+      "round": "3p",
+      "matches": [
+        { "id": "2022-3p-1", "stage": "3p", "matchLabel": "3RD", "homeTeam": "Croatia", "awayTeam": "Morocco", "homeTeamId": "cro22", "awayTeamId": "mar22", "homeScore": 2, "awayScore": 1, "date": "2022-12-17T15:00:00Z", "venue": "Khalifa International Stadium", "city": "Al Rayyan", "attendance": 44137, "status": "completed", "goals": [{"player":"Gvardiol","minute":7,"penalty":false,"ownGoal":false},{"player":"Oršic","minute":42,"penalty":false,"ownGoal":false},{"player":"Dari","minute":9,"penalty":false,"ownGoal":false}], "cards": [] }
+      ]
+    },
+    {
+      "round": "final",
+      "matches": [
+        { "id": "2022-final", "stage": "final", "matchLabel": "FINAL", "homeTeam": "Argentina", "awayTeam": "France", "homeTeamId": "arg22", "awayTeamId": "fra22", "homeScore": 3, "awayScore": 3, "date": "2022-12-18T15:00:00Z", "venue": "Lusail Stadium", "city": "Lusail", "attendance": 88966, "status": "completed", "goals": [{"player":"Messi","minute":23,"penalty":true,"ownGoal":false},{"player":"Di María","minute":36,"penalty":false,"ownGoal":false},{"player":"Mbappé","minute":80,"penalty":true,"ownGoal":false},{"player":"Mbappé","minute":81,"penalty":false,"ownGoal":false},{"player":"Messi","minute":108,"penalty":false,"ownGoal":false},{"player":"Mbappé","minute":118,"penalty":true,"ownGoal":false},{"player":"Montiel","minute":123,"penalty":false,"ownGoal":false}], "cards": [], "playerOfMatch": "Lionel Messi" }
+      ]
+    }
+  ],
+  "players": [
+    { "id": "mbappe22", "name": "Kylian Mbappé",   "country": "France",    "position": "FW", "goals": 8, "assists": 2, "yellowCards": 0, "redCards": 0, "playerOfMatch": 3 },
+    { "id": "messi22",  "name": "Lionel Messi",     "country": "Argentina", "position": "FW", "goals": 7, "assists": 3, "yellowCards": 1, "redCards": 0, "playerOfMatch": 5 },
+    { "id": "ramos22",  "name": "Gonçalo Ramos",    "country": "Portugal",  "position": "FW", "goals": 3, "assists": 0, "yellowCards": 0, "redCards": 0, "playerOfMatch": 1 },
+    { "id": "alvarez22","name": "Julián Álvarez",   "country": "Argentina", "position": "FW", "goals": 4, "assists": 1, "yellowCards": 0, "redCards": 0, "playerOfMatch": 2 },
+    { "id": "giroud22", "name": "Olivier Giroud",   "country": "France",    "position": "FW", "goals": 4, "assists": 0, "yellowCards": 0, "redCards": 0, "playerOfMatch": 1 }
+  ]
+}

@@ -1,0 +1,126 @@
+{
+  "name": "1998 FIFA World Cup",
+  "year": 1998,
+  "host": "France",
+  "winner": "France",
+  "format": 32,
+  "lastUpdated": "1998-07-12T17:00:00Z",
+  "groups": [
+    {
+      "group": "A",
+      "teams": [
+        { "id": "brazil", "name": "Brazil", "flagCode": "BR", "group": "A", "played": 3, "wins": 0, "draws": 0, "losses": 0, "goalsFor": 0, "goalsAgainst": 0, "goalDifference": 0, "points": 0 },
+        { "id": "norway", "name": "Norway", "flagCode": "NO", "group": "A", "played": 3, "wins": 0, "draws": 0, "losses": 0, "goalsFor": 0, "goalsAgainst": 0, "goalDifference": 0, "points": 0 },
+        { "id": "morocco", "name": "Morocco", "flagCode": "MA", "group": "A", "played": 3, "wins": 0, "draws": 0, "losses": 0, "goalsFor": 0, "goalsAgainst": 0, "goalDifference": 0, "points": 0 },
+        { "id": "scotland", "name": "Scotland", "flagCode": "GB", "group": "A", "played": 3, "wins": 0, "draws": 0, "losses": 0, "goalsFor": 0, "goalsAgainst": 0, "goalDifference": 0, "points": 0 }
+      ]
+    },
+    {
+      "group": "B",
+      "teams": [
+        { "id": "italy", "name": "Italy", "flagCode": "IT", "group": "B", "played": 3, "wins": 0, "draws": 0, "losses": 0, "goalsFor": 0, "goalsAgainst": 0, "goalDifference": 0, "points": 0 },
+        { "id": "chile", "name": "Chile", "flagCode": "CL", "group": "B", "played": 3, "wins": 0, "draws": 0, "losses": 0, "goalsFor": 0, "goalsAgainst": 0, "goalDifference": 0, "points": 0 },
+        { "id": "austria", "name": "Austria", "flagCode": "AT", "group": "B", "played": 3, "wins": 0, "draws": 0, "losses": 0, "goalsFor": 0, "goalsAgainst": 0, "goalDifference": 0, "points": 0 },
+        { "id": "cameroon", "name": "Cameroon", "flagCode": "CM", "group": "B", "played": 3, "wins": 0, "draws": 0, "losses": 0, "goalsFor": 0, "goalsAgainst": 0, "goalDifference": 0, "points": 0 }
+      ]
+    },
+    {
+      "group": "C",
+      "teams": [
+        { "id": "france", "name": "France", "flagCode": "FR", "group": "C", "played": 3, "wins": 0, "draws": 0, "losses": 0, "goalsFor": 0, "goalsAgainst": 0, "goalDifference": 0, "points": 0 },
+        { "id": "denmark", "name": "Denmark", "flagCode": "DK", "group": "C", "played": 3, "wins": 0, "draws": 0, "losses": 0, "goalsFor": 0, "goalsAgainst": 0, "goalDifference": 0, "points": 0 },
+        { "id": "south-africa", "name": "South Africa", "flagCode": "ZA", "group": "C", "played": 3, "wins": 0, "draws": 0, "losses": 0, "goalsFor": 0, "goalsAgainst": 0, "goalDifference": 0, "points": 0 },
+        { "id": "saudi-arabia", "name": "Saudi Arabia", "flagCode": "SA", "group": "C", "played": 3, "wins": 0, "draws": 0, "losses": 0, "goalsFor": 0, "goalsAgainst": 0, "goalDifference": 0, "points": 0 }
+      ]
+    },
+    {
+      "group": "D",
+      "teams": [
+        { "id": "nigeria", "name": "Nigeria", "flagCode": "NG", "group": "D", "played": 3, "wins": 0, "draws": 0, "losses": 0, "goalsFor": 0, "goalsAgainst": 0, "goalDifference": 0, "points": 0 },
+        { "id": "paraguay", "name": "Paraguay", "flagCode": "PY", "group": "D", "played": 3, "wins": 0, "draws": 0, "losses": 0, "goalsFor": 0, "goalsAgainst": 0, "goalDifference": 0, "points": 0 },
+        { "id": "spain", "name": "Spain", "flagCode": "ES", "group": "D", "played": 3, "wins": 0, "draws": 0, "losses": 0, "goalsFor": 0, "goalsAgainst": 0, "goalDifference": 0, "points": 0 },
+        { "id": "bulgaria", "name": "Bulgaria", "flagCode": "BG", "group": "D", "played": 3, "wins": 0, "draws": 0, "losses": 0, "goalsFor": 0, "goalsAgainst": 0, "goalDifference": 0, "points": 0 }
+      ]
+    },
+    {
+      "group": "E",
+      "teams": [
+        { "id": "south-korea", "name": "South Korea", "flagCode": "KR", "group": "E", "played": 3, "wins": 0, "draws": 0, "losses": 0, "goalsFor": 0, "goalsAgainst": 0, "goalDifference": 0, "points": 0 },
+        { "id": "mexico", "name": "Mexico", "flagCode": "MX", "group": "E", "played": 3, "wins": 0, "draws": 0, "losses": 0, "goalsFor": 0, "goalsAgainst": 0, "goalDifference": 0, "points": 0 },
+        { "id": "netherlands", "name": "Netherlands", "flagCode": "NL", "group": "E", "played": 3, "wins": 0, "draws": 0, "losses": 0, "goalsFor": 0, "goalsAgainst": 0, "goalDifference": 0, "points": 0 },
+        { "id": "belgium", "name": "Belgium", "flagCode": "BE", "group": "E", "played": 3, "wins": 0, "draws": 0, "losses": 0, "goalsFor": 0, "goalsAgainst": 0, "goalDifference": 0, "points": 0 }
+      ]
+    },
+    {
+      "group": "F",
+      "teams": [
+        { "id": "germany", "name": "Germany", "flagCode": "DE", "group": "F", "played": 3, "wins": 0, "draws": 0, "losses": 0, "goalsFor": 0, "goalsAgainst": 0, "goalDifference": 0, "points": 0 },
+        { "id": "yugoslavia", "name": "Yugoslavia", "flagCode": "RS", "group": "F", "played": 3, "wins": 0, "draws": 0, "losses": 0, "goalsFor": 0, "goalsAgainst": 0, "goalDifference": 0, "points": 0 },
+        { "id": "iran", "name": "Iran", "flagCode": "IR", "group": "F", "played": 3, "wins": 0, "draws": 0, "losses": 0, "goalsFor": 0, "goalsAgainst": 0, "goalDifference": 0, "points": 0 },
+        { "id": "usa", "name": "USA", "flagCode": "US", "group": "F", "played": 3, "wins": 0, "draws": 0, "losses": 0, "goalsFor": 0, "goalsAgainst": 0, "goalDifference": 0, "points": 0 }
+      ]
+    },
+    {
+      "group": "G",
+      "teams": [
+        { "id": "england", "name": "England", "flagCode": "GB-ENG", "group": "G", "played": 3, "wins": 0, "draws": 0, "losses": 0, "goalsFor": 0, "goalsAgainst": 0, "goalDifference": 0, "points": 0 },
+        { "id": "romania", "name": "Romania", "flagCode": "RO", "group": "G", "played": 3, "wins": 0, "draws": 0, "losses": 0, "goalsFor": 0, "goalsAgainst": 0, "goalDifference": 0, "points": 0 },
+        { "id": "colombia", "name": "Colombia", "flagCode": "CO", "group": "G", "played": 3, "wins": 0, "draws": 0, "losses": 0, "goalsFor": 0, "goalsAgainst": 0, "goalDifference": 0, "points": 0 },
+        { "id": "tunisia", "name": "Tunisia", "flagCode": "TN", "group": "G", "played": 3, "wins": 0, "draws": 0, "losses": 0, "goalsFor": 0, "goalsAgainst": 0, "goalDifference": 0, "points": 0 }
+      ]
+    },
+    {
+      "group": "H",
+      "teams": [
+        { "id": "argentina", "name": "Argentina", "flagCode": "AR", "group": "H", "played": 3, "wins": 0, "draws": 0, "losses": 0, "goalsFor": 0, "goalsAgainst": 0, "goalDifference": 0, "points": 0 },
+        { "id": "croatia", "name": "Croatia", "flagCode": "HR", "group": "H", "played": 3, "wins": 0, "draws": 0, "losses": 0, "goalsFor": 0, "goalsAgainst": 0, "goalDifference": 0, "points": 0 },
+        { "id": "jamaica", "name": "Jamaica", "flagCode": "JM", "group": "H", "played": 3, "wins": 0, "draws": 0, "losses": 0, "goalsFor": 0, "goalsAgainst": 0, "goalDifference": 0, "points": 0 },
+        { "id": "japan", "name": "Japan", "flagCode": "JP", "group": "H", "played": 3, "wins": 0, "draws": 0, "losses": 0, "goalsFor": 0, "goalsAgainst": 0, "goalDifference": 0, "points": 0 }
+      ]
+    }
+  ],
+  "knockoutBracket": [
+    {
+      "round": "r16",
+      "matches": [
+        { "id": "1998-r16-1", "stage": "r16", "matchLabel": "M49", "homeTeam": "Brazil", "awayTeam": "Chile", "homeTeamId": "brazil", "awayTeamId": "chile", "homeScore": 4, "awayScore": 1, "date": "1998-06-27T16:00:00Z", "venue": "Stade de la Mosson", "city": "Montpellier", "attendance": 35000, "status": "completed", "goals": [], "cards": [] },
+        { "id": "1998-r16-2", "stage": "r16", "matchLabel": "M50", "homeTeam": "Nigeria", "awayTeam": "Denmark", "homeTeamId": "nigeria", "awayTeamId": "denmark", "homeScore": 1, "awayScore": 4, "date": "1998-06-28T16:00:00Z", "venue": "Stade de France", "city": "Paris", "attendance": 80000, "status": "completed", "goals": [], "cards": [] },
+        { "id": "1998-r16-3", "stage": "r16", "matchLabel": "M51", "homeTeam": "France", "awayTeam": "Paraguay", "homeTeamId": "france", "awayTeamId": "paraguay", "homeScore": 1, "awayScore": 0, "date": "1998-06-28T20:30:00Z", "venue": "Stade Félix Bollaert", "city": "Lens", "attendance": 38000, "status": "completed", "goals": [], "cards": [] },
+        { "id": "1998-r16-4", "stage": "r16", "matchLabel": "M52", "homeTeam": "Germany", "awayTeam": "Mexico", "homeTeamId": "germany", "awayTeamId": "mexico", "homeScore": 2, "awayScore": 1, "date": "1998-06-29T16:00:00Z", "venue": "Stade Gerland", "city": "Lyon", "attendance": 35000, "status": "completed", "goals": [], "cards": [] },
+        { "id": "1998-r16-5", "stage": "r16", "matchLabel": "M53", "homeTeam": "Romania", "awayTeam": "Croatia", "homeTeamId": "romania", "awayTeamId": "croatia", "homeScore": 0, "awayScore": 1, "date": "1998-06-30T16:00:00Z", "venue": "Stade de Bordeaux", "city": "Bordeaux", "attendance": 31800, "status": "completed", "goals": [], "cards": [] },
+        { "id": "1998-r16-6", "stage": "r16", "matchLabel": "M54", "homeTeam": "Netherlands", "awayTeam": "Yugoslavia", "homeTeamId": "netherlands", "awayTeamId": "yugoslavia", "homeScore": 2, "awayScore": 1, "date": "1998-06-27T20:30:00Z", "venue": "Stade de Toulouse", "city": "Toulouse", "attendance": 33000, "status": "completed", "goals": [], "cards": [] },
+        { "id": "1998-r16-7", "stage": "r16", "matchLabel": "M55", "homeTeam": "Argentina", "awayTeam": "England", "homeTeamId": "argentina", "awayTeamId": "england", "homeScore": 2, "awayScore": 2, "date": "1998-06-30T20:30:00Z", "venue": "Stade Geoffroy-Guichard", "city": "Saint-Étienne", "attendance": 35500, "status": "completed", "goals": [], "cards": [] },
+        { "id": "1998-r16-8", "stage": "r16", "matchLabel": "M56", "homeTeam": "Italy", "awayTeam": "Norway", "homeTeamId": "italy", "awayTeamId": "norway", "homeScore": 1, "awayScore": 0, "date": "1998-06-27T20:30:00Z", "venue": "Stade Vélodrome", "city": "Marseille", "attendance": 55000, "status": "completed", "goals": [], "cards": [] }
+      ]
+    },
+    {
+      "round": "qf",
+      "matches": [
+        { "id": "1998-qf-1", "stage": "qf", "matchLabel": "M57", "homeTeam": "France", "awayTeam": "Italy", "homeTeamId": "france", "awayTeamId": "italy", "homeScore": 0, "awayScore": 0, "date": "1998-07-03T20:30:00Z", "venue": "Stade de France", "city": "Paris", "attendance": 80000, "status": "completed", "goals": [], "cards": [] },
+        { "id": "1998-qf-2", "stage": "qf", "matchLabel": "M58", "homeTeam": "Croatia", "awayTeam": "Germany", "homeTeamId": "croatia", "awayTeamId": "germany", "homeScore": 3, "awayScore": 0, "date": "1998-07-04T16:00:00Z", "venue": "Stade Gerland", "city": "Lyon", "attendance": 39100, "status": "completed", "goals": [], "cards": [] },
+        { "id": "1998-qf-3", "stage": "qf", "matchLabel": "M59", "homeTeam": "Netherlands", "awayTeam": "Argentina", "homeTeamId": "netherlands", "awayTeamId": "argentina", "homeScore": 2, "awayScore": 1, "date": "1998-07-04T20:30:00Z", "venue": "Stade Vélodrome", "city": "Marseille", "attendance": 55000, "status": "completed", "goals": [], "cards": [] },
+        { "id": "1998-qf-4", "stage": "qf", "matchLabel": "M60", "homeTeam": "Brazil", "awayTeam": "Denmark", "homeTeamId": "brazil", "awayTeamId": "denmark", "homeScore": 3, "awayScore": 2, "date": "1998-07-03T16:00:00Z", "venue": "Stade de Nantes", "city": "Nantes", "attendance": 35500, "status": "completed", "goals": [], "cards": [] }
+      ]
+    },
+    {
+      "round": "sf",
+      "matches": [
+        { "id": "1998-sf-1", "stage": "sf", "matchLabel": "M61", "homeTeam": "France", "awayTeam": "Croatia", "homeTeamId": "france", "awayTeamId": "croatia", "homeScore": 2, "awayScore": 1, "date": "1998-07-08T20:30:00Z", "venue": "Stade de France", "city": "Paris", "attendance": 80000, "status": "completed", "goals": [], "cards": [] },
+        { "id": "1998-sf-2", "stage": "sf", "matchLabel": "M62", "homeTeam": "Brazil", "awayTeam": "Netherlands", "homeTeamId": "brazil", "awayTeamId": "netherlands", "homeScore": 1, "awayScore": 1, "date": "1998-07-07T20:30:00Z", "venue": "Stade Vélodrome", "city": "Marseille", "attendance": 60000, "status": "completed", "goals": [], "cards": [] }
+      ]
+    },
+    {
+      "round": "3p",
+      "matches": [
+        { "id": "1998-3p-1", "stage": "3p", "matchLabel": "M63", "homeTeam": "Croatia", "awayTeam": "Netherlands", "homeTeamId": "croatia", "awayTeamId": "netherlands", "homeScore": 2, "awayScore": 1, "date": "1998-07-11T16:00:00Z", "venue": "Parc des Princes", "city": "Paris", "attendance": 45500, "status": "completed", "goals": [], "cards": [] }
+      ]
+    },
+    {
+      "round": "final",
+      "matches": [
+        { "id": "1998-final-1", "stage": "final", "matchLabel": "M64", "homeTeam": "France", "awayTeam": "Brazil", "homeTeamId": "france", "awayTeamId": "brazil", "homeScore": 3, "awayScore": 0, "date": "1998-07-12T21:00:00Z", "venue": "Stade de France", "city": "Paris", "attendance": 80000, "status": "completed", "goals": [], "cards": [] }
+      ]
+    }
+  ],
+  "players": []
+}

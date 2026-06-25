@@ -1,0 +1,85 @@
+{
+  "name": "Football World Cup 2014", "year": 2014, "host": "Brazil", "winner": "Germany", "format": 32, "lastUpdated": "2014-07-13T17:00:00Z",
+  "groups": [
+    { "group": "A", "teams": [
+      { "id": "bra14", "name": "Brazil",     "flagCode": "BR", "group": "A", "played": 3, "wins": 2, "draws": 1, "losses": 0, "goalsFor": 7, "goalsAgainst": 2, "goalDifference": 5, "points": 7 },
+      { "id": "mex14", "name": "Mexico",     "flagCode": "MX", "group": "A", "played": 3, "wins": 2, "draws": 1, "losses": 0, "goalsFor": 4, "goalsAgainst": 1, "goalDifference": 3, "points": 7 },
+      { "id": "cro14", "name": "Croatia",    "flagCode": "HR", "group": "A", "played": 3, "wins": 1, "draws": 0, "losses": 2, "goalsFor": 6, "goalsAgainst": 6, "goalDifference": 0, "points": 3 },
+      { "id": "cmr14", "name": "Cameroon",   "flagCode": "CM", "group": "A", "played": 3, "wins": 0, "draws": 0, "losses": 3, "goalsFor": 1, "goalsAgainst": 9, "goalDifference": -8, "points": 0 }
+    ]},
+    { "group": "B", "teams": [
+      { "id": "ned14", "name": "Netherlands","flagCode": "NL", "group": "B", "played": 3, "wins": 3, "draws": 0, "losses": 0, "goalsFor": 10, "goalsAgainst": 3, "goalDifference": 7, "points": 9 },
+      { "id": "chi14", "name": "Chile",      "flagCode": "CL", "group": "B", "played": 3, "wins": 2, "draws": 0, "losses": 1, "goalsFor": 5, "goalsAgainst": 3, "goalDifference": 2, "points": 6 },
+      { "id": "esp14", "name": "Spain",      "flagCode": "ES", "group": "B", "played": 3, "wins": 1, "draws": 0, "losses": 2, "goalsFor": 4, "goalsAgainst": 7, "goalDifference": -3, "points": 3 },
+      { "id": "aus14", "name": "Australia",  "flagCode": "AU", "group": "B", "played": 3, "wins": 0, "draws": 0, "losses": 3, "goalsFor": 3, "goalsAgainst": 9, "goalDifference": -6, "points": 0 }
+    ]},
+    { "group": "C", "teams": [
+      { "id": "col14", "name": "Colombia",   "flagCode": "CO", "group": "C", "played": 3, "wins": 3, "draws": 0, "losses": 0, "goalsFor": 9, "goalsAgainst": 2, "goalDifference": 7, "points": 9 },
+      { "id": "gre14", "name": "Greece",     "flagCode": "GR", "group": "C", "played": 3, "wins": 1, "draws": 1, "losses": 1, "goalsFor": 2, "goalsAgainst": 4, "goalDifference": -2, "points": 4 },
+      { "id": "civ14", "name": "Ivory Coast","flagCode": "CI", "group": "C", "played": 3, "wins": 1, "draws": 0, "losses": 2, "goalsFor": 4, "goalsAgainst": 5, "goalDifference": -1, "points": 3 },
+      { "id": "jpn14", "name": "Japan",      "flagCode": "JP", "group": "C", "played": 3, "wins": 0, "draws": 1, "losses": 2, "goalsFor": 2, "goalsAgainst": 6, "goalDifference": -4, "points": 1 }
+    ]},
+    { "group": "D", "teams": [
+      { "id": "crc14", "name": "Costa Rica", "flagCode": "CR", "group": "D", "played": 3, "wins": 2, "draws": 1, "losses": 0, "goalsFor": 4, "goalsAgainst": 1, "goalDifference": 3, "points": 7 },
+      { "id": "uru14", "name": "Uruguay",    "flagCode": "UY", "group": "D", "played": 3, "wins": 2, "draws": 0, "losses": 1, "goalsFor": 4, "goalsAgainst": 4, "goalDifference": 0, "points": 6 },
+      { "id": "eng14", "name": "England",    "flagCode": "GB", "group": "D", "played": 3, "wins": 1, "draws": 0, "losses": 2, "goalsFor": 2, "goalsAgainst": 4, "goalDifference": -2, "points": 3 },
+      { "id": "ita14", "name": "Italy",      "flagCode": "IT", "group": "D", "played": 3, "wins": 1, "draws": 0, "losses": 2, "goalsFor": 2, "goalsAgainst": 3, "goalDifference": -1, "points": 3 }
+    ]},
+    { "group": "E", "teams": [
+      { "id": "fra14", "name": "France",     "flagCode": "FR", "group": "E", "played": 3, "wins": 2, "draws": 1, "losses": 0, "goalsFor": 8, "goalsAgainst": 2, "goalDifference": 6, "points": 7 },
+      { "id": "sui14", "name": "Switzerland","flagCode": "CH", "group": "E", "played": 3, "wins": 2, "draws": 0, "losses": 1, "goalsFor": 7, "goalsAgainst": 6, "goalDifference": 1, "points": 6 },
+      { "id": "ecu14", "name": "Ecuador",    "flagCode": "EC", "group": "E", "played": 3, "wins": 1, "draws": 1, "losses": 1, "goalsFor": 3, "goalsAgainst": 3, "goalDifference": 0, "points": 4 },
+      { "id": "hon14", "name": "Honduras",   "flagCode": "HN", "group": "E", "played": 3, "wins": 0, "draws": 0, "losses": 3, "goalsFor": 1, "goalsAgainst": 8, "goalDifference": -7, "points": 0 }
+    ]},
+    { "group": "F", "teams": [
+      { "id": "arg14", "name": "Argentina",  "flagCode": "AR", "group": "F", "played": 3, "wins": 3, "draws": 0, "losses": 0, "goalsFor": 6, "goalsAgainst": 3, "goalDifference": 3, "points": 9 },
+      { "id": "bih14", "name": "Bosnia",     "flagCode": "BA", "group": "F", "played": 3, "wins": 1, "draws": 0, "losses": 2, "goalsFor": 4, "goalsAgainst": 4, "goalDifference": 0, "points": 3 },
+      { "id": "nig14", "name": "Nigeria",    "flagCode": "NG", "group": "F", "played": 3, "wins": 1, "draws": 1, "losses": 1, "goalsFor": 3, "goalsAgainst": 3, "goalDifference": 0, "points": 4 },
+      { "id": "ira14", "name": "Iran",       "flagCode": "IR", "group": "F", "played": 3, "wins": 0, "draws": 1, "losses": 2, "goalsFor": 1, "goalsAgainst": 4, "goalDifference": -3, "points": 1 }
+    ]},
+    { "group": "G", "teams": [
+      { "id": "ger14", "name": "Germany",    "flagCode": "DE", "group": "G", "played": 3, "wins": 2, "draws": 1, "losses": 0, "goalsFor": 7, "goalsAgainst": 2, "goalDifference": 5, "points": 7 },
+      { "id": "usa14", "name": "USA",        "flagCode": "US", "group": "G", "played": 3, "wins": 1, "draws": 1, "losses": 1, "goalsFor": 4, "goalsAgainst": 4, "goalDifference": 0, "points": 4 },
+      { "id": "por14", "name": "Portugal",   "flagCode": "PT", "group": "G", "played": 3, "wins": 1, "draws": 1, "losses": 1, "goalsFor": 4, "goalsAgainst": 7, "goalDifference": -3, "points": 4 },
+      { "id": "gha14", "name": "Ghana",      "flagCode": "GH", "group": "G", "played": 3, "wins": 1, "draws": 0, "losses": 2, "goalsFor": 4, "goalsAgainst": 6, "goalDifference": -2, "points": 3 }
+    ]},
+    { "group": "H", "teams": [
+      { "id": "bel14", "name": "Belgium",    "flagCode": "BE", "group": "H", "played": 3, "wins": 3, "draws": 0, "losses": 0, "goalsFor": 4, "goalsAgainst": 1, "goalDifference": 3, "points": 9 },
+      { "id": "alg14", "name": "Algeria",    "flagCode": "DZ", "group": "H", "played": 3, "wins": 1, "draws": 1, "losses": 1, "goalsFor": 6, "goalsAgainst": 5, "goalDifference": 1, "points": 4 },
+      { "id": "rus14", "name": "Russia",     "flagCode": "RU", "group": "H", "played": 3, "wins": 0, "draws": 2, "losses": 1, "goalsFor": 2, "goalsAgainst": 3, "goalDifference": -1, "points": 2 },
+      { "id": "kor14", "name": "South Korea","flagCode": "KR", "group": "H", "played": 3, "wins": 0, "draws": 1, "losses": 2, "goalsFor": 3, "goalsAgainst": 6, "goalDifference": -3, "points": 1 }
+    ]}
+  ],
+  "knockoutBracket": [
+    { "round": "r16", "matches": [
+      { "id": "2014-r16-1", "stage": "r16", "matchLabel": "M49", "homeTeam": "Brazil",      "awayTeam": "Chile",       "homeTeamId": "bra14", "awayTeamId": "chi14", "homeScore": 1, "awayScore": 1, "date": "2014-06-28T17:00:00Z", "venue": "Estádio Mineirão",     "city": "Belo Horizonte", "attendance": 57714, "status": "completed", "goals": [], "cards": [] },
+      { "id": "2014-r16-2", "stage": "r16", "matchLabel": "M50", "homeTeam": "Colombia",    "awayTeam": "Uruguay",     "homeTeamId": "col14", "awayTeamId": "uru14", "homeScore": 2, "awayScore": 0, "date": "2014-06-28T13:00:00Z", "venue": "Estádio do Maracanã",  "city": "Rio de Janeiro", "attendance": 73804, "status": "completed", "goals": [], "cards": [] },
+      { "id": "2014-r16-3", "stage": "r16", "matchLabel": "M51", "homeTeam": "Netherlands", "awayTeam": "Mexico",      "homeTeamId": "ned14", "awayTeamId": "mex14", "homeScore": 2, "awayScore": 1, "date": "2014-06-29T17:00:00Z", "venue": "Estádio Castelão",     "city": "Fortaleza",      "attendance": 60342, "status": "completed", "goals": [], "cards": [] },
+      { "id": "2014-r16-4", "stage": "r16", "matchLabel": "M52", "homeTeam": "Costa Rica",  "awayTeam": "Greece",      "homeTeamId": "crc14", "awayTeamId": "gre14", "homeScore": 1, "awayScore": 1, "date": "2014-06-29T13:00:00Z", "venue": "Arena Pernambuco",     "city": "Recife",         "attendance": 41242, "status": "completed", "goals": [], "cards": [] },
+      { "id": "2014-r16-5", "stage": "r16", "matchLabel": "M53", "homeTeam": "France",      "awayTeam": "Nigeria",     "homeTeamId": "fra14", "awayTeamId": "nig14", "homeScore": 2, "awayScore": 0, "date": "2014-06-30T17:00:00Z", "venue": "Estádio Nacional",     "city": "Brasília",       "attendance": 67882, "status": "completed", "goals": [], "cards": [] },
+      { "id": "2014-r16-6", "stage": "r16", "matchLabel": "M54", "homeTeam": "Germany",     "awayTeam": "Algeria",     "homeTeamId": "ger14", "awayTeamId": "alg14", "homeScore": 2, "awayScore": 1, "date": "2014-06-30T13:00:00Z", "venue": "Estádio Beira-Rio",    "city": "Porto Alegre",   "attendance": 43063, "status": "completed", "goals": [], "cards": [] },
+      { "id": "2014-r16-7", "stage": "r16", "matchLabel": "M55", "homeTeam": "Argentina",   "awayTeam": "Switzerland", "homeTeamId": "arg14", "awayTeamId": "sui14", "homeScore": 1, "awayScore": 0, "date": "2014-07-01T17:00:00Z", "venue": "Arena de São Paulo",   "city": "São Paulo",      "attendance": 63255, "status": "completed", "goals": [], "cards": [] },
+      { "id": "2014-r16-8", "stage": "r16", "matchLabel": "M56", "homeTeam": "Belgium",     "awayTeam": "USA",         "homeTeamId": "bel14", "awayTeamId": "usa14", "homeScore": 2, "awayScore": 1, "date": "2014-07-01T13:00:00Z", "venue": "Arena Fonte Nova",     "city": "Salvador",       "attendance": 51082, "status": "completed", "goals": [], "cards": [] }
+    ]},
+    { "round": "qf", "matches": [
+      { "id": "2014-qf-1", "stage": "qf", "matchLabel": "QF1", "homeTeam": "France",      "awayTeam": "Germany",     "homeTeamId": "fra14", "awayTeamId": "ger14", "homeScore": 0, "awayScore": 1, "date": "2014-07-04T17:00:00Z", "venue": "Estádio do Maracanã", "city": "Rio de Janeiro",  "attendance": 74240, "status": "completed", "goals": [{"player":"Hummels","minute":13,"penalty":false,"ownGoal":false}], "cards": [] },
+      { "id": "2014-qf-2", "stage": "qf", "matchLabel": "QF2", "homeTeam": "Brazil",      "awayTeam": "Colombia",    "homeTeamId": "bra14", "awayTeamId": "col14", "homeScore": 2, "awayScore": 1, "date": "2014-07-04T13:00:00Z", "venue": "Estádio Castelão",    "city": "Fortaleza",       "attendance": 60342, "status": "completed", "goals": [], "cards": [] },
+      { "id": "2014-qf-3", "stage": "qf", "matchLabel": "QF3", "homeTeam": "Netherlands", "awayTeam": "Costa Rica",  "homeTeamId": "ned14", "awayTeamId": "crc14", "homeScore": 0, "awayScore": 0, "date": "2014-07-05T17:00:00Z", "venue": "Arena Fonte Nova",    "city": "Salvador",        "attendance": 51179, "status": "completed", "goals": [], "cards": [] },
+      { "id": "2014-qf-4", "stage": "qf", "matchLabel": "QF4", "homeTeam": "Argentina",   "awayTeam": "Belgium",     "homeTeamId": "arg14", "awayTeamId": "bel14", "homeScore": 1, "awayScore": 0, "date": "2014-07-05T13:00:00Z", "venue": "Estádio Nacional",    "city": "Brasília",        "attendance": 68551, "status": "completed", "goals": [{"player":"Higuaín","minute":8,"penalty":false,"ownGoal":false}], "cards": [] }
+    ]},
+    { "round": "sf", "matches": [
+      { "id": "2014-sf-1", "stage": "sf", "matchLabel": "SF1", "homeTeam": "Brazil",      "awayTeam": "Germany",     "homeTeamId": "bra14", "awayTeamId": "ger14", "homeScore": 1, "awayScore": 7, "date": "2014-07-08T17:00:00Z", "venue": "Estádio Mineirão",    "city": "Belo Horizonte", "attendance": 58141, "status": "completed", "goals": [{"player":"Müller","minute":11,"penalty":false,"ownGoal":false},{"player":"Klose","minute":23,"penalty":false,"ownGoal":false},{"player":"Kroos","minute":24,"penalty":false,"ownGoal":false},{"player":"Kroos","minute":26,"penalty":false,"ownGoal":false},{"player":"Khedira","minute":29,"penalty":false,"ownGoal":false},{"player":"Schürrle","minute":69,"penalty":false,"ownGoal":false},{"player":"Schürrle","minute":79,"penalty":false,"ownGoal":false},{"player":"Oscar","minute":90,"penalty":false,"ownGoal":false}], "cards": [] },
+      { "id": "2014-sf-2", "stage": "sf", "matchLabel": "SF2", "homeTeam": "Netherlands", "awayTeam": "Argentina",   "homeTeamId": "ned14", "awayTeamId": "arg14", "homeScore": 0, "awayScore": 0, "date": "2014-07-09T17:00:00Z", "venue": "Arena de São Paulo",  "city": "São Paulo",      "attendance": 63267, "status": "completed", "goals": [], "cards": [] }
+    ]},
+    { "round": "3p", "matches": [
+      { "id": "2014-3p-1", "stage": "3p", "matchLabel": "3RD", "homeTeam": "Brazil", "awayTeam": "Netherlands", "homeTeamId": "bra14", "awayTeamId": "ned14", "homeScore": 0, "awayScore": 3, "date": "2014-07-12T17:00:00Z", "venue": "Estádio Nacional", "city": "Brasília", "attendance": 68034, "status": "completed", "goals": [], "cards": [] }
+    ]},
+    { "round": "final", "matches": [
+      { "id": "2014-final", "stage": "final", "matchLabel": "FINAL", "homeTeam": "Germany", "awayTeam": "Argentina", "homeTeamId": "ger14", "awayTeamId": "arg14", "homeScore": 1, "awayScore": 0, "date": "2014-07-13T17:00:00Z", "venue": "Estádio do Maracanã", "city": "Rio de Janeiro", "attendance": 74738, "status": "completed", "goals": [{"player":"Mario Götze","minute":113,"penalty":false,"ownGoal":false}], "cards": [] }
+    ]}
+  ],
+  "players": [
+    { "id": "james14", "name": "James Rodríguez","country": "Colombia", "position": "MF", "goals": 6, "assists": 2, "yellowCards": 0, "redCards": 0, "playerOfMatch": 2 },
+    { "id": "muel14",  "name": "Thomas Müller",  "country": "Germany",  "position": "FW", "goals": 5, "assists": 3, "yellowCards": 1, "redCards": 0, "playerOfMatch": 1 }
+  ]
+}

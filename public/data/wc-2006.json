@@ -1,0 +1,126 @@
+{
+  "name": "2006 FIFA World Cup",
+  "year": 2006,
+  "host": "Germany",
+  "winner": "Italy",
+  "format": 32,
+  "lastUpdated": "2006-07-09T17:00:00Z",
+  "groups": [
+    {
+      "group": "A",
+      "teams": [
+        { "id": "germany", "name": "Germany", "flagCode": "DE", "group": "A", "played": 3, "wins": 0, "draws": 0, "losses": 0, "goalsFor": 0, "goalsAgainst": 0, "goalDifference": 0, "points": 0 },
+        { "id": "poland", "name": "Poland", "flagCode": "PL", "group": "A", "played": 3, "wins": 0, "draws": 0, "losses": 0, "goalsFor": 0, "goalsAgainst": 0, "goalDifference": 0, "points": 0 },
+        { "id": "ecuador", "name": "Ecuador", "flagCode": "EC", "group": "A", "played": 3, "wins": 0, "draws": 0, "losses": 0, "goalsFor": 0, "goalsAgainst": 0, "goalDifference": 0, "points": 0 },
+        { "id": "costa-rica", "name": "Costa Rica", "flagCode": "CR", "group": "A", "played": 3, "wins": 0, "draws": 0, "losses": 0, "goalsFor": 0, "goalsAgainst": 0, "goalDifference": 0, "points": 0 }
+      ]
+    },
+    {
+      "group": "B",
+      "teams": [
+        { "id": "england", "name": "England", "flagCode": "GB-ENG", "group": "B", "played": 3, "wins": 0, "draws": 0, "losses": 0, "goalsFor": 0, "goalsAgainst": 0, "goalDifference": 0, "points": 0 },
+        { "id": "sweden", "name": "Sweden", "flagCode": "SE", "group": "B", "played": 3, "wins": 0, "draws": 0, "losses": 0, "goalsFor": 0, "goalsAgainst": 0, "goalDifference": 0, "points": 0 },
+        { "id": "paraguay", "name": "Paraguay", "flagCode": "PY", "group": "B", "played": 3, "wins": 0, "draws": 0, "losses": 0, "goalsFor": 0, "goalsAgainst": 0, "goalDifference": 0, "points": 0 },
+        { "id": "trinidad", "name": "Trinidad & Tobago", "flagCode": "TT", "group": "B", "played": 3, "wins": 0, "draws": 0, "losses": 0, "goalsFor": 0, "goalsAgainst": 0, "goalDifference": 0, "points": 0 }
+      ]
+    },
+    {
+      "group": "C",
+      "teams": [
+        { "id": "argentina", "name": "Argentina", "flagCode": "AR", "group": "C", "played": 3, "wins": 0, "draws": 0, "losses": 0, "goalsFor": 0, "goalsAgainst": 0, "goalDifference": 0, "points": 0 },
+        { "id": "netherlands", "name": "Netherlands", "flagCode": "NL", "group": "C", "played": 3, "wins": 0, "draws": 0, "losses": 0, "goalsFor": 0, "goalsAgainst": 0, "goalDifference": 0, "points": 0 },
+        { "id": "serbia-montenegro", "name": "Serbia & Montenegro", "flagCode": "RS", "group": "C", "played": 3, "wins": 0, "draws": 0, "losses": 0, "goalsFor": 0, "goalsAgainst": 0, "goalDifference": 0, "points": 0 },
+        { "id": "ivory-coast", "name": "Ivory Coast", "flagCode": "CI", "group": "C", "played": 3, "wins": 0, "draws": 0, "losses": 0, "goalsFor": 0, "goalsAgainst": 0, "goalDifference": 0, "points": 0 }
+      ]
+    },
+    {
+      "group": "D",
+      "teams": [
+        { "id": "portugal", "name": "Portugal", "flagCode": "PT", "group": "D", "played": 3, "wins": 0, "draws": 0, "losses": 0, "goalsFor": 0, "goalsAgainst": 0, "goalDifference": 0, "points": 0 },
+        { "id": "mexico", "name": "Mexico", "flagCode": "MX", "group": "D", "played": 3, "wins": 0, "draws": 0, "losses": 0, "goalsFor": 0, "goalsAgainst": 0, "goalDifference": 0, "points": 0 },
+        { "id": "angola", "name": "Angola", "flagCode": "AO", "group": "D", "played": 3, "wins": 0, "draws": 0, "losses": 0, "goalsFor": 0, "goalsAgainst": 0, "goalDifference": 0, "points": 0 },
+        { "id": "iran", "name": "Iran", "flagCode": "IR", "group": "D", "played": 3, "wins": 0, "draws": 0, "losses": 0, "goalsFor": 0, "goalsAgainst": 0, "goalDifference": 0, "points": 0 }
+      ]
+    },
+    {
+      "group": "E",
+      "teams": [
+        { "id": "italy", "name": "Italy", "flagCode": "IT", "group": "E", "played": 3, "wins": 0, "draws": 0, "losses": 0, "goalsFor": 0, "goalsAgainst": 0, "goalDifference": 0, "points": 0 },
+        { "id": "ghana", "name": "Ghana", "flagCode": "GH", "group": "E", "played": 3, "wins": 0, "draws": 0, "losses": 0, "goalsFor": 0, "goalsAgainst": 0, "goalDifference": 0, "points": 0 },
+        { "id": "usa", "name": "USA", "flagCode": "US", "group": "E", "played": 3, "wins": 0, "draws": 0, "losses": 0, "goalsFor": 0, "goalsAgainst": 0, "goalDifference": 0, "points": 0 },
+        { "id": "czech-republic", "name": "Czech Republic", "flagCode": "CZ", "group": "E", "played": 3, "wins": 0, "draws": 0, "losses": 0, "goalsFor": 0, "goalsAgainst": 0, "goalDifference": 0, "points": 0 }
+      ]
+    },
+    {
+      "group": "F",
+      "teams": [
+        { "id": "brazil", "name": "Brazil", "flagCode": "BR", "group": "F", "played": 3, "wins": 0, "draws": 0, "losses": 0, "goalsFor": 0, "goalsAgainst": 0, "goalDifference": 0, "points": 0 },
+        { "id": "australia", "name": "Australia", "flagCode": "AU", "group": "F", "played": 3, "wins": 0, "draws": 0, "losses": 0, "goalsFor": 0, "goalsAgainst": 0, "goalDifference": 0, "points": 0 },
+        { "id": "japan", "name": "Japan", "flagCode": "JP", "group": "F", "played": 3, "wins": 0, "draws": 0, "losses": 0, "goalsFor": 0, "goalsAgainst": 0, "goalDifference": 0, "points": 0 },
+        { "id": "croatia", "name": "Croatia", "flagCode": "HR", "group": "F", "played": 3, "wins": 0, "draws": 0, "losses": 0, "goalsFor": 0, "goalsAgainst": 0, "goalDifference": 0, "points": 0 }
+      ]
+    },
+    {
+      "group": "G",
+      "teams": [
+        { "id": "switzerland", "name": "Switzerland", "flagCode": "CH", "group": "G", "played": 3, "wins": 0, "draws": 0, "losses": 0, "goalsFor": 0, "goalsAgainst": 0, "goalDifference": 0, "points": 0 },
+        { "id": "france", "name": "France", "flagCode": "FR", "group": "G", "played": 3, "wins": 0, "draws": 0, "losses": 0, "goalsFor": 0, "goalsAgainst": 0, "goalDifference": 0, "points": 0 },
+        { "id": "togo", "name": "Togo", "flagCode": "TG", "group": "G", "played": 3, "wins": 0, "draws": 0, "losses": 0, "goalsFor": 0, "goalsAgainst": 0, "goalDifference": 0, "points": 0 },
+        { "id": "south-korea", "name": "South Korea", "flagCode": "KR", "group": "G", "played": 3, "wins": 0, "draws": 0, "losses": 0, "goalsFor": 0, "goalsAgainst": 0, "goalDifference": 0, "points": 0 }
+      ]
+    },
+    {
+      "group": "H",
+      "teams": [
+        { "id": "spain", "name": "Spain", "flagCode": "ES", "group": "H", "played": 3, "wins": 0, "draws": 0, "losses": 0, "goalsFor": 0, "goalsAgainst": 0, "goalDifference": 0, "points": 0 },
+        { "id": "ukraine", "name": "Ukraine", "flagCode": "UA", "group": "H", "played": 3, "wins": 0, "draws": 0, "losses": 0, "goalsFor": 0, "goalsAgainst": 0, "goalDifference": 0, "points": 0 },
+        { "id": "tunisia", "name": "Tunisia", "flagCode": "TN", "group": "H", "played": 3, "wins": 0, "draws": 0, "losses": 0, "goalsFor": 0, "goalsAgainst": 0, "goalDifference": 0, "points": 0 },
+        { "id": "saudi-arabia", "name": "Saudi Arabia", "flagCode": "SA", "group": "H", "played": 3, "wins": 0, "draws": 0, "losses": 0, "goalsFor": 0, "goalsAgainst": 0, "goalDifference": 0, "points": 0 }
+      ]
+    }
+  ],
+  "knockoutBracket": [
+    {
+      "round": "r16",
+      "matches": [
+        { "id": "2006-r16-1", "stage": "r16", "matchLabel": "M49", "homeTeam": "Germany", "awayTeam": "Sweden", "homeTeamId": "germany", "awayTeamId": "sweden", "homeScore": 2, "awayScore": 0, "date": "2006-06-24T17:00:00Z", "venue": "Allianz Arena", "city": "Munich", "attendance": 66000, "status": "completed", "goals": [], "cards": [] },
+        { "id": "2006-r16-2", "stage": "r16", "matchLabel": "M50", "homeTeam": "Argentina", "awayTeam": "Mexico", "homeTeamId": "argentina", "awayTeamId": "mexico", "homeScore": 2, "awayScore": 1, "date": "2006-06-24T21:00:00Z", "venue": "Leipzig Central Stadium", "city": "Leipzig", "attendance": 43000, "status": "completed", "goals": [], "cards": [] },
+        { "id": "2006-r16-3", "stage": "r16", "matchLabel": "M51", "homeTeam": "England", "awayTeam": "Ecuador", "homeTeamId": "england", "awayTeamId": "ecuador", "homeScore": 1, "awayScore": 0, "date": "2006-06-25T17:00:00Z", "venue": "Gottlieb-Daimler-Stadion", "city": "Stuttgart", "attendance": 52000, "status": "completed", "goals": [], "cards": [] },
+        { "id": "2006-r16-4", "stage": "r16", "matchLabel": "M52", "homeTeam": "Portugal", "awayTeam": "Netherlands", "homeTeamId": "portugal", "awayTeamId": "netherlands", "homeScore": 1, "awayScore": 0, "date": "2006-06-25T21:00:00Z", "venue": "Nürnberg Stadium", "city": "Nuremberg", "attendance": 41000, "status": "completed", "goals": [], "cards": [] },
+        { "id": "2006-r16-5", "stage": "r16", "matchLabel": "M53", "homeTeam": "Italy", "awayTeam": "Australia", "homeTeamId": "italy", "awayTeamId": "australia", "homeScore": 1, "awayScore": 0, "date": "2006-06-26T17:00:00Z", "venue": "Fritz Walter Stadion", "city": "Kaiserslautern", "attendance": 46000, "status": "completed", "goals": [], "cards": [] },
+        { "id": "2006-r16-6", "stage": "r16", "matchLabel": "M54", "homeTeam": "Switzerland", "awayTeam": "Ukraine", "homeTeamId": "switzerland", "awayTeamId": "ukraine", "homeScore": 0, "awayScore": 0, "date": "2006-06-26T21:00:00Z", "venue": "Veltins-Arena", "city": "Gelsenkirchen", "attendance": 52000, "status": "completed", "goals": [], "cards": [] },
+        { "id": "2006-r16-7", "stage": "r16", "matchLabel": "M55", "homeTeam": "Brazil", "awayTeam": "Ghana", "homeTeamId": "brazil", "awayTeamId": "ghana", "homeScore": 3, "awayScore": 0, "date": "2006-06-27T17:00:00Z", "venue": "Dortmund Stadium", "city": "Dortmund", "attendance": 65000, "status": "completed", "goals": [], "cards": [] },
+        { "id": "2006-r16-8", "stage": "r16", "matchLabel": "M56", "homeTeam": "Spain", "awayTeam": "France", "homeTeamId": "spain", "awayTeamId": "france", "homeScore": 1, "awayScore": 3, "date": "2006-06-27T21:00:00Z", "venue": "Hannover Arena", "city": "Hanover", "attendance": 43000, "status": "completed", "goals": [], "cards": [] }
+      ]
+    },
+    {
+      "round": "qf",
+      "matches": [
+        { "id": "2006-qf-1", "stage": "qf", "matchLabel": "M57", "homeTeam": "Germany", "awayTeam": "Argentina", "homeTeamId": "germany", "awayTeamId": "argentina", "homeScore": 1, "awayScore": 1, "date": "2006-06-30T21:00:00Z", "venue": "Olympiastadion", "city": "Berlin", "attendance": 72000, "status": "completed", "goals": [], "cards": [] },
+        { "id": "2006-qf-2", "stage": "qf", "matchLabel": "M58", "homeTeam": "Italy", "awayTeam": "Ukraine", "homeTeamId": "italy", "awayTeamId": "ukraine", "homeScore": 3, "awayScore": 0, "date": "2006-07-01T17:00:00Z", "venue": "Volksparkstadion", "city": "Hamburg", "attendance": 50000, "status": "completed", "goals": [], "cards": [] },
+        { "id": "2006-qf-3", "stage": "qf", "matchLabel": "M59", "homeTeam": "England", "awayTeam": "Portugal", "homeTeamId": "england", "awayTeamId": "portugal", "homeScore": 0, "awayScore": 0, "date": "2006-07-01T21:00:00Z", "venue": "Veltins-Arena", "city": "Gelsenkirchen", "attendance": 52000, "status": "completed", "goals": [], "cards": [] },
+        { "id": "2006-qf-4", "stage": "qf", "matchLabel": "M60", "homeTeam": "France", "awayTeam": "Brazil", "homeTeamId": "france", "awayTeamId": "brazil", "homeScore": 1, "awayScore": 0, "date": "2006-07-01T21:00:00Z", "venue": "Commerzbank-Arena", "city": "Frankfurt", "attendance": 48000, "status": "completed", "goals": [], "cards": [] }
+      ]
+    },
+    {
+      "round": "sf",
+      "matches": [
+        { "id": "2006-sf-1", "stage": "sf", "matchLabel": "M61", "homeTeam": "Germany", "awayTeam": "Italy", "homeTeamId": "germany", "awayTeamId": "italy", "homeScore": 0, "awayScore": 2, "date": "2006-07-04T21:00:00Z", "venue": "Dortmund Stadium", "city": "Dortmund", "attendance": 65000, "status": "completed", "goals": [], "cards": [] },
+        { "id": "2006-sf-2", "stage": "sf", "matchLabel": "M62", "homeTeam": "Portugal", "awayTeam": "France", "homeTeamId": "portugal", "awayTeamId": "france", "homeScore": 0, "awayScore": 1, "date": "2006-07-05T21:00:00Z", "venue": "Allianz Arena", "city": "Munich", "attendance": 66000, "status": "completed", "goals": [], "cards": [] }
+      ]
+    },
+    {
+      "round": "3p",
+      "matches": [
+        { "id": "2006-3p-1", "stage": "3p", "matchLabel": "M63", "homeTeam": "Germany", "awayTeam": "Portugal", "homeTeamId": "germany", "awayTeamId": "portugal", "homeScore": 3, "awayScore": 1, "date": "2006-07-08T21:00:00Z", "venue": "Gottlieb-Daimler-Stadion", "city": "Stuttgart", "attendance": 52000, "status": "completed", "goals": [], "cards": [] }
+      ]
+    },
+    {
+      "round": "final",
+      "matches": [
+        { "id": "2006-final-1", "stage": "final", "matchLabel": "M64", "homeTeam": "France", "awayTeam": "Italy", "homeTeamId": "france", "awayTeamId": "italy", "homeScore": 1, "awayScore": 1, "date": "2006-07-09T20:00:00Z", "venue": "Olympiastadion", "city": "Berlin", "attendance": 69000, "status": "completed", "goals": [], "cards": [] }
+      ]
+    }
+  ],
+  "players": []
+}

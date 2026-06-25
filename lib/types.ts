@@ -76,6 +76,8 @@ export type Group = GroupStanding
 export interface Tournament {
   name: string
   year: number
+  host?: string
+  winner?: string | null
   format?: number
   groups: GroupStanding[]
   knockoutBracket: Bracket[]
