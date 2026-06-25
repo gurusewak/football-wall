@@ -198,14 +198,8 @@ export function MatchDetailModal({
             }}
           />
 
-          {/* Centering wrapper — bottom-anchored avoids mobile URL bar overlap */}
-          <div
-            style={{
-              position: 'fixed', bottom: 0, left: 0, right: 0, zIndex: 61,
-              display: 'flex', justifyContent: 'center',
-              pointerEvents: 'none',
-            }}
-          >
+          {/* Mobile: bottom-anchored sheet (avoids URL bar). Desktop: centered overlay. */}
+          <div className="fixed bottom-0 left-0 right-0 md:inset-0 flex justify-center md:items-center md:p-6 pointer-events-none" style={{ zIndex: 61 }}>
           {/* Panel */}
           <motion.div
             key="panel"
@@ -213,13 +207,12 @@ export function MatchDetailModal({
             animate={{ opacity: 1, y: 0 }}
             exit={{ opacity: 0, y: 30 }}
             transition={{ duration: 0.26, ease: [0.22, 1, 0.36, 1] }}
+            className="rounded-t-[20px] md:rounded-2xl min-h-[45vh] md:min-h-0"
             style={{
               width: '100%', maxWidth: 720,
-              minHeight: '45vh',
               maxHeight: '88vh',
               background: 'rgba(8,8,8,0.97)',
               border: '1px solid rgba(255,255,255,0.1)',
-              borderRadius: '20px 20px 0 0',
               overflow: 'hidden',
               display: 'flex', flexDirection: 'column',
               pointerEvents: 'auto',
