@@ -198,28 +198,28 @@ export function MatchDetailModal({
             }}
           />
 
-          {/* Centering wrapper */}
+          {/* Centering wrapper — bottom-anchored avoids mobile URL bar overlap */}
           <div
             style={{
-              position: 'fixed', inset: 0, zIndex: 61,
-              display: 'flex', justifyContent: 'center', alignItems: 'center',
-              padding: '16px',
+              position: 'fixed', bottom: 0, left: 0, right: 0, zIndex: 61,
+              display: 'flex', justifyContent: 'center',
               pointerEvents: 'none',
             }}
           >
           {/* Panel */}
           <motion.div
             key="panel"
-            initial={{ opacity: 0, y: 24, scale: 0.97 }}
-            animate={{ opacity: 1, y: 0, scale: 1 }}
-            exit={{ opacity: 0, y: 16, scale: 0.97 }}
+            initial={{ opacity: 0, y: 40 }}
+            animate={{ opacity: 1, y: 0 }}
+            exit={{ opacity: 0, y: 30 }}
             transition={{ duration: 0.26, ease: [0.22, 1, 0.36, 1] }}
             style={{
               width: '100%', maxWidth: 720,
-              maxHeight: '92vh',
+              minHeight: '45vh',
+              maxHeight: '88vh',
               background: 'rgba(8,8,8,0.97)',
               border: '1px solid rgba(255,255,255,0.1)',
-              borderRadius: 16,
+              borderRadius: '20px 20px 0 0',
               overflow: 'hidden',
               display: 'flex', flexDirection: 'column',
               pointerEvents: 'auto',
