@@ -169,9 +169,12 @@ export default function WorldCupApp({ initialYear }: { initialYear?: number }) {
     if (!selectedYear || !yearIndex) return
     if (!yearIndex.find(e => e.year === selectedYear)) return
     if (cache.has(selectedYear)) {
-      setTournament(cache.get(selectedYear)!)
-      setLoading(false)
-      return
+      // Minimum 350ms spinner so the transition feels intentional, not a flash
+      const t = setTimeout(() => {
+        setTournament(cache.get(selectedYear)!)
+        setLoading(false)
+      }, 350)
+      return () => clearTimeout(t)
     }
     setLoading(true)
 
@@ -205,14 +208,13 @@ export default function WorldCupApp({ initialYear }: { initialYear?: number }) {
       .finally(() => setLoading(false))
   }, [selectedYear, yearIndex])
 
-  // ── Year change — pure state update + URL pushState (no remount) ──────────
+  // ── Year change — show spinner immediately, then load ───────────────────────
   const changeYear = useCallback((y: number) => {
+    setLoading(true)      // show spinner right away for every year switch
     setSelectedYear(y)
     setTab('brackets')
     setSimKey(0)
     setSelectedMatchId(null)
-    // pushState instead of router.push: updates URL + history without Next.js navigation
-    // This keeps the component mounted → smooth transition, no flicker
     window.history.pushState({}, '', '/' + y)
   }, [])
 
