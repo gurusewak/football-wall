@@ -81,21 +81,24 @@ async function apiFetch<T>(path: string): Promise<T | null> {
   }
 }
 
+// Actual shape of /standings response: [{league: {standings: ApiStandingEntry[][]}}]
+type StandingsResponse = Array<{ league: { standings: ApiStandingEntry[][] } }>
+
 export async function fetchWc2026Data(): Promise<ApiFetchedData | null> {
   const apiKey = process.env.API_FOOTBALL_KEY
   if (!apiKey) return null
 
-  const [fixtures, liveFixtures, standingsRaw, topScorers] = await Promise.all([
+  const [fixtures, liveFixtures, standingsWrapper, topScorers] = await Promise.all([
     apiFetch<ApiFixture[]>(`/fixtures?league=${WC_LEAGUE_ID}&season=${WC_SEASON}`),
     apiFetch<ApiFixture[]>(`/fixtures?league=${WC_LEAGUE_ID}&season=${WC_SEASON}&live=all`),
-    apiFetch<ApiStandingEntry[][]>(`/standings?league=${WC_LEAGUE_ID}&season=${WC_SEASON}`),
+    apiFetch<StandingsResponse>(`/standings?league=${WC_LEAGUE_ID}&season=${WC_SEASON}`),
     apiFetch<ApiTopScorer[]>(`/players/topscorers?league=${WC_LEAGUE_ID}&season=${WC_SEASON}`),
   ])
 
   if (!fixtures) return null
 
-  // Standings comes back as nested ApiStandingEntry[][] — flatten it
-  const standings: ApiStandingEntry[] = standingsRaw ? standingsRaw.flat() : []
+  // Standings: response[0].league.standings is ApiStandingEntry[][] (one array per group) — flatten
+  const standings: ApiStandingEntry[] = standingsWrapper?.[0]?.league?.standings?.flat() ?? []
 
   return {
     fetchedAt: new Date().toISOString(),
