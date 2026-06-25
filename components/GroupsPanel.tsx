@@ -522,8 +522,6 @@ export function GroupsPanel({ tournament }: { tournament: Tournament }) {
     return gs.flatMap(g => g.matches ?? [])
   })()
 
-  const cols = tournament.groups.length <= 8 ? 4 : 4  // max 4 cols per spec
-
   if (selectedGroup !== null) {
     const group = tournament.groups.find(g => g.group === selectedGroup)
     if (group) {
@@ -550,7 +548,7 @@ export function GroupsPanel({ tournament }: { tournament: Tournament }) {
         transition={{ duration: 0.25 }}
         className="grid gap-3"
         style={{
-          gridTemplateColumns: `repeat(${cols}, minmax(220px, 1fr))`,
+          gridTemplateColumns: 'repeat(auto-fill, minmax(min(100%, 200px), 1fr))',
         }}
       >
         {tournament.groups.map((group, idx) => (

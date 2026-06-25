@@ -24,6 +24,9 @@ type Tab = 'brackets' | 'groups' | 'stats'
 // ── Poster layout ─────────────────────────────────────────────────────────────
 const GROUP_COL_W = 134
 
+// Below this zoom the poster is too small to read → switch to scrollable
+const MIN_ZOOM = 0.38
+
 function WallChartPoster({ tournament, simKey, onSimulate }: {
   tournament: Tournament
   simKey: number
@@ -40,7 +43,7 @@ function WallChartPoster({ tournament, simKey, onSimulate }: {
     if (!containerRef.current) return
     const measure = () => {
       const w = containerRef.current!.clientWidth
-      if (w > 0) setZoom(Math.min(1, w / NATURAL_W))
+      if (w > 0) setZoom(Math.min(1, Math.max(MIN_ZOOM, w / NATURAL_W)))
     }
     const ro = new ResizeObserver(measure)
     ro.observe(containerRef.current)
@@ -51,9 +54,16 @@ function WallChartPoster({ tournament, simKey, onSimulate }: {
   const leftGroups  = tournament.groups.slice(0, Math.ceil(tournament.groups.length / 2))
   const rightGroups = tournament.groups.slice(Math.ceil(tournament.groups.length / 2))
 
+  // When zoom is clamped at MIN_ZOOM the inner box is wider than the viewport → scroll
+  const needsScroll = zoom === MIN_ZOOM
+
   return (
-    <div ref={containerRef} className="w-full overflow-hidden">
-      <div style={{ zoom, width: NATURAL_W, margin: '0 auto' }}>
+    <div
+      ref={containerRef}
+      className="w-full"
+      style={{ overflowX: needsScroll ? 'auto' : 'hidden' }}
+    >
+      <div style={{ zoom, width: NATURAL_W, margin: needsScroll ? '0' : '0 auto' }}>
 
         {/* Simulate button — in normal flow, above the card */}
         <div style={{ paddingLeft: '10px', paddingBottom: '8px' }}>
@@ -249,9 +259,16 @@ export default function Page() {
           {selectedYear === 2026 && dataSource && (
             <span style={{ fontSize: 11, letterSpacing: '0.07em', color: '#555', display: 'flex', alignItems: 'center', gap: '5px' }}>
               <span style={{ fontSize: 7, lineHeight: 1, color: dataSource === 'json+api' ? '#666' : '#444' }}>●</span>
-              {dataSource === 'json+api'
-                ? `Live · ${apiUpdatedAt ? Math.round((Date.now() - new Date(apiUpdatedAt).getTime()) / 60000) + 'm ago' : 'synced'}`
-                : 'Cached'}
+              {(() => {
+                const ts = apiUpdatedAt ?? tournament?.lastUpdated ?? null
+                if (!ts) return 'Updated'
+                const mins = Math.round((Date.now() - new Date(ts).getTime()) / 60000)
+                if (mins < 1) return 'Updated just now'
+                if (mins < 60) return `Updated ${mins}m ago`
+                const hrs = Math.round(mins / 60)
+                if (hrs < 24) return `Updated ${hrs}h ago`
+                return `Updated ${Math.round(hrs / 24)}d ago`
+              })()}
             </span>
           )}
           <YearSelector yearIndex={yearIndex} selectedYear={selectedYear} onChange={changeYear} />
