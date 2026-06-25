@@ -161,7 +161,8 @@ function MatchRow({ match, onMatchClick }: { match: Match; onMatchClick?: (id: s
   const awayFlag = teamFlagEmoji(match.awayTeam)
   const isPlayed = match.status === 'completed' || (match.homeScore !== null && match.awayScore !== null)
   const isLive = match.status === 'live'
-  const allScorers = match.goals?.filter(g => g.player) ?? []
+  // Support both old format (g.player) and new API format (g.scorerPlayerName)
+  const allScorers = match.goals?.filter(g => g.player || (g as any).scorerPlayerName) ?? []
   const hasET = match.wentToExtraTime
   const hasPKS = match.wentToPenaltyShootout
   const homeWin = isPlayed && (match.homeScore ?? 0) > (match.awayScore ?? 0)
@@ -228,25 +229,41 @@ function MatchRow({ match, onMatchClick }: { match: Match; onMatchClick?: (id: s
         </div>
       </div>
 
-      {/* Goal scorers */}
+      {/* Goal scorers with assists */}
       {allScorers.length > 0 && (
-        <div className="mt-2 flex flex-wrap gap-x-4 gap-y-1">
-          {allScorers.map((g, i) => (
-            <span key={i} style={{ fontSize: '11px', color: '#777' }}>
-              ⚽ {(g as any).scorerPlayerName ?? g.player} {g.minute}&apos;{g.penalty ? ' (p)' : ''}{g.ownGoal ? ' (og)' : ''}
-            </span>
-          ))}
+        <div className="mt-2 flex flex-col gap-0.5">
+          {allScorers.map((g, i) => {
+            const raw = g as any
+            const scorer = raw.scorerPlayerName ?? g.player ?? ''
+            const assist = raw.assistPlayerName ?? null
+            const minute = raw.minute ?? g.minute
+            const isPen = raw.isPenalty ?? g.penalty
+            const isOG = raw.isOwnGoal ?? g.ownGoal
+            return (
+              <div key={i} className="flex items-baseline gap-1.5" style={{ fontSize: '11px' }}>
+                <span>⚽</span>
+                <span style={{ color: '#c0c0c0' }}>{scorer}</span>
+                <span style={{ color: '#555' }}>{minute}&apos;</span>
+                {isPen && <span style={{ color: '#666' }}>(pen)</span>}
+                {isOG && <span style={{ color: '#888' }}>(og)</span>}
+                {assist && <span style={{ color: '#505050' }}>↳ {assist}</span>}
+              </div>
+            )
+          })}
         </div>
       )}
 
       {/* Cards */}
       {match.cards && match.cards.length > 0 && (
-        <div className="mt-1.5 flex flex-wrap gap-x-4 gap-y-1">
-          {match.cards.map((c, i) => (
-            <span key={i} style={{ fontSize: '11px', color: '#666' }}>
-              {c.cardType === 'yellow' ? '🟨' : '🟥'} {(c as any).playerName ?? c.player} {c.minute}&apos;
-            </span>
-          ))}
+        <div className="mt-1.5 flex flex-wrap gap-x-4 gap-y-0.5">
+          {match.cards.map((c, i) => {
+            const raw = c as any
+            return (
+              <span key={i} style={{ fontSize: '11px', color: '#666' }}>
+                {c.cardType === 'yellow' ? '🟨' : '🟥'} {raw.playerName ?? c.player} {c.minute}&apos;
+              </span>
+            )
+          })}
         </div>
       )}
     </div>
