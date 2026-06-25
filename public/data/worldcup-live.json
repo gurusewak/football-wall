@@ -1,0 +1,1198 @@
+{
+  "name": "World Tournament 2026",
+  "year": 2026,
+  "lastUpdated": "2026-06-24T18:45:00Z",
+  "groups": [
+    {
+      "group": "A",
+      "teams": [
+        {
+          "id": "team_01",
+          "name": "Argentina",
+          "flagCode": "AR",
+          "group": "A",
+          "wins": 3,
+          "draws": 0,
+          "losses": 0,
+          "goalsFor": 9,
+          "goalsAgainst": 1,
+          "goalDifference": 8,
+          "points": 9,
+          "played": 3
+        },
+        {
+          "id": "team_02",
+          "name": "France",
+          "flagCode": "FR",
+          "group": "A",
+          "wins": 2,
+          "draws": 1,
+          "losses": 0,
+          "goalsFor": 7,
+          "goalsAgainst": 2,
+          "goalDifference": 5,
+          "points": 7,
+          "played": 3
+        },
+        {
+          "id": "team_03",
+          "name": "Poland",
+          "flagCode": "PL",
+          "group": "A",
+          "wins": 1,
+          "draws": 0,
+          "losses": 2,
+          "goalsFor": 4,
+          "goalsAgainst": 6,
+          "goalDifference": -2,
+          "points": 3,
+          "played": 3
+        },
+        {
+          "id": "team_04",
+          "name": "Mexico",
+          "flagCode": "MX",
+          "group": "A",
+          "wins": 0,
+          "draws": 0,
+          "losses": 3,
+          "goalsFor": 1,
+          "goalsAgainst": 12,
+          "goalDifference": -11,
+          "points": 0,
+          "played": 3
+        }
+      ]
+    },
+    {
+      "group": "B",
+      "teams": [
+        {
+          "id": "team_05",
+          "name": "Spain",
+          "flagCode": "ES",
+          "group": "B",
+          "wins": 3,
+          "draws": 0,
+          "losses": 0,
+          "goalsFor": 8,
+          "goalsAgainst": 1,
+          "goalDifference": 7,
+          "points": 9,
+          "played": 3
+        },
+        {
+          "id": "team_06",
+          "name": "Germany",
+          "flagCode": "DE",
+          "group": "B",
+          "wins": 2,
+          "draws": 1,
+          "losses": 0,
+          "goalsFor": 6,
+          "goalsAgainst": 2,
+          "goalDifference": 4,
+          "points": 7,
+          "played": 3
+        },
+        {
+          "id": "team_07",
+          "name": "Japan",
+          "flagCode": "JP",
+          "group": "B",
+          "wins": 1,
+          "draws": 1,
+          "losses": 1,
+          "goalsFor": 3,
+          "goalsAgainst": 4,
+          "goalDifference": -1,
+          "points": 4,
+          "played": 3
+        },
+        {
+          "id": "team_08",
+          "name": "Costa Rica",
+          "flagCode": "CR",
+          "group": "B",
+          "wins": 0,
+          "draws": 0,
+          "losses": 3,
+          "goalsFor": 2,
+          "goalsAgainst": 11,
+          "goalDifference": -9,
+          "points": 0,
+          "played": 3
+        }
+      ]
+    },
+    {
+      "group": "C",
+      "teams": [
+        {
+          "id": "team_09",
+          "name": "Brazil",
+          "flagCode": "BR",
+          "group": "C",
+          "wins": 3,
+          "draws": 0,
+          "losses": 0,
+          "goalsFor": 10,
+          "goalsAgainst": 1,
+          "goalDifference": 9,
+          "points": 9,
+          "played": 3
+        },
+        {
+          "id": "team_10",
+          "name": "England",
+          "flagCode": "GB-ENG",
+          "group": "C",
+          "wins": 2,
+          "draws": 1,
+          "losses": 0,
+          "goalsFor": 8,
+          "goalsAgainst": 2,
+          "goalDifference": 6,
+          "points": 7,
+          "played": 3
+        },
+        {
+          "id": "team_11",
+          "name": "Serbia",
+          "flagCode": "RS",
+          "group": "C",
+          "wins": 1,
+          "draws": 0,
+          "losses": 2,
+          "goalsFor": 3,
+          "goalsAgainst": 8,
+          "goalDifference": -5,
+          "points": 3,
+          "played": 3
+        },
+        {
+          "id": "team_12",
+          "name": "Switzerland",
+          "flagCode": "CH",
+          "group": "C",
+          "wins": 0,
+          "draws": 1,
+          "losses": 2,
+          "goalsFor": 2,
+          "goalsAgainst": 12,
+          "goalDifference": -10,
+          "points": 1,
+          "played": 3
+        }
+      ]
+    },
+    {
+      "group": "D",
+      "teams": [
+        {
+          "id": "team_13",
+          "name": "Italy",
+          "flagCode": "IT",
+          "group": "D",
+          "wins": 2,
+          "draws": 1,
+          "losses": 0,
+          "goalsFor": 6,
+          "goalsAgainst": 1,
+          "goalDifference": 5,
+          "points": 7,
+          "played": 3
+        },
+        {
+          "id": "team_14",
+          "name": "Netherlands",
+          "flagCode": "NL",
+          "group": "D",
+          "wins": 2,
+          "draws": 1,
+          "losses": 0,
+          "goalsFor": 7,
+          "goalsAgainst": 2,
+          "goalDifference": 5,
+          "points": 7,
+          "played": 3
+        },
+        {
+          "id": "team_15",
+          "name": "Belgium",
+          "flagCode": "BE",
+          "group": "D",
+          "wins": 1,
+          "draws": 0,
+          "losses": 2,
+          "goalsFor": 4,
+          "goalsAgainst": 7,
+          "goalDifference": -3,
+          "points": 3,
+          "played": 3
+        },
+        {
+          "id": "team_16",
+          "name": "Canada",
+          "flagCode": "CA",
+          "group": "D",
+          "wins": 0,
+          "draws": 0,
+          "losses": 3,
+          "goalsFor": 0,
+          "goalsAgainst": 7,
+          "goalDifference": -7,
+          "points": 0,
+          "played": 3
+        }
+      ]
+    },
+    {
+      "group": "E",
+      "teams": [
+        {
+          "id": "team_17",
+          "name": "Portugal",
+          "flagCode": "PT",
+          "group": "E",
+          "wins": 3,
+          "draws": 0,
+          "losses": 0,
+          "goalsFor": 9,
+          "goalsAgainst": 1,
+          "goalDifference": 8,
+          "points": 9,
+          "played": 3
+        },
+        {
+          "id": "team_18",
+          "name": "Uruguay",
+          "flagCode": "UY",
+          "group": "E",
+          "wins": 2,
+          "draws": 0,
+          "losses": 1,
+          "goalsFor": 5,
+          "goalsAgainst": 3,
+          "goalDifference": 2,
+          "points": 6,
+          "played": 3
+        },
+        {
+          "id": "team_19",
+          "name": "South Korea",
+          "flagCode": "KR",
+          "group": "E",
+          "wins": 1,
+          "draws": 1,
+          "losses": 1,
+          "goalsFor": 3,
+          "goalsAgainst": 5,
+          "goalDifference": -2,
+          "points": 4,
+          "played": 3
+        },
+        {
+          "id": "team_20",
+          "name": "Ghana",
+          "flagCode": "GH",
+          "group": "E",
+          "wins": 0,
+          "draws": 0,
+          "losses": 3,
+          "goalsFor": 2,
+          "goalsAgainst": 10,
+          "goalDifference": -8,
+          "points": 0,
+          "played": 3
+        }
+      ]
+    },
+    {
+      "group": "F",
+      "teams": [
+        {
+          "id": "team_21",
+          "name": "Belgium",
+          "flagCode": "BE",
+          "group": "F",
+          "wins": 2,
+          "draws": 1,
+          "losses": 0,
+          "goalsFor": 6,
+          "goalsAgainst": 2,
+          "goalDifference": 4,
+          "points": 7,
+          "played": 3
+        },
+        {
+          "id": "team_22",
+          "name": "Croatia",
+          "flagCode": "HR",
+          "group": "F",
+          "wins": 2,
+          "draws": 1,
+          "losses": 0,
+          "goalsFor": 5,
+          "goalsAgainst": 2,
+          "goalDifference": 3,
+          "points": 7,
+          "played": 3
+        },
+        {
+          "id": "team_23",
+          "name": "Morocco",
+          "flagCode": "MA",
+          "group": "F",
+          "wins": 1,
+          "draws": 0,
+          "losses": 2,
+          "goalsFor": 3,
+          "goalsAgainst": 6,
+          "goalDifference": -3,
+          "points": 3,
+          "played": 3
+        },
+        {
+          "id": "team_24",
+          "name": "New Zealand",
+          "flagCode": "NZ",
+          "group": "F",
+          "wins": 0,
+          "draws": 0,
+          "losses": 3,
+          "goalsFor": 1,
+          "goalsAgainst": 5,
+          "goalDifference": -4,
+          "points": 0,
+          "played": 3
+        }
+      ]
+    },
+    {
+      "group": "G",
+      "teams": [
+        {
+          "id": "team_25",
+          "name": "Netherlands",
+          "flagCode": "NL",
+          "group": "G",
+          "wins": 3,
+          "draws": 0,
+          "losses": 0,
+          "goalsFor": 7,
+          "goalsAgainst": 1,
+          "goalDifference": 6,
+          "points": 9,
+          "played": 3
+        },
+        {
+          "id": "team_26",
+          "name": "Senegal",
+          "flagCode": "SN",
+          "group": "G",
+          "wins": 2,
+          "draws": 0,
+          "losses": 1,
+          "goalsFor": 5,
+          "goalsAgainst": 2,
+          "goalDifference": 3,
+          "points": 6,
+          "played": 3
+        },
+        {
+          "id": "team_27",
+          "name": "Ecuador",
+          "flagCode": "EC",
+          "group": "G",
+          "wins": 1,
+          "draws": 1,
+          "losses": 1,
+          "goalsFor": 3,
+          "goalsAgainst": 4,
+          "goalDifference": -1,
+          "points": 4,
+          "played": 3
+        },
+        {
+          "id": "team_28",
+          "name": "Qatar",
+          "flagCode": "QA",
+          "group": "G",
+          "wins": 0,
+          "draws": 0,
+          "losses": 3,
+          "goalsFor": 1,
+          "goalsAgainst": 9,
+          "goalDifference": -8,
+          "points": 0,
+          "played": 3
+        }
+      ]
+    },
+    {
+      "group": "H",
+      "teams": [
+        {
+          "id": "team_29",
+          "name": "France",
+          "flagCode": "FR",
+          "group": "H",
+          "wins": 3,
+          "draws": 0,
+          "losses": 0,
+          "goalsFor": 8,
+          "goalsAgainst": 0,
+          "goalDifference": 8,
+          "points": 9,
+          "played": 3
+        },
+        {
+          "id": "team_30",
+          "name": "Denmark",
+          "flagCode": "DK",
+          "group": "H",
+          "wins": 2,
+          "draws": 0,
+          "losses": 1,
+          "goalsFor": 4,
+          "goalsAgainst": 2,
+          "goalDifference": 2,
+          "points": 6,
+          "played": 3
+        },
+        {
+          "id": "team_31",
+          "name": "Peru",
+          "flagCode": "PE",
+          "group": "H",
+          "wins": 1,
+          "draws": 0,
+          "losses": 2,
+          "goalsFor": 2,
+          "goalsAgainst": 6,
+          "goalDifference": -4,
+          "points": 3,
+          "played": 3
+        },
+        {
+          "id": "team_32",
+          "name": "Tunisia",
+          "flagCode": "TN",
+          "group": "H",
+          "wins": 0,
+          "draws": 0,
+          "losses": 3,
+          "goalsFor": 1,
+          "goalsAgainst": 7,
+          "goalDifference": -6,
+          "points": 0,
+          "played": 3
+        }
+      ]
+    }
+  ],
+  "knockoutBracket": [
+    {
+      "round": "r32",
+      "matches": [
+        {
+          "id": "m_r32_01",
+          "stage": "r32",
+          "homeTeam": "Argentina",
+          "awayTeam": "Mexico",
+          "homeTeamId": "team_01",
+          "awayTeamId": "team_04",
+          "homeScore": 2,
+          "awayScore": 0,
+          "date": "2026-06-29T18:00:00Z",
+          "venue": "Stadium 1",
+          "city": "Los Angeles",
+          "attendance": 75000,
+          "status": "completed",
+          "goals": [
+            { "player": "Messi", "minute": 23, "penalty": false, "ownGoal": false },
+            { "player": "Di María", "minute": 45, "penalty": false, "ownGoal": false }
+          ],
+          "cards": []
+        },
+        {
+          "id": "m_r32_02",
+          "stage": "r32",
+          "homeTeam": "France",
+          "awayTeam": "Poland",
+          "homeTeamId": "team_02",
+          "awayTeamId": "team_03",
+          "homeScore": 3,
+          "awayScore": 1,
+          "date": "2026-06-29T20:00:00Z",
+          "venue": "Stadium 2",
+          "city": "Seattle",
+          "attendance": 68000,
+          "status": "completed",
+          "goals": [
+            { "player": "Mbappé", "minute": 12, "penalty": false, "ownGoal": false },
+            { "player": "Griezmann", "minute": 67, "penalty": false, "ownGoal": false },
+            { "player": "Benzema", "minute": 89, "penalty": false, "ownGoal": false }
+          ],
+          "cards": []
+        },
+        {
+          "id": "m_r32_03",
+          "stage": "r32",
+          "homeTeam": "Spain",
+          "awayTeam": "Costa Rica",
+          "homeTeamId": "team_05",
+          "awayTeamId": "team_08",
+          "homeScore": 3,
+          "awayScore": 0,
+          "date": "2026-06-30T18:00:00Z",
+          "venue": "Stadium 3",
+          "city": "Denver",
+          "attendance": 72000,
+          "status": "completed",
+          "goals": [
+            { "player": "Pedri", "minute": 15, "penalty": false, "ownGoal": false },
+            { "player": "Busquets", "minute": 38, "penalty": false, "ownGoal": false },
+            { "player": "Torres", "minute": 72, "penalty": false, "ownGoal": false }
+          ],
+          "cards": []
+        },
+        {
+          "id": "m_r32_04",
+          "stage": "r32",
+          "homeTeam": "Germany",
+          "awayTeam": "Japan",
+          "homeTeamId": "team_06",
+          "awayTeamId": "team_07",
+          "homeScore": 2,
+          "awayScore": 1,
+          "date": "2026-06-30T20:00:00Z",
+          "venue": "Stadium 4",
+          "city": "Houston",
+          "attendance": 70000,
+          "status": "completed",
+          "goals": [
+            { "player": "Müller", "minute": 28, "penalty": false, "ownGoal": false },
+            { "player": "Sané", "minute": 85, "penalty": false, "ownGoal": false }
+          ],
+          "cards": []
+        },
+        {
+          "id": "m_r32_05",
+          "stage": "r32",
+          "homeTeam": "Brazil",
+          "awayTeam": "Switzerland",
+          "homeTeamId": "team_09",
+          "awayTeamId": "team_12",
+          "homeScore": 1,
+          "awayScore": 0,
+          "date": "2026-07-01T18:00:00Z",
+          "venue": "Stadium 5",
+          "city": "Phoenix",
+          "attendance": 71000,
+          "status": "completed",
+          "goals": [
+            { "player": "Neymar", "minute": 44, "penalty": true, "ownGoal": false }
+          ],
+          "cards": []
+        },
+        {
+          "id": "m_r32_06",
+          "stage": "r32",
+          "homeTeam": "England",
+          "awayTeam": "Serbia",
+          "homeTeamId": "team_10",
+          "awayTeamId": "team_11",
+          "homeScore": 2,
+          "awayScore": 1,
+          "date": "2026-07-01T20:00:00Z",
+          "venue": "Stadium 6",
+          "city": "Miami",
+          "attendance": 73000,
+          "status": "completed",
+          "goals": [
+            { "player": "Saka", "minute": 18, "penalty": false, "ownGoal": false },
+            { "player": "Sterling", "minute": 76, "penalty": false, "ownGoal": false }
+          ],
+          "cards": []
+        },
+        {
+          "id": "m_r32_07",
+          "stage": "r32",
+          "homeTeam": "Italy",
+          "awayTeam": "Canada",
+          "homeTeamId": "team_13",
+          "awayTeamId": "team_16",
+          "homeScore": 2,
+          "awayScore": 0,
+          "date": "2026-07-02T18:00:00Z",
+          "venue": "Stadium 7",
+          "city": "Toronto",
+          "attendance": 76000,
+          "status": "completed",
+          "goals": [
+            { "player": "Verratti", "minute": 31, "penalty": false, "ownGoal": false },
+            { "player": "Immobile", "minute": 88, "penalty": false, "ownGoal": false }
+          ],
+          "cards": []
+        },
+        {
+          "id": "m_r32_08",
+          "stage": "r32",
+          "homeTeam": "Netherlands",
+          "awayTeam": "Belgium",
+          "homeTeamId": "team_25",
+          "awayTeamId": "team_15",
+          "homeScore": 3,
+          "awayScore": 2,
+          "date": "2026-07-02T20:00:00Z",
+          "venue": "Stadium 8",
+          "city": "New York",
+          "attendance": 74000,
+          "status": "completed",
+          "goals": [
+            { "player": "De Vrij", "minute": 12, "penalty": false, "ownGoal": false },
+            { "player": "Van Dijk", "minute": 34, "penalty": false, "ownGoal": false },
+            { "player": "Depay", "minute": 91, "penalty": false, "ownGoal": false }
+          ],
+          "cards": []
+        },
+        {
+          "id": "m_r32_09",
+          "stage": "r32",
+          "homeTeam": "Portugal",
+          "awayTeam": "Ghana",
+          "homeTeamId": "team_17",
+          "awayTeamId": "team_20",
+          "homeScore": 3,
+          "awayScore": 2,
+          "date": "2026-07-03T18:00:00Z",
+          "venue": "Stadium 9",
+          "city": "Boston",
+          "attendance": 69000,
+          "status": "completed",
+          "goals": [
+            { "player": "Cristiano Ronaldo", "minute": 7, "penalty": false, "ownGoal": false },
+            { "player": "Fernandes", "minute": 51, "penalty": true, "ownGoal": false },
+            { "player": "Leão", "minute": 77, "penalty": false, "ownGoal": false }
+          ],
+          "cards": []
+        },
+        {
+          "id": "m_r32_10",
+          "stage": "r32",
+          "homeTeam": "Uruguay",
+          "awayTeam": "South Korea",
+          "homeTeamId": "team_18",
+          "awayTeamId": "team_19",
+          "homeScore": 2,
+          "awayScore": 1,
+          "date": "2026-07-03T20:00:00Z",
+          "venue": "Stadium 10",
+          "city": "Chicago",
+          "attendance": 70000,
+          "status": "completed",
+          "goals": [
+            { "player": "Cavani", "minute": 25, "penalty": false, "ownGoal": false },
+            { "player": "Suárez", "minute": 68, "penalty": false, "ownGoal": false }
+          ],
+          "cards": []
+        },
+        {
+          "id": "m_r32_11",
+          "stage": "r32",
+          "homeTeam": "Croatia",
+          "awayTeam": "New Zealand",
+          "homeTeamId": "team_22",
+          "awayTeamId": "team_24",
+          "homeScore": 2,
+          "awayScore": 0,
+          "date": "2026-07-04T18:00:00Z",
+          "venue": "Stadium 11",
+          "city": "San Francisco",
+          "attendance": 72000,
+          "status": "completed",
+          "goals": [
+            { "player": "Modrić", "minute": 19, "penalty": false, "ownGoal": false },
+            { "player": "Rebić", "minute": 74, "penalty": false, "ownGoal": false }
+          ],
+          "cards": []
+        },
+        {
+          "id": "m_r32_12",
+          "stage": "r32",
+          "homeTeam": "Morocco",
+          "awayTeam": "Senegal",
+          "homeTeamId": "team_23",
+          "awayTeamId": "team_26",
+          "homeScore": 1,
+          "awayScore": 0,
+          "date": "2026-07-04T20:00:00Z",
+          "venue": "Stadium 12",
+          "city": "Las Vegas",
+          "attendance": 68000,
+          "status": "completed",
+          "goals": [
+            { "player": "En-Nesyri", "minute": 52, "penalty": false, "ownGoal": false }
+          ],
+          "cards": []
+        },
+        {
+          "id": "m_r32_13",
+          "stage": "r32",
+          "homeTeam": "France",
+          "awayTeam": "Ecuador",
+          "homeTeamId": "team_29",
+          "awayTeamId": "team_27",
+          "homeScore": 3,
+          "awayScore": 1,
+          "date": "2026-07-05T18:00:00Z",
+          "venue": "Stadium 13",
+          "city": "Dallas",
+          "attendance": 71000,
+          "status": "completed",
+          "goals": [
+            { "player": "Griezmann", "minute": 22, "penalty": false, "ownGoal": false },
+            { "player": "Benzema", "minute": 64, "penalty": false, "ownGoal": false },
+            { "player": "Mbappé", "minute": 88, "penalty": false, "ownGoal": false }
+          ],
+          "cards": []
+        },
+        {
+          "id": "m_r32_14",
+          "stage": "r32",
+          "homeTeam": "Denmark",
+          "awayTeam": "Tunisia",
+          "homeTeamId": "team_30",
+          "awayTeamId": "team_32",
+          "homeScore": 2,
+          "awayScore": 0,
+          "date": "2026-07-05T20:00:00Z",
+          "venue": "Stadium 14",
+          "city": "Atlanta",
+          "attendance": 70000,
+          "status": "completed",
+          "goals": [
+            { "player": "Poulsen", "minute": 38, "penalty": false, "ownGoal": false },
+            { "player": "Braithwaite", "minute": 81, "penalty": false, "ownGoal": false }
+          ],
+          "cards": []
+        },
+        {
+          "id": "m_r32_15",
+          "stage": "r32",
+          "homeTeam": "Peru",
+          "awayTeam": "Netherlands",
+          "homeTeamId": "team_31",
+          "awayTeamId": "team_25",
+          "homeScore": 0,
+          "awayScore": 2,
+          "date": "2026-07-06T18:00:00Z",
+          "venue": "Stadium 15",
+          "city": "San Diego",
+          "attendance": 68000,
+          "status": "completed",
+          "goals": [
+            { "player": "Depay", "minute": 29, "penalty": false, "ownGoal": false },
+            { "player": "Van Dijk", "minute": 67, "penalty": false, "ownGoal": false }
+          ],
+          "cards": []
+        },
+        {
+          "id": "m_r32_16",
+          "stage": "r32",
+          "homeTeam": "Qatar",
+          "awayTeam": "Spain",
+          "homeTeamId": "team_28",
+          "awayTeamId": "team_05",
+          "homeScore": 0,
+          "awayScore": 3,
+          "date": "2026-07-06T20:00:00Z",
+          "venue": "Stadium 16",
+          "city": "Portland",
+          "attendance": 69000,
+          "status": "completed",
+          "goals": [
+            { "player": "Pedri", "minute": 15, "penalty": false, "ownGoal": false },
+            { "player": "Busquets", "minute": 47, "penalty": false, "ownGoal": false },
+            { "player": "Torres", "minute": 85, "penalty": false, "ownGoal": false }
+          ],
+          "cards": []
+        }
+      ]
+    },
+    {
+      "round": "r16",
+      "matches": [
+        {
+          "id": "m_r16_01",
+          "stage": "r16",
+          "homeTeam": "Argentina",
+          "awayTeam": "France",
+          "homeTeamId": "team_01",
+          "awayTeamId": "team_02",
+          "homeScore": 1,
+          "awayScore": 1,
+          "date": "2026-07-09T18:00:00Z",
+          "venue": "Stadium 1",
+          "city": "Los Angeles",
+          "attendance": 78000,
+          "status": "completed",
+          "goals": [
+            { "player": "Messi", "minute": 35, "penalty": false, "ownGoal": false },
+            { "player": "Mbappé", "minute": 82, "penalty": true, "ownGoal": false }
+          ],
+          "cards": [
+            { "player": "Ramos", "minute": 67, "cardType": "yellow" }
+          ]
+        },
+        {
+          "id": "m_r16_02",
+          "stage": "r16",
+          "homeTeam": "Spain",
+          "awayTeam": "Germany",
+          "homeTeamId": "team_05",
+          "awayTeamId": "team_06",
+          "homeScore": 2,
+          "awayScore": 1,
+          "date": "2026-07-09T20:00:00Z",
+          "venue": "Stadium 2",
+          "city": "Seattle",
+          "attendance": 75000,
+          "status": "completed",
+          "goals": [
+            { "player": "Pedri", "minute": 28, "penalty": false, "ownGoal": false },
+            { "player": "Torres", "minute": 64, "penalty": false, "ownGoal": false }
+          ],
+          "cards": []
+        },
+        {
+          "id": "m_r16_03",
+          "stage": "r16",
+          "homeTeam": "Brazil",
+          "awayTeam": "England",
+          "homeTeamId": "team_09",
+          "awayTeamId": "team_10",
+          "homeScore": 3,
+          "awayScore": 2,
+          "date": "2026-07-10T18:00:00Z",
+          "venue": "Stadium 3",
+          "city": "Denver",
+          "attendance": 76000,
+          "status": "completed",
+          "goals": [
+            { "player": "Neymar", "minute": 12, "penalty": false, "ownGoal": false },
+            { "player": "Vinícius Jr", "minute": 48, "penalty": false, "ownGoal": false },
+            { "player": "Richarlison", "minute": 89, "penalty": false, "ownGoal": false }
+          ],
+          "cards": []
+        },
+        {
+          "id": "m_r16_04",
+          "stage": "r16",
+          "homeTeam": "Italy",
+          "awayTeam": "Netherlands",
+          "homeTeamId": "team_13",
+          "awayTeamId": "team_25",
+          "homeScore": 1,
+          "awayScore": 2,
+          "date": "2026-07-10T20:00:00Z",
+          "venue": "Stadium 4",
+          "city": "Houston",
+          "attendance": 74000,
+          "status": "completed",
+          "goals": [
+            { "player": "Immobile", "minute": 27, "penalty": false, "ownGoal": false },
+            { "player": "Depay", "minute": 71, "penalty": false, "ownGoal": false }
+          ],
+          "cards": []
+        },
+        {
+          "id": "m_r16_05",
+          "stage": "r16",
+          "homeTeam": "Portugal",
+          "awayTeam": "Uruguay",
+          "homeTeamId": "team_17",
+          "awayTeamId": "team_18",
+          "homeScore": 2,
+          "awayScore": 1,
+          "date": "2026-07-11T18:00:00Z",
+          "venue": "Stadium 5",
+          "city": "Phoenix",
+          "attendance": 72000,
+          "status": "completed",
+          "goals": [
+            { "player": "Cristiano Ronaldo", "minute": 45, "penalty": false, "ownGoal": false },
+            { "player": "Fernandes", "minute": 73, "penalty": true, "ownGoal": false }
+          ],
+          "cards": []
+        },
+        {
+          "id": "m_r16_06",
+          "stage": "r16",
+          "homeTeam": "Croatia",
+          "awayTeam": "Morocco",
+          "homeTeamId": "team_22",
+          "awayTeamId": "team_23",
+          "homeScore": 2,
+          "awayScore": 1,
+          "date": "2026-07-11T20:00:00Z",
+          "venue": "Stadium 6",
+          "city": "Miami",
+          "attendance": 73000,
+          "status": "completed",
+          "goals": [
+            { "player": "Modrić", "minute": 18, "penalty": false, "ownGoal": false },
+            { "player": "Kramarić", "minute": 56, "penalty": false, "ownGoal": false }
+          ],
+          "cards": []
+        },
+        {
+          "id": "m_r16_07",
+          "stage": "r16",
+          "homeTeam": "France",
+          "awayTeam": "Denmark",
+          "homeTeamId": "team_29",
+          "awayTeamId": "team_30",
+          "homeScore": 2,
+          "awayScore": 1,
+          "date": "2026-07-12T18:00:00Z",
+          "venue": "Stadium 7",
+          "city": "Toronto",
+          "attendance": 75000,
+          "status": "completed",
+          "goals": [
+            { "player": "Griezmann", "minute": 33, "penalty": false, "ownGoal": false },
+            { "player": "Mbappé", "minute": 68, "penalty": false, "ownGoal": false }
+          ],
+          "cards": []
+        },
+        {
+          "id": "m_r16_08",
+          "stage": "r16",
+          "homeTeam": "Netherlands",
+          "awayTeam": "Spain",
+          "homeTeamId": "team_25",
+          "awayTeamId": "team_05",
+          "homeScore": 2,
+          "awayScore": 1,
+          "date": "2026-07-12T20:00:00Z",
+          "venue": "Stadium 8",
+          "city": "New York",
+          "attendance": 76000,
+          "status": "completed",
+          "goals": [
+            { "player": "Van Dijk", "minute": 22, "penalty": false, "ownGoal": false },
+            { "player": "Depay", "minute": 74, "penalty": true, "ownGoal": false }
+          ],
+          "cards": []
+        }
+      ]
+    },
+    {
+      "round": "qf",
+      "matches": [
+        {
+          "id": "m_qf_01",
+          "stage": "qf",
+          "homeTeam": "Argentina",
+          "awayTeam": "Spain",
+          "homeTeamId": "team_01",
+          "awayTeamId": "team_05",
+          "homeScore": 2,
+          "awayScore": 1,
+          "date": "2026-07-16T18:00:00Z",
+          "venue": "Stadium 1",
+          "city": "Los Angeles",
+          "attendance": 80000,
+          "status": "completed",
+          "goals": [
+            { "player": "Messi", "minute": 28, "penalty": false, "ownGoal": false },
+            { "player": "Di María", "minute": 71, "penalty": false, "ownGoal": false }
+          ],
+          "cards": []
+        },
+        {
+          "id": "m_qf_02",
+          "stage": "qf",
+          "homeTeam": "Brazil",
+          "awayTeam": "Netherlands",
+          "homeTeamId": "team_09",
+          "awayTeamId": "team_25",
+          "homeScore": 2,
+          "awayScore": 0,
+          "date": "2026-07-16T20:00:00Z",
+          "venue": "Stadium 2",
+          "city": "Seattle",
+          "attendance": 78000,
+          "status": "completed",
+          "goals": [
+            { "player": "Neymar", "minute": 34, "penalty": false, "ownGoal": false },
+            { "player": "Vinícius Jr", "minute": 82, "penalty": false, "ownGoal": false }
+          ],
+          "cards": []
+        },
+        {
+          "id": "m_qf_03",
+          "stage": "qf",
+          "homeTeam": "Portugal",
+          "awayTeam": "Croatia",
+          "homeTeamId": "team_17",
+          "awayTeamId": "team_22",
+          "homeScore": 3,
+          "awayScore": 2,
+          "date": "2026-07-17T18:00:00Z",
+          "venue": "Stadium 3",
+          "city": "Denver",
+          "attendance": 77000,
+          "status": "completed",
+          "goals": [
+            { "player": "Cristiano Ronaldo", "minute": 15, "penalty": true, "ownGoal": false },
+            { "player": "Leão", "minute": 63, "penalty": false, "ownGoal": false },
+            { "player": "Fernandes", "minute": 89, "penalty": false, "ownGoal": false }
+          ],
+          "cards": []
+        },
+        {
+          "id": "m_qf_04",
+          "stage": "qf",
+          "homeTeam": "France",
+          "awayTeam": "Netherlands",
+          "homeTeamId": "team_29",
+          "awayTeamId": "team_25",
+          "homeScore": 2,
+          "awayScore": 1,
+          "date": "2026-07-17T20:00:00Z",
+          "venue": "Stadium 4",
+          "city": "Houston",
+          "attendance": 76000,
+          "status": "completed",
+          "goals": [
+            { "player": "Mbappé", "minute": 26, "penalty": false, "ownGoal": false },
+            { "player": "Griezmann", "minute": 75, "penalty": false, "ownGoal": false }
+          ],
+          "cards": []
+        }
+      ]
+    },
+    {
+      "round": "sf",
+      "matches": [
+        {
+          "id": "m_sf_01",
+          "stage": "sf",
+          "homeTeam": "Argentina",
+          "awayTeam": "Brazil",
+          "homeTeamId": "team_01",
+          "awayTeamId": "team_09",
+          "homeScore": 0,
+          "awayScore": 0,
+          "date": "2026-07-20T18:00:00Z",
+          "venue": "Stadium 1",
+          "city": "Los Angeles",
+          "attendance": 82000,
+          "status": "scheduled",
+          "goals": [],
+          "cards": []
+        },
+        {
+          "id": "m_sf_02",
+          "stage": "sf",
+          "homeTeam": "Portugal",
+          "awayTeam": "France",
+          "homeTeamId": "team_17",
+          "awayTeamId": "team_29",
+          "homeScore": 0,
+          "awayScore": 0,
+          "date": "2026-07-20T20:00:00Z",
+          "venue": "Stadium 2",
+          "city": "Seattle",
+          "attendance": 80000,
+          "status": "scheduled",
+          "goals": [],
+          "cards": []
+        }
+      ]
+    },
+    {
+      "round": "final",
+      "matches": [
+        {
+          "id": "m_final_01",
+          "stage": "final",
+          "homeTeam": "TBD",
+          "awayTeam": "TBD",
+          "homeTeamId": "",
+          "awayTeamId": "",
+          "homeScore": 0,
+          "awayScore": 0,
+          "date": "2026-07-24T18:00:00Z",
+          "venue": "Stadium 1",
+          "city": "Los Angeles",
+          "attendance": 85000,
+          "status": "scheduled",
+          "goals": [],
+          "cards": []
+        }
+      ]
+    }
+  ],
+  "players": [
+    {
+      "id": "player_01",
+      "name": "Lionel Messi",
+      "country": "Argentina",
+      "position": "Forward",
+      "goals": 6,
+      "assists": 3,
+      "yellowCards": 1,
+      "redCards": 0,
+      "playerOfMatch": 3
+    },
+    {
+      "id": "player_02",
+      "name": "Kylian Mbappé",
+      "country": "France",
+      "position": "Forward",
+      "goals": 7,
+      "assists": 2,
+      "yellowCards": 0,
+      "redCards": 0,
+      "playerOfMatch": 4
+    },
+    {
+      "id": "player_03",
+      "name": "Cristiano Ronaldo",
+      "country": "Portugal",
+      "position": "Forward",
+      "goals": 5,
+      "assists": 1,
+      "yellowCards": 2,
+      "redCards": 0,
+      "playerOfMatch": 2
+    },
+    {
+      "id": "player_04",
+      "name": "Neymar",
+      "country": "Brazil",
+      "position": "Forward",
+      "goals": 5,
+      "assists": 4,
+      "yellowCards": 3,
+      "redCards": 0,
+      "playerOfMatch": 2
+    },
+    {
+      "id": "player_05",
+      "name": "Robert Lewandowski",
+      "country": "Germany",
+      "position": "Forward",
+      "goals": 4,
+      "assists": 2,
+      "yellowCards": 1,
+      "redCards": 0,
+      "playerOfMatch": 1
+    }
+  ]
+}

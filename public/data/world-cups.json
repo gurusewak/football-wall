@@ -1,0 +1,596 @@
+{
+  "latestYear": 2026,
+  "tournaments": [
+    {
+      "name": "Football World Cup 1998",
+      "year": 1998,
+      "format": 32,
+      "lastUpdated": "1998-07-12T23:59:59Z",
+      "groups": [
+        {
+          "group": "A",
+          "teams": [
+            {
+              "id": "fra-1998",
+              "name": "France",
+              "flagCode": "FR",
+              "wins": 3,
+              "draws": 0,
+              "losses": 0,
+              "goalsFor": 9,
+              "goalsAgainst": 1,
+              "goalDifference": 8,
+              "points": 9,
+              "played": 3
+            },
+            {
+              "id": "den-1998",
+              "name": "Denmark",
+              "flagCode": "DK",
+              "wins": 1,
+              "draws": 1,
+              "losses": 1,
+              "goalsFor": 3,
+              "goalsAgainst": 3,
+              "goalDifference": 0,
+              "points": 4,
+              "played": 3
+            },
+            {
+              "id": "bra-1998",
+              "name": "Brazil",
+              "flagCode": "BR",
+              "wins": 1,
+              "draws": 1,
+              "losses": 1,
+              "goalsFor": 5,
+              "goalsAgainst": 5,
+              "goalDifference": 0,
+              "points": 4,
+              "played": 3
+            },
+            {
+              "id": "saf-1998",
+              "name": "South Africa",
+              "flagCode": "ZA",
+              "wins": 0,
+              "draws": 0,
+              "losses": 3,
+              "goalsFor": 3,
+              "goalsAgainst": 11,
+              "goalDifference": -8,
+              "points": 0,
+              "played": 3
+            }
+          ]
+        },
+        {
+          "group": "B",
+          "teams": [
+            {
+              "id": "ita-1998",
+              "name": "Italy",
+              "flagCode": "IT",
+              "wins": 2,
+              "draws": 1,
+              "losses": 0,
+              "goalsFor": 7,
+              "goalsAgainst": 2,
+              "goalDifference": 5,
+              "points": 7,
+              "played": 3
+            },
+            {
+              "id": "chi-1998",
+              "name": "Chile",
+              "flagCode": "CL",
+              "wins": 1,
+              "draws": 1,
+              "losses": 1,
+              "goalsFor": 3,
+              "goalsAgainst": 5,
+              "goalDifference": -2,
+              "points": 4,
+              "played": 3
+            },
+            {
+              "id": "aut-1998",
+              "name": "Austria",
+              "flagCode": "AT",
+              "wins": 1,
+              "draws": 0,
+              "losses": 2,
+              "goalsFor": 4,
+              "goalsAgainst": 5,
+              "goalDifference": -1,
+              "points": 3,
+              "played": 3
+            },
+            {
+              "id": "cmr-1998",
+              "name": "Cameroon",
+              "flagCode": "CM",
+              "wins": 0,
+              "draws": 1,
+              "losses": 2,
+              "goalsFor": 2,
+              "goalsAgainst": 4,
+              "goalDifference": -2,
+              "points": 1,
+              "played": 3
+            }
+          ]
+        }
+      ],
+      "knockoutBracket": [
+        {
+          "round": "r16",
+          "matches": [
+            {
+              "id": "match-1998-1",
+              "stage": "r16",
+              "homeTeam": "France",
+              "awayTeam": "Paraguay",
+              "homeTeamId": "fra-1998",
+              "awayTeamId": "par-1998",
+              "homeScore": 1,
+              "awayScore": 0,
+              "date": "1998-06-28T16:00:00Z",
+              "venue": "Stade Vélodrome",
+              "city": "Marseille",
+              "attendance": 60000,
+              "status": "completed",
+              "goals": [
+                { "player": "Thierry Henry", "minute": 113, "penalty": false, "ownGoal": false }
+              ],
+              "cards": []
+            },
+            {
+              "id": "match-1998-2",
+              "stage": "r16",
+              "homeTeam": "Italy",
+              "awayTeam": "Norway",
+              "homeTeamId": "ita-1998",
+              "awayTeamId": "nor-1998",
+              "homeScore": 1,
+              "awayScore": 0,
+              "date": "1998-06-28T20:00:00Z",
+              "venue": "Stadio Sant'Elia",
+              "city": "Cagliari",
+              "attendance": 40000,
+              "status": "completed",
+              "goals": [
+                { "player": "Roberto Baggio", "minute": 78, "penalty": false, "ownGoal": false }
+              ],
+              "cards": []
+            }
+          ]
+        },
+        {
+          "round": "qf",
+          "matches": [
+            {
+              "id": "match-1998-qf1",
+              "stage": "qf",
+              "homeTeam": "France",
+              "awayTeam": "Italy",
+              "homeTeamId": "fra-1998",
+              "awayTeamId": "ita-1998",
+              "homeScore": 0,
+              "awayScore": 0,
+              "date": "1998-07-03T20:00:00Z",
+              "venue": "Parc des Princes",
+              "city": "Paris",
+              "attendance": 43000,
+              "status": "completed",
+              "goals": [],
+              "cards": []
+            }
+          ]
+        },
+        {
+          "round": "sf",
+          "matches": [
+            {
+              "id": "match-1998-sf1",
+              "stage": "sf",
+              "homeTeam": "France",
+              "awayTeam": "Germany",
+              "homeTeamId": "fra-1998",
+              "awayTeamId": "ger-1998",
+              "homeScore": 0,
+              "awayScore": 0,
+              "date": "1998-07-08T20:00:00Z",
+              "venue": "Stade de France",
+              "city": "Saint-Denis",
+              "attendance": 75000,
+              "status": "completed",
+              "goals": [],
+              "cards": []
+            }
+          ]
+        },
+        {
+          "round": "final",
+          "matches": [
+            {
+              "id": "match-1998-final",
+              "stage": "final",
+              "homeTeam": "France",
+              "awayTeam": "Brazil",
+              "homeTeamId": "fra-1998",
+              "awayTeamId": "bra-1998",
+              "homeScore": 3,
+              "awayScore": 0,
+              "date": "1998-07-12T20:00:00Z",
+              "venue": "Stade de France",
+              "city": "Saint-Denis",
+              "attendance": 80000,
+              "status": "completed",
+              "goals": [
+                { "player": "Zinedine Zidane", "minute": 27, "penalty": false, "ownGoal": false },
+                { "player": "Zinedine Zidane", "minute": 45, "penalty": false, "ownGoal": false },
+                { "player": "Emmanuel Petit", "minute": 90, "penalty": false, "ownGoal": false }
+              ],
+              "cards": [],
+              "playerOfMatch": "Zinedine Zidane"
+            }
+          ]
+        }
+      ],
+      "players": [
+        {
+          "id": "zidane",
+          "name": "Zinedine Zidane",
+          "country": "France",
+          "position": "MF",
+          "goals": 5,
+          "assists": 1,
+          "yellowCards": 3,
+          "redCards": 0,
+          "playerOfMatch": 2,
+          "cleanSheets": 0
+        },
+        {
+          "id": "henry",
+          "name": "Thierry Henry",
+          "country": "France",
+          "position": "FW",
+          "goals": 3,
+          "assists": 2,
+          "yellowCards": 1,
+          "redCards": 0,
+          "playerOfMatch": 1,
+          "cleanSheets": 0
+        },
+        {
+          "id": "ronaldo",
+          "name": "Ronaldo",
+          "country": "Brazil",
+          "position": "FW",
+          "goals": 4,
+          "assists": 0,
+          "yellowCards": 2,
+          "redCards": 0,
+          "playerOfMatch": 1,
+          "cleanSheets": 0
+        }
+      ]
+    },
+    {
+      "name": "Football World Cup 2026",
+      "year": 2026,
+      "format": 48,
+      "lastUpdated": "2026-06-15T23:59:59Z",
+      "groups": [
+        {
+          "group": "A",
+          "teams": [
+            {
+              "id": "usa-2026",
+              "name": "United States",
+              "flagCode": "US",
+              "wins": 2,
+              "draws": 1,
+              "losses": 0,
+              "goalsFor": 6,
+              "goalsAgainst": 1,
+              "goalDifference": 5,
+              "points": 7,
+              "played": 3
+            },
+            {
+              "id": "ger-2026",
+              "name": "Germany",
+              "flagCode": "DE",
+              "wins": 2,
+              "draws": 0,
+              "losses": 1,
+              "goalsFor": 5,
+              "goalsAgainst": 3,
+              "goalDifference": 2,
+              "points": 6,
+              "played": 3
+            },
+            {
+              "id": "nld-2026",
+              "name": "Netherlands",
+              "flagCode": "NL",
+              "wins": 1,
+              "draws": 1,
+              "losses": 1,
+              "goalsFor": 4,
+              "goalsAgainst": 4,
+              "goalDifference": 0,
+              "points": 4,
+              "played": 3
+            },
+            {
+              "id": "mex-2026",
+              "name": "Mexico",
+              "flagCode": "MX",
+              "wins": 0,
+              "draws": 0,
+              "losses": 3,
+              "goalsFor": 2,
+              "goalsAgainst": 9,
+              "goalDifference": -7,
+              "points": 0,
+              "played": 3
+            }
+          ]
+        },
+        {
+          "group": "B",
+          "teams": [
+            {
+              "id": "arg-2026",
+              "name": "Argentina",
+              "flagCode": "AR",
+              "wins": 2,
+              "draws": 1,
+              "losses": 0,
+              "goalsFor": 7,
+              "goalsAgainst": 2,
+              "goalDifference": 5,
+              "points": 7,
+              "played": 3
+            },
+            {
+              "id": "spa-2026",
+              "name": "Spain",
+              "flagCode": "ES",
+              "wins": 2,
+              "draws": 0,
+              "losses": 1,
+              "goalsFor": 6,
+              "goalsAgainst": 3,
+              "goalDifference": 3,
+              "points": 6,
+              "played": 3
+            },
+            {
+              "id": "fra-2026",
+              "name": "France",
+              "flagCode": "FR",
+              "wins": 1,
+              "draws": 1,
+              "losses": 1,
+              "goalsFor": 5,
+              "goalsAgainst": 5,
+              "goalDifference": 0,
+              "points": 4,
+              "played": 3
+            },
+            {
+              "id": "mar-2026",
+              "name": "Morocco",
+              "flagCode": "MA",
+              "wins": 0,
+              "draws": 0,
+              "losses": 3,
+              "goalsFor": 1,
+              "goalsAgainst": 9,
+              "goalDifference": -8,
+              "points": 0,
+              "played": 3
+            }
+          ]
+        }
+      ],
+      "knockoutBracket": [
+        {
+          "round": "r32",
+          "matches": [
+            {
+              "id": "match-2026-1",
+              "stage": "r32",
+              "homeTeam": "Argentina",
+              "awayTeam": "USA",
+              "homeTeamId": "arg-2026",
+              "awayTeamId": "usa-2026",
+              "homeScore": 2,
+              "awayScore": 1,
+              "date": "2026-07-01T16:00:00Z",
+              "venue": "MetLife Stadium",
+              "city": "East Rutherford",
+              "attendance": 82000,
+              "status": "completed",
+              "goals": [
+                { "player": "Lionel Messi", "minute": 23, "penalty": false, "ownGoal": false },
+                { "player": "Ángel Di María", "minute": 67, "penalty": false, "ownGoal": false },
+                { "player": "Christian Pulisic", "minute": 45, "penalty": false, "ownGoal": false }
+              ],
+              "cards": []
+            }
+          ]
+        },
+        {
+          "round": "r16",
+          "matches": [
+            {
+              "id": "match-2026-r16-1",
+              "stage": "r16",
+              "homeTeam": "Argentina",
+              "awayTeam": "Germany",
+              "homeTeamId": "arg-2026",
+              "awayTeamId": "ger-2026",
+              "homeScore": 1,
+              "awayScore": 1,
+              "date": "2026-07-05T20:00:00Z",
+              "venue": "SoFi Stadium",
+              "city": "Los Angeles",
+              "attendance": 70000,
+              "status": "completed",
+              "goals": [
+                { "player": "Lionel Messi", "minute": 34, "penalty": true, "ownGoal": false },
+                { "player": "Florian Wirtz", "minute": 87, "penalty": false, "ownGoal": false }
+              ],
+              "cards": []
+            }
+          ]
+        },
+        {
+          "round": "qf",
+          "matches": [
+            {
+              "id": "match-2026-qf-1",
+              "stage": "qf",
+              "homeTeam": "Argentina",
+              "awayTeam": "Netherlands",
+              "homeTeamId": "arg-2026",
+              "awayTeamId": "nld-2026",
+              "homeScore": 3,
+              "awayScore": 2,
+              "date": "2026-07-10T20:00:00Z",
+              "venue": "Oracle Park",
+              "city": "San Francisco",
+              "attendance": 60000,
+              "status": "completed",
+              "goals": [
+                { "player": "Lionel Messi", "minute": 15, "penalty": false, "ownGoal": false },
+                { "player": "Ángel Di María", "minute": 42, "penalty": false, "ownGoal": false },
+                { "player": "Julián Álvarez", "minute": 78, "penalty": false, "ownGoal": false },
+                { "player": "Daley Blind", "minute": 51, "penalty": false, "ownGoal": false },
+                { "player": "Cody Gakpo", "minute": 89, "penalty": false, "ownGoal": false }
+              ],
+              "cards": []
+            }
+          ]
+        },
+        {
+          "round": "sf",
+          "matches": [
+            {
+              "id": "match-2026-sf-1",
+              "stage": "sf",
+              "homeTeam": "Argentina",
+              "awayTeam": "France",
+              "homeTeamId": "arg-2026",
+              "awayTeamId": "fra-2026",
+              "homeScore": 2,
+              "awayScore": 0,
+              "date": "2026-07-14T20:00:00Z",
+              "venue": "MetLife Stadium",
+              "city": "East Rutherford",
+              "attendance": 82000,
+              "status": "completed",
+              "goals": [
+                { "player": "Lionel Messi", "minute": 36, "penalty": false, "ownGoal": false },
+                { "player": "Ángel Di María", "minute": 73, "penalty": false, "ownGoal": false }
+              ],
+              "cards": []
+            }
+          ]
+        },
+        {
+          "round": "final",
+          "matches": [
+            {
+              "id": "match-2026-final",
+              "stage": "final",
+              "homeTeam": "Argentina",
+              "awayTeam": "Spain",
+              "homeTeamId": "arg-2026",
+              "awayTeamId": "spa-2026",
+              "homeScore": 1,
+              "awayScore": 0,
+              "date": "2026-07-19T18:00:00Z",
+              "venue": "MetLife Stadium",
+              "city": "East Rutherford",
+              "attendance": 82000,
+              "status": "completed",
+              "goals": [
+                { "player": "Lionel Messi", "minute": 59, "penalty": false, "ownGoal": false }
+              ],
+              "cards": [],
+              "playerOfMatch": "Lionel Messi"
+            }
+          ]
+        }
+      ],
+      "players": [
+        {
+          "id": "messi-2026",
+          "name": "Lionel Messi",
+          "country": "Argentina",
+          "position": "FW",
+          "goals": 8,
+          "assists": 3,
+          "yellowCards": 1,
+          "redCards": 0,
+          "playerOfMatch": 4,
+          "cleanSheets": 0
+        },
+        {
+          "id": "di-maria-2026",
+          "name": "Ángel Di María",
+          "country": "Argentina",
+          "position": "MF",
+          "goals": 5,
+          "assists": 2,
+          "yellowCards": 2,
+          "redCards": 0,
+          "playerOfMatch": 2,
+          "cleanSheets": 0
+        },
+        {
+          "id": "alvarez-2026",
+          "name": "Julián Álvarez",
+          "country": "Argentina",
+          "position": "FW",
+          "goals": 6,
+          "assists": 1,
+          "yellowCards": 1,
+          "redCards": 0,
+          "playerOfMatch": 1,
+          "cleanSheets": 0
+        },
+        {
+          "id": "wirtz-2026",
+          "name": "Florian Wirtz",
+          "country": "Germany",
+          "position": "FW",
+          "goals": 5,
+          "assists": 4,
+          "yellowCards": 2,
+          "redCards": 0,
+          "playerOfMatch": 2,
+          "cleanSheets": 0
+        },
+        {
+          "id": "gakpo-2026",
+          "name": "Cody Gakpo",
+          "country": "Netherlands",
+          "position": "FW",
+          "goals": 4,
+          "assists": 2,
+          "yellowCards": 0,
+          "redCards": 0,
+          "playerOfMatch": 1,
+          "cleanSheets": 0
+        }
+      ]
+    }
+  ]
+}
