@@ -1,23 +1,22 @@
-import { notFound, redirect } from 'next/navigation'
+import { redirect } from 'next/navigation'
 import WorldCupApp from '@/components/WorldCupApp'
-
-const VALID_YEARS = [1998, 2002, 2006, 2010, 2014, 2018, 2022, 2026]
-const VALID_TABS = ['brackets', 'groups', 'stats'] as const
+import { VALID_YEARS, VALID_TABS, LATEST_YEAR, isValidYear, isValidTab } from '@/lib/worldCupYears'
 
 export default async function YearTabPage({ params }: { params: Promise<{ year: string; tab: string }> }) {
   const { year, tab } = await params
   const parsed = parseInt(year, 10)
 
-  if (isNaN(parsed) || !VALID_YEARS.includes(parsed)) {
-    notFound()
+  // Unknown year → fall back to the latest World Cup's brackets
+  if (!isValidYear(parsed)) {
+    redirect(`/${LATEST_YEAR}/brackets`)
   }
 
-  // Any unknown tab falls back to the brackets view for that year
-  if (!VALID_TABS.includes(tab as (typeof VALID_TABS)[number])) {
+  // Unknown tab → fall back to that year's brackets
+  if (!isValidTab(tab)) {
     redirect(`/${parsed}/brackets`)
   }
 
-  return <WorldCupApp initialYear={parsed} initialTab={tab as (typeof VALID_TABS)[number]} />
+  return <WorldCupApp initialYear={parsed} initialTab={tab} />
 }
 
 export function generateStaticParams() {

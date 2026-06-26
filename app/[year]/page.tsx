@@ -1,13 +1,13 @@
-import { notFound, redirect } from 'next/navigation'
-
-const VALID_YEARS = [1998, 2002, 2006, 2010, 2014, 2018, 2022, 2026]
+import { redirect } from 'next/navigation'
+import { VALID_YEARS, LATEST_YEAR, isValidYear } from '@/lib/worldCupYears'
 
 export default async function YearPage({ params }: { params: Promise<{ year: string }> }) {
   const { year } = await params
   const parsed = parseInt(year, 10)
 
-  if (isNaN(parsed) || !VALID_YEARS.includes(parsed)) {
-    notFound()
+  // Unknown year → fall back to the latest World Cup's brackets
+  if (!isValidYear(parsed)) {
+    redirect(`/${LATEST_YEAR}/brackets`)
   }
 
   // Canonical URL always includes the tab segment
