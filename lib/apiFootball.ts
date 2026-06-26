@@ -89,28 +89,24 @@ async function apiFetch<T>(path: string): Promise<T | null> {
   }
 }
 
+// Retry wrapper for transient failures (proxy drops, brief network blips).
+// Only re-fires when apiFetch returns null (a real error) — a successful but
+// empty response (e.g. []) is returned as-is, so normal call volume is unchanged.
+async function apiFetchRetry<T>(path: string, retries = 1): Promise<T | null> {
+  for (let attempt = 0; ; attempt++) {
+    const result = await apiFetch<T>(path)
+    if (result !== null || attempt >= retries) return result
+  }
+}
+
 const LIVE_STATUS_SET = new Set(['1H', 'HT', '2H', 'ET', 'BT', 'P', 'INT'])
 const DONE_STATUS_SET = new Set(['FT', 'AET', 'PEN'])
-const THREE_DAYS_MS = 3 * 24 * 60 * 60 * 1000
+const TWO_DAYS_MS = 2 * 24 * 60 * 60 * 1000
 
 // Actual shape of /standings response: [{league: {standings: ApiStandingEntry[][]}}]
 type StandingsResponse = Array<{ league: { standings: ApiStandingEntry[][] } }>
 
-const NAME_ALIASES: Record<string, string> = {
-  'united states': 'usa',
-  'korea republic': 'south korea',
-  'ir iran': 'iran',
-  'côte d ivoire': 'ivory coast',
-  'cote d ivoire': 'ivory coast',
-}
-function normName(n: string): string {
-  const lower = n.toLowerCase().replace(/[^a-z0-9 ]/g, '').trim()
-  return NAME_ALIASES[lower] ?? lower
-}
-
-// rawMatches: existing DB matches — used to detect goal-count mismatches so we
-// can back-fill event detail for completed matches outside the 3-day window
-export async function fetchWc2026Data(rawMatches: any[] = []): Promise<ApiFetchedData | null> {
+export async function fetchWc2026Data(): Promise<ApiFetchedData | null> {
   const apiKey = process.env.API_FOOTBALL_KEY
   if (!apiKey) return null
 
@@ -125,53 +121,35 @@ export async function fetchWc2026Data(rawMatches: any[] = []): Promise<ApiFetche
 
   const standings: ApiStandingEntry[] = standingsWrapper?.[0]?.league?.standings?.flat() ?? []
 
-  // Build a lookup from DB matches: normHome__normAway → stored goal count
-  const matchGoalCounts = new Map<string, number>()
-  for (const m of rawMatches) {
-    if (!m.homeTeam || !m.awayTeam) continue
-    matchGoalCounts.set(`${normName(m.homeTeam)}__${normName(m.awayTeam)}`, m.goals?.length ?? 0)
-  }
-
-  // Identify fixtures where stored goal count != actual score (need back-fill)
-  const priorityIds: number[] = []
-  for (const f of fixtures) {
-    if (!DONE_STATUS_SET.has(f.fixture.status.short)) continue
-    const key = `${normName(f.teams.home.name)}__${normName(f.teams.away.name)}`
-    const stored = matchGoalCounts.get(key)
-    if (stored === undefined) continue
-    const actual = (f.goals.home ?? 0) + (f.goals.away ?? 0)
-    if (stored !== actual) priorityIds.push(f.fixture.id)
-  }
-
-  const prioritySet = new Set(priorityIds)
-
-  // Recent completed/live fixtures (last 3 days)
-  const cutoff = Date.now() - THREE_DAYS_MS
-  const recentFixtures = fixtures.filter(f => {
+  // Only fetch event/stat detail for live + recently-finished matches (last 2
+  // days). Historical detail already lives in the DB, so there's no need to
+  // re-pull it every run; a 2-day window covers late-night finishes and gives
+  // each new match many hourly passes to capture its events reliably.
+  const cutoff = Date.now() - TWO_DAYS_MS
+  const detailFixtures = fixtures.filter(f => {
     const status = f.fixture.status.short
     if (!LIVE_STATUS_SET.has(status) && !DONE_STATUS_SET.has(status)) return false
     return new Date(f.fixture.date).getTime() > cutoff
   })
 
-  // Priority fixtures not already covered by the recent window
-  const recentIds = new Set(recentFixtures.map(f => f.fixture.id))
-  const priorityOnly = fixtures.filter(f => prioritySet.has(f.fixture.id) && !recentIds.has(f.fixture.id))
-
-  // Combined: priority first, then recent — cap at 20 fixtures (40 API calls)
-  const detailFixtures = [...priorityOnly, ...recentFixtures].slice(0, 20)
-
-  // Fetch events + statistics in parallel
+  // Fetch events + statistics in batches. Firing all detail calls at once
+  // (up to 80 parallel requests) can overwhelm a proxy/connection pool and
+  // drop responses silently; batching keeps concurrency bounded and reliable.
   const fixtureEvents: Record<number, ApiMatchEvent[]> = {}
   const fixtureStats: Record<number, ApiMatchStatBlock[]> = {}
 
-  await Promise.all(
-    detailFixtures.flatMap(f => [
-      apiFetch<ApiMatchEvent[]>(`/fixtures/events?fixture=${f.fixture.id}`)
-        .then(ev => { if (ev?.length) fixtureEvents[f.fixture.id] = ev }),
-      apiFetch<ApiMatchStatBlock[]>(`/fixtures/statistics?fixture=${f.fixture.id}`)
-        .then(st => { if (st?.length) fixtureStats[f.fixture.id] = st }),
-    ])
-  )
+  const BATCH_SIZE = 6  // 6 fixtures = 12 concurrent requests per batch
+  for (let i = 0; i < detailFixtures.length; i += BATCH_SIZE) {
+    const batch = detailFixtures.slice(i, i + BATCH_SIZE)
+    await Promise.all(
+      batch.flatMap(f => [
+        apiFetchRetry<ApiMatchEvent[]>(`/fixtures/events?fixture=${f.fixture.id}`)
+          .then(ev => { if (ev?.length) fixtureEvents[f.fixture.id] = ev }),
+        apiFetchRetry<ApiMatchStatBlock[]>(`/fixtures/statistics?fixture=${f.fixture.id}`)
+          .then(st => { if (st?.length) fixtureStats[f.fixture.id] = st }),
+      ])
+    )
+  }
 
   return {
     fetchedAt: new Date().toISOString(),

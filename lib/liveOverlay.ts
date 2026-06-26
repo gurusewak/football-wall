@@ -1,4 +1,5 @@
 import { ApiFetchedData, ApiFixture, ApiMatchEvent, ApiMatchStatBlock, ApiStandingEntry } from './apiFootball'
+import { normalizeTeamName } from './teamNames'
 
 export function toDateOnly(date: string | null | undefined): string | null {
   if (!date) return null
@@ -21,21 +22,6 @@ export function getMatchesNeedingApi(rawMatches: any[], now: Date): any[] {
 export function isJsonFreshForToday(rawTournament: any, now: Date): boolean {
   const allMatches: any[] = rawTournament.matches ?? []
   return getMatchesNeedingApi(allMatches, now).length === 0
-}
-
-// ── Name normalization for fuzzy team-name matching ───────────────────────────
-
-const NAME_ALIASES: Record<string, string> = {
-  'united states': 'usa',
-  'korea republic': 'south korea',
-  'ir iran': 'iran',
-  'côte d ivoire': 'ivory coast',
-  'cote d ivoire': 'ivory coast',
-}
-
-function normalizeTeamName(name: string): string {
-  const lower = name.toLowerCase().replace(/[^a-z0-9 ]/g, '').trim()
-  return NAME_ALIASES[lower] ?? lower
 }
 
 // ── API fixture status → JSON status ─────────────────────────────────────────

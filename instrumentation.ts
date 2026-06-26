@@ -33,7 +33,7 @@ export async function register() {
     }
 
     console.log('  ↳ [dev-sync] Syncing 2026 data from API-Football...')
-    const apiData = await fetchWc2026Data(raw.matches ?? [])
+    const apiData = await fetchWc2026Data()
     if (!apiData) {
       console.log('  ↳ [dev-sync] API-Football unavailable, using existing DB data')
       return

@@ -39,10 +39,8 @@ async function handleSync(req: NextRequest) {
     return NextResponse.json({ status: 'skipped', reason: 'data_is_fresh' })
   }
 
-  // 4. Fetch live data from API-FOOTBALL
-  // Pass existing matches so the API layer can detect goal-count mismatches and
-  // back-fill event detail for completed matches outside the 3-day window
-  const apiData = await fetchWc2026Data(raw.matches ?? [])
+  // 4. Fetch live data from API-FOOTBALL (live + last-2-days event detail)
+  const apiData = await fetchWc2026Data()
   if (!apiData) {
     return NextResponse.json({ status: 'error', reason: 'api_failed' })
   }
