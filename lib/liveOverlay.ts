@@ -192,11 +192,14 @@ export function mergeApiOverlay(rawTournament: any, apiData: ApiFetchedData): Me
     if (apiStatus === 'live') liveMatchCount++
 
     // ── Events: goals + cards ──────────────────────────────────────────────
-    // Update events for live matches or matches missing event data
+    // Update events for live matches, matches missing events, or completed matches
+    // where stored goal count doesn't match the actual score (late API data arrival)
     const events = apiData.fixtureEvents[fixtureId]
     if (events?.length) {
       const hasExistingEvents = (match.goals?.length > 0) || (match.cards?.length > 0)
-      if (apiStatus === 'live' || !hasExistingEvents) {
+      const expectedGoals = (match.homeScore ?? 0) + (match.awayScore ?? 0)
+      const goalCountMismatch = (match.goals?.length ?? 0) !== expectedGoals
+      if (apiStatus === 'live' || !hasExistingEvents || goalCountMismatch) {
         match.goals = eventsToGoals(events, match.id, homeTeamName, awayTeamName, match.homeTeamId ?? '', match.awayTeamId ?? '', normHome)
         match.cards = eventsToCards(events, match.id, homeTeamName, awayTeamName, match.homeTeamId ?? '', match.awayTeamId ?? '', normHome)
         if (apiStatus !== 'live') matchesUpdated++
