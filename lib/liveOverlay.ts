@@ -47,7 +47,8 @@ function eventsToGoals(
   normHome: string,
 ): any[] {
   return events
-    .filter(e => e.type === 'Goal')
+    // A goal must have a scorer — drop upstream phantoms with a null player
+    .filter(e => e.type === 'Goal' && e.player?.name)
     .map((e, i) => {
       const isHome = normalizeTeamName(e.team.name) === normHome
       return {
@@ -300,8 +301,81 @@ export function mergeApiOverlay(rawTournament: any, apiData: ApiFetchedData): Me
     }
   }
 
-  // ── Top scorers fallback ──────────────────────────────────────────────────
-  if ((!tournament.players || tournament.players.length === 0) && apiData.topScorers.length > 0) {
+  // ── Sanitize stored goal events ───────────────────────────────────────────
+  // Drop any goal with no scorer (upstream data errors, e.g. a phantom goal with
+  // a null player). Runs over every match — even those outside the fetch window —
+  // so the per-scorer breakdown can never exceed the actual score.
+  for (const match of tournament.matches ?? []) {
+    if (Array.isArray(match.goals) && match.goals.length) {
+      match.goals = match.goals.filter((g: any) => g.scorerPlayerName)
+    }
+  }
+
+  // ── Recompute aggregate tournament stats from the merged matches ──────────
+  // tournament.matches holds every match (group + knockout + placement), so the
+  // totals here stay correct through the whole tournament.
+  {
+    const all: any[] = tournament.matches ?? []
+    const completed = all.filter(m => m.status === 'completed' && m.homeScore != null && m.awayScore != null)
+    const totalGoals = completed.reduce((sum, m) => sum + (m.homeScore ?? 0) + (m.awayScore ?? 0), 0)
+    const completedCount = completed.length
+    if (!tournament.tournamentSummary) tournament.tournamentSummary = {}
+    const summary = tournament.tournamentSummary
+    summary.totalGoals = totalGoals
+    summary.completedMatches = completedCount
+    summary.totalMatchesPlayed = completedCount
+    summary.scheduledMatches = all.length - completedCount
+    summary.averageGoalsPerMatch = completedCount > 0 ? Math.round((totalGoals / completedCount) * 1000) / 1000 : 0
+  }
+
+  // ── Player leaderboards (Golden Boot + Top Assists) from API ──────────────
+  // The API aggregates by player ID, which is more reliable than summing event
+  // names (the same player can appear under different spellings across fixtures).
+  const teamByNorm = new Map<string, { id: string; name: string }>()
+  for (const t of tournament.teams ?? []) {
+    if (t?.name) teamByNorm.set(normalizeTeamName(t.name), { id: t.id ?? '', name: t.name })
+  }
+  const toLeaders = (entries: typeof apiData.topScorers) =>
+    entries.slice(0, 10).map((p, i) => {
+      const stat = p.statistics?.[0]
+      const team = stat ? teamByNorm.get(normalizeTeamName(stat.team.name)) : undefined
+      return {
+        rank: i + 1,
+        playerName: p.player.name,
+        playerId: p.player.name.toLowerCase().replace(/[^a-z0-9]+/g, '-').replace(/^-|-$/g, ''),
+        teamId: team?.id ?? '',
+        teamName: team?.name ?? stat?.team.name ?? '',
+        goals: stat?.goals.total ?? 0,
+        assists: stat?.goals.assists ?? 0,
+        verified: true,
+        sourceIds: ['api-football'],
+        minutesPlayed: null,
+      }
+    })
+
+  const upsertAward = (name: string, matcher: RegExp, leaders: any[]) => {
+    if (!leaders.length) return
+    if (!tournament.awardStandings) tournament.awardStandings = []
+    const existing = tournament.awardStandings.find((s: any) => matcher.test(s.awardName))
+    if (existing) {
+      existing.leaders = leaders
+    } else {
+      tournament.awardStandings.push({
+        id: name.toLowerCase().replace(/ /g, '-'),
+        awardName: name,
+        leaders,
+        verified: true,
+        sourceIds: ['api-football'],
+        tournamentYear: tournament.year,
+      })
+    }
+  }
+
+  upsertAward('Golden Boot', /boot|scorer/i, toLeaders(apiData.topScorers))
+  upsertAward('Top Assists', /assist/i, toLeaders(apiData.topAssists))
+
+  // Keep tournament.players in sync as a flat fallback leaderboard
+  if (apiData.topScorers.length > 0) {
     tournament.players = apiData.topScorers.slice(0, 20).map(p => ({
       id: p.player.name.toLowerCase().replace(/ /g, '-'),
       name: p.player.name,

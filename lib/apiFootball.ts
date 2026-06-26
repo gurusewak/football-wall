@@ -67,6 +67,7 @@ export interface ApiFetchedData {
   liveFixtures: ApiFixture[]
   standings: ApiStandingEntry[]
   topScorers: ApiTopScorer[]
+  topAssists: ApiTopScorer[]
   // Per-fixture detail for live + recently completed matches (keyed by fixture ID)
   fixtureEvents: Record<number, ApiMatchEvent[]>
   fixtureStats: Record<number, ApiMatchStatBlock[]>
@@ -110,11 +111,12 @@ export async function fetchWc2026Data(): Promise<ApiFetchedData | null> {
   const apiKey = process.env.API_FOOTBALL_KEY
   if (!apiKey) return null
 
-  const [fixtures, liveFixtures, standingsWrapper, topScorers] = await Promise.all([
+  const [fixtures, liveFixtures, standingsWrapper, topScorers, topAssists] = await Promise.all([
     apiFetch<ApiFixture[]>(`/fixtures?league=${WC_LEAGUE_ID}&season=${WC_SEASON}`),
     apiFetch<ApiFixture[]>(`/fixtures?league=${WC_LEAGUE_ID}&season=${WC_SEASON}&live=all`),
     apiFetch<StandingsResponse>(`/standings?league=${WC_LEAGUE_ID}&season=${WC_SEASON}`),
     apiFetch<ApiTopScorer[]>(`/players/topscorers?league=${WC_LEAGUE_ID}&season=${WC_SEASON}`),
+    apiFetch<ApiTopScorer[]>(`/players/topassists?league=${WC_LEAGUE_ID}&season=${WC_SEASON}`),
   ])
 
   if (!fixtures) return null
@@ -158,6 +160,7 @@ export async function fetchWc2026Data(): Promise<ApiFetchedData | null> {
     liveFixtures: liveFixtures ?? [],
     standings,
     topScorers: topScorers ?? [],
+    topAssists: topAssists ?? [],
     fixtureEvents,
     fixtureStats,
   }
