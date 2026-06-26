@@ -138,14 +138,14 @@ function WallChartPoster({ tournament, simKey, onSimulate, onMatchClick }: {
 }
 
 // ── Main app component ────────────────────────────────────────────────────────
-export default function WorldCupApp({ initialYear }: { initialYear?: number }) {
+export default function WorldCupApp({ initialYear, initialTab }: { initialYear?: number; initialTab?: Tab }) {
   const [yearIndex, setYearIndex]             = useState<YearEntry[] | null>(null)
   const [latestYear, setLatestYear]           = useState<number | null>(null)
   const [selectedYear, setSelectedYear]       = useState<number | null>(initialYear ?? null)
   const [tournament, setTournament]           = useState<Tournament | null>(null)
   const [cache, setCache]                     = useState<Map<number, Tournament>>(new Map())
   const [loading, setLoading]                 = useState(true)
-  const [tab, setTab]                         = useState<Tab>('brackets')
+  const [tab, setTab]                         = useState<Tab>(initialTab ?? 'brackets')
   const [simKey, setSimKey]                   = useState(0)
   const [dataSource, setDataSource]           = useState<'json' | 'json+api' | 'db' | null>(null)
   const [apiUpdatedAt, setApiUpdatedAt]       = useState<string | null>(null)
@@ -183,7 +183,7 @@ export default function WorldCupApp({ initialYear }: { initialYear?: number }) {
       if (!initialYear) {
         // No year in URL — load latest and update URL bar without navigation
         setSelectedYear(idx.latestYear)
-        window.history.replaceState({}, '', '/' + idx.latestYear)
+        window.history.replaceState({}, '', `/${idx.latestYear}/brackets`)
       }
     }).catch(console.error)
   }, []) // eslint-disable-line react-hooks/exhaustive-deps
@@ -191,12 +191,13 @@ export default function WorldCupApp({ initialYear }: { initialYear?: number }) {
   // ── Browser back/forward: sync state from URL ─────────────────────────────
   useEffect(() => {
     const handlePopState = () => {
-      const m = window.location.pathname.match(/^\/(\d{4})$/)
+      const m = window.location.pathname.match(/^\/(\d{4})(?:\/(brackets|groups|stats))?$/)
       if (m) {
         const y = parseInt(m[1], 10)
+        const t = (m[2] as Tab) || 'brackets'
         if (y >= 1998 && y <= 2030) {
           setSelectedYear(y)
-          setTab('brackets')
+          setTab(t)
           setSimKey(0)
           setSelectedMatchId(null)
         }
@@ -261,8 +262,14 @@ export default function WorldCupApp({ initialYear }: { initialYear?: number }) {
     setTab('brackets')
     setSimKey(0)
     setSelectedMatchId(null)
-    window.history.pushState({}, '', '/' + y)
+    window.history.pushState({}, '', `/${y}/brackets`)
   }, [])
+
+  // ── Tab change — update view + URL so each tab is shareable/bookmarkable ─────
+  const changeTab = useCallback((t: Tab) => {
+    setTab(t)
+    if (selectedYear) window.history.pushState({}, '', `/${selectedYear}/${t}`)
+  }, [selectedYear])
 
   const openMatch = useCallback((id: string) => setSelectedMatchId(id), [])
 
@@ -290,7 +297,14 @@ export default function WorldCupApp({ initialYear }: { initialYear?: number }) {
           className="flex items-center gap-2 cursor-pointer"
           style={{ background: 'none', border: 'none', padding: 0 }}
           onClick={() => {
-            if (latestYear && latestYear !== selectedYear) changeYear(latestYear)
+            const target = latestYear ?? selectedYear
+            if (target && target !== selectedYear) {
+              // Different year — changeYear resets to the brackets tab and pushes /{year}/brackets
+              changeYear(target)
+            } else if (tab !== 'brackets') {
+              // Already on the latest year — just snap back to the brackets tab
+              changeTab('brackets')
+            }
             window.scrollTo({ top: 0, behavior: 'smooth' })
           }}
         >
@@ -358,7 +372,7 @@ export default function WorldCupApp({ initialYear }: { initialYear?: number }) {
         {(['brackets', 'groups', 'stats'] as Tab[]).map(t => (
           <button
             key={t}
-            onClick={() => setTab(t)}
+            onClick={() => changeTab(t)}
             className="flex-1 max-w-[140px] px-4 py-3 rounded text-[13px] font-semibold tracking-wide uppercase transition-all"
             style={{
               background: tab === t ? 'rgba(255,255,255,0.09)' : 'transparent',

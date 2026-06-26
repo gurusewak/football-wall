@@ -1,5 +1,4 @@
-import { notFound } from 'next/navigation'
-import WorldCupApp from '@/components/WorldCupApp'
+import { notFound, redirect } from 'next/navigation'
 
 const VALID_YEARS = [1998, 2002, 2006, 2010, 2014, 2018, 2022, 2026]
 
@@ -11,7 +10,8 @@ export default async function YearPage({ params }: { params: Promise<{ year: str
     notFound()
   }
 
-  return <WorldCupApp initialYear={parsed} />
+  // Canonical URL always includes the tab segment
+  redirect(`/${parsed}/brackets`)
 }
 
 export function generateStaticParams() {
