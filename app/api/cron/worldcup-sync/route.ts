@@ -3,7 +3,7 @@ import { NextRequest, NextResponse } from 'next/server'
 import fs from 'fs'
 import path from 'path'
 import { fetchWc2026Data } from '@/lib/apiFootball'
-import { isJsonFreshForToday, mergeApiOverlay } from '@/lib/liveOverlay'
+import { isJsonFreshForToday, isTournamentOver, mergeApiOverlay } from '@/lib/liveOverlay'
 import { dbUpsert, dbGet } from '@/lib/db/helpers'
 
 export const dynamic = 'force-dynamic'
@@ -34,22 +34,27 @@ async function handleSync(req: NextRequest) {
     return NextResponse.json({ status: 'error', reason: 'failed_to_read_data' })
   }
 
-  // 3. Skip only if all today's matches are already complete with scores
+  // 3. Stop all API pulls once the tournament is over (final played / past end date)
+  if (isTournamentOver(raw, now)) {
+    return NextResponse.json({ status: 'skipped', reason: 'tournament_complete' })
+  }
+
+  // 4. Skip only if all today's matches are already complete with scores
   if (isJsonFreshForToday(raw, now)) {
     return NextResponse.json({ status: 'skipped', reason: 'data_is_fresh' })
   }
 
-  // 4. Fetch live data from API-FOOTBALL (live + last-2-days event detail)
+  // 5. Fetch live data from API-FOOTBALL (live + last-2-days event detail)
   const apiData = await fetchWc2026Data()
   if (!apiData) {
     return NextResponse.json({ status: 'error', reason: 'api_failed' })
   }
 
-  // 5. Merge API data into the base JSON (scores, events, stats, standings)
+  // 6. Merge API data into the base JSON (scores, events, stats, standings)
   const mergeResult = mergeApiOverlay(raw, apiData)
   const enriched = { ...mergeResult.tournament, lastUpdated: now.toISOString() }
 
-  // 6. Always persist to DB so page loads always get the latest data
+  // 7. Always persist to DB so page loads always get the latest data
   await dbUpsert('wc-2026', enriched)
 
   return NextResponse.json({

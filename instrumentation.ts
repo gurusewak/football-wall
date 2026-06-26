@@ -6,7 +6,7 @@ export async function register() {
   try {
     const [
       { fetchWc2026Data },
-      { mergeApiOverlay, isJsonFreshForToday },
+      { mergeApiOverlay, isJsonFreshForToday, isTournamentOver },
       { dbGet, dbUpsert },
       { default: fs },
       { default: path },
@@ -25,6 +25,11 @@ export async function register() {
     if (!raw) {
       const filePath = path.join(process.cwd(), 'public/data/wc-2026.json')
       raw = JSON.parse(fs.readFileSync(filePath, 'utf8'))
+    }
+
+    if (isTournamentOver(raw, now)) {
+      console.log('  ↳ [dev-sync] Tournament complete — API pulls stopped')
+      return
     }
 
     if (isJsonFreshForToday(raw, now)) {

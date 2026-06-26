@@ -24,6 +24,27 @@ export function isJsonFreshForToday(rawTournament: any, now: Date): boolean {
   return getMatchesNeedingApi(allMatches, now).length === 0
 }
 
+const DAY_MS = 24 * 60 * 60 * 1000
+
+// Once the World Cup is over there is nothing left to pull, so the sync should
+// stop hitting the API entirely. Two independent triggers:
+//   1. Data-driven: the final is completed and its goals are captured.
+//   2. Date backstop: a couple of days past the scheduled end date — guarantees
+//      pulls stop (≈ July 20-21 2026) even if the final's events never arrive.
+export function isTournamentOver(rawTournament: any, now: Date): boolean {
+  const matches: any[] = rawTournament.matches ?? []
+  const final = matches.find(m => m.round === 'final')
+  if (final && final.status === 'completed' && final.homeScore != null && final.awayScore != null) {
+    const expectedGoals = (final.homeScore ?? 0) + (final.awayScore ?? 0)
+    if ((final.goals?.length ?? 0) >= expectedGoals) return true
+  }
+  const endDate: string | undefined = rawTournament.tournamentSummary?.endDate
+  const backstop = endDate
+    ? new Date(endDate).getTime() + 2 * DAY_MS
+    : Date.parse('2026-07-21T00:00:00Z')
+  return now.getTime() > backstop
+}
+
 // ── API fixture status → JSON status ─────────────────────────────────────────
 
 const LIVE_STATUSES = new Set(['1H', 'HT', '2H', 'ET', 'BT', 'P', 'INT'])
