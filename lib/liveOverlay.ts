@@ -143,12 +143,14 @@ export interface MergeResult {
 export function mergeApiOverlay(rawTournament: any, apiData: ApiFetchedData): MergeResult {
   const tournament = JSON.parse(JSON.stringify(rawTournament))
 
-  // Build fixture map: normHome__normAway → ApiFixture
+  // Build fixture map keyed by both orderings so our JSON home/away doesn't
+  // need to match what API-Football considers home/away (World Cup has no real home)
   const apiFixtureMap = new Map<string, ApiFixture>()
   for (const fixture of apiData.fixtures) {
     const normHome = normalizeTeamName(fixture.teams.home.name)
     const normAway = normalizeTeamName(fixture.teams.away.name)
     apiFixtureMap.set(`${normHome}__${normAway}`, fixture)
+    apiFixtureMap.set(`${normAway}__${normHome}`, fixture)
   }
 
   let matchesUpdated = 0
