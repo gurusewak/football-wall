@@ -40,7 +40,9 @@ async function handleSync(req: NextRequest) {
   }
 
   // 4. Fetch live data from API-FOOTBALL
-  const apiData = await fetchWc2026Data()
+  // Pass existing matches so the API layer can detect goal-count mismatches and
+  // back-fill event detail for completed matches outside the 3-day window
+  const apiData = await fetchWc2026Data(raw.matches ?? [])
   if (!apiData) {
     return NextResponse.json({ status: 'error', reason: 'api_failed' })
   }

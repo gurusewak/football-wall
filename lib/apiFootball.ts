@@ -96,7 +96,21 @@ const THREE_DAYS_MS = 3 * 24 * 60 * 60 * 1000
 // Actual shape of /standings response: [{league: {standings: ApiStandingEntry[][]}}]
 type StandingsResponse = Array<{ league: { standings: ApiStandingEntry[][] } }>
 
-export async function fetchWc2026Data(): Promise<ApiFetchedData | null> {
+const NAME_ALIASES: Record<string, string> = {
+  'united states': 'usa',
+  'korea republic': 'south korea',
+  'ir iran': 'iran',
+  'côte d ivoire': 'ivory coast',
+  'cote d ivoire': 'ivory coast',
+}
+function normName(n: string): string {
+  const lower = n.toLowerCase().replace(/[^a-z0-9 ]/g, '').trim()
+  return NAME_ALIASES[lower] ?? lower
+}
+
+// rawMatches: existing DB matches — used to detect goal-count mismatches so we
+// can back-fill event detail for completed matches outside the 3-day window
+export async function fetchWc2026Data(rawMatches: any[] = []): Promise<ApiFetchedData | null> {
   const apiKey = process.env.API_FOOTBALL_KEY
   if (!apiKey) return null
 
@@ -111,20 +125,47 @@ export async function fetchWc2026Data(): Promise<ApiFetchedData | null> {
 
   const standings: ApiStandingEntry[] = standingsWrapper?.[0]?.league?.standings?.flat() ?? []
 
-  // Identify fixtures needing per-fixture detail: live or completed within the last 3 days
+  // Build a lookup from DB matches: normHome__normAway → stored goal count
+  const matchGoalCounts = new Map<string, number>()
+  for (const m of rawMatches) {
+    if (!m.homeTeam || !m.awayTeam) continue
+    matchGoalCounts.set(`${normName(m.homeTeam)}__${normName(m.awayTeam)}`, m.goals?.length ?? 0)
+  }
+
+  // Identify fixtures where stored goal count != actual score (need back-fill)
+  const priorityIds: number[] = []
+  for (const f of fixtures) {
+    if (!DONE_STATUS_SET.has(f.fixture.status.short)) continue
+    const key = `${normName(f.teams.home.name)}__${normName(f.teams.away.name)}`
+    const stored = matchGoalCounts.get(key)
+    if (stored === undefined) continue
+    const actual = (f.goals.home ?? 0) + (f.goals.away ?? 0)
+    if (stored !== actual) priorityIds.push(f.fixture.id)
+  }
+
+  const prioritySet = new Set(priorityIds)
+
+  // Recent completed/live fixtures (last 3 days)
   const cutoff = Date.now() - THREE_DAYS_MS
-  const detailFixtures = fixtures.filter(f => {
+  const recentFixtures = fixtures.filter(f => {
     const status = f.fixture.status.short
     if (!LIVE_STATUS_SET.has(status) && !DONE_STATUS_SET.has(status)) return false
     return new Date(f.fixture.date).getTime() > cutoff
   })
 
-  // Fetch events + statistics in parallel for up to 15 fixtures (30 API calls max)
+  // Priority fixtures not already covered by the recent window
+  const recentIds = new Set(recentFixtures.map(f => f.fixture.id))
+  const priorityOnly = fixtures.filter(f => prioritySet.has(f.fixture.id) && !recentIds.has(f.fixture.id))
+
+  // Combined: priority first, then recent — cap at 20 fixtures (40 API calls)
+  const detailFixtures = [...priorityOnly, ...recentFixtures].slice(0, 20)
+
+  // Fetch events + statistics in parallel
   const fixtureEvents: Record<number, ApiMatchEvent[]> = {}
   const fixtureStats: Record<number, ApiMatchStatBlock[]> = {}
 
   await Promise.all(
-    detailFixtures.slice(0, 15).flatMap(f => [
+    detailFixtures.flatMap(f => [
       apiFetch<ApiMatchEvent[]>(`/fixtures/events?fixture=${f.fixture.id}`)
         .then(ev => { if (ev?.length) fixtureEvents[f.fixture.id] = ev }),
       apiFetch<ApiMatchStatBlock[]>(`/fixtures/statistics?fixture=${f.fixture.id}`)
