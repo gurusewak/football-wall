@@ -1,4 +1,5 @@
 import 'server-only'
+import { normalizeTeamName } from './teamNames'
 
 const BASE_URL = 'https://v3.football.api-sports.io'
 const WC_LEAGUE_ID = 1  // FIFA World Cup
@@ -71,6 +72,21 @@ export interface ApiFetchedData {
   // Per-fixture detail for live + recently completed matches (keyed by fixture ID)
   fixtureEvents: Record<number, ApiMatchEvent[]>
   fixtureStats: Record<number, ApiMatchStatBlock[]>
+  // Per-fixture goalkeeper saves (keyed by fixture ID)
+  fixtureGkSaves: Record<number, Array<{ playerName: string; teamName: string; saves: number }>>
+  // Fixture IDs whose /fixtures/players we successfully queried this run (even if
+  // no keeper data came back) — lets the merge mark them done so empty results
+  // don't block the capped back-fill from reaching other matches.
+  gkFetchedFixtureIds: number[]
+}
+
+// Shape of /fixtures/players response (only the bits we need)
+interface ApiFixturePlayers {
+  team: { id: number; name: string }
+  players: Array<{
+    player: { id: number; name: string }
+    statistics: Array<{ games: { position: string | null }; goals: { saves: number | null } }>
+  }>
 }
 
 async function apiFetch<T>(path: string): Promise<T | null> {
@@ -107,7 +123,10 @@ const TWO_DAYS_MS = 2 * 24 * 60 * 60 * 1000
 // Actual shape of /standings response: [{league: {standings: ApiStandingEntry[][]}}]
 type StandingsResponse = Array<{ league: { standings: ApiStandingEntry[][] } }>
 
-export async function fetchWc2026Data(): Promise<ApiFetchedData | null> {
+// rawMatches: existing DB matches — used to find completed matches still missing
+// goalkeeper-saves data so we can back-fill them (a few per run) without re-pulling
+// per-player data for the whole tournament every sync.
+export async function fetchWc2026Data(rawMatches: any[] = []): Promise<ApiFetchedData | null> {
   const apiKey = process.env.API_FOOTBALL_KEY
   if (!apiKey) return null
 
@@ -153,6 +172,46 @@ export async function fetchWc2026Data(): Promise<ApiFetchedData | null> {
     )
   }
 
+  // ── Goalkeeper saves (per-fixture player data) ─────────────────────────────
+  // /fixtures/players is the only source of per-keeper saves (no season endpoint).
+  // Fetch it for the same window, plus a capped back-fill of completed matches
+  // that don't have saves stored yet — so the season tally fills in over a few
+  // runs and then only new matches cost a call.
+  const fixtureGkSaves: ApiFetchedData['fixtureGkSaves'] = {}
+  const gkAttempted = new Set<number>()
+  const pairKey = (a: string, b: string) => [normalizeTeamName(a), normalizeTeamName(b)].sort().join('__')
+  const needSaves = new Set<string>()
+  for (const m of rawMatches) {
+    if (m?.status === 'completed' && m.homeTeam && m.awayTeam && !m.goalkeeperSavesChecked && !(Array.isArray(m.goalkeeperSaves) && m.goalkeeperSaves.length)) {
+      needSaves.add(pairKey(m.homeTeam, m.awayTeam))
+    }
+  }
+  const windowIds = new Set(detailFixtures.map(f => f.fixture.id))
+  const savesBackfill = fixtures
+    .filter(f => DONE_STATUS_SET.has(f.fixture.status.short) && !windowIds.has(f.fixture.id) && needSaves.has(pairKey(f.teams.home.name, f.teams.away.name)))
+    .slice(0, 12)
+  const gkFixtures = [
+    ...detailFixtures.filter(f => DONE_STATUS_SET.has(f.fixture.status.short) || LIVE_STATUS_SET.has(f.fixture.status.short)),
+    ...savesBackfill,
+  ]
+  for (let i = 0; i < gkFixtures.length; i += BATCH_SIZE) {
+    const batch = gkFixtures.slice(i, i + BATCH_SIZE)
+    await Promise.all(batch.map(f =>
+      apiFetchRetry<ApiFixturePlayers[]>(`/fixtures/players?fixture=${f.fixture.id}`).then(resp => {
+        if (resp == null) return  // transient error → leave for a later retry
+        gkAttempted.add(f.fixture.id)  // got a definitive response (even if empty)
+        const keepers: Array<{ playerName: string; teamName: string; saves: number }> = []
+        for (const team of resp) {
+          for (const p of team.players ?? []) {
+            const st = p.statistics?.[0]
+            if (st?.games?.position === 'G') keepers.push({ playerName: p.player.name, teamName: team.team.name, saves: st.goals?.saves ?? 0 })
+          }
+        }
+        if (keepers.length) fixtureGkSaves[f.fixture.id] = keepers
+      })
+    ))
+  }
+
   return {
     fetchedAt: new Date().toISOString(),
     leagueId: WC_LEAGUE_ID,
@@ -163,5 +222,7 @@ export async function fetchWc2026Data(): Promise<ApiFetchedData | null> {
     topAssists: topAssists ?? [],
     fixtureEvents,
     fixtureStats,
+    fixtureGkSaves,
+    gkFetchedFixtureIds: [...gkAttempted],
   }
 }

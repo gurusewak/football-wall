@@ -25,6 +25,7 @@ function normalizeMatchV2(raw: any, stage: string): Match {
     status: raw.status ?? 'scheduled',
     goals: raw.goals ?? [],
     cards: raw.cards ?? [],
+    goalkeeperSaves: raw.goalkeeperSaves ?? [],
     playerOfMatch: raw.playerOfMatch,
     group: raw.group ?? undefined,
     wentToExtraTime: raw.wentToExtraTime ?? false,

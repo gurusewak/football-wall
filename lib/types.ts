@@ -64,6 +64,7 @@ export interface Match {
   status: 'scheduled' | 'live' | 'completed'
   goals: Goal[]
   cards: Card[]
+  goalkeeperSaves?: Array<{ playerName: string; team: string; teamId: string; saves: number }>
   playerOfMatch?: string
   group?: string
   wentToExtraTime?: boolean

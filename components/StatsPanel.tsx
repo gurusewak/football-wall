@@ -272,6 +272,31 @@ export function StatsPanel({ tournament }: { tournament: Tournament }) {
     }
     const topYellowCards = [...yellowMap.values()].filter(p => p.count >= 2).sort((a, b) => b.count - a.count).slice(0, 5)
 
+    // ── Red card leaders from match events ────────────────────────────────────
+    const redMap = new Map<string, { name: string; team: string; flagCode: string; count: number }>()
+    for (const m of allCompleted) {
+      for (const c of (m.cards as any[]) ?? []) {
+        const pName = c.playerName ?? c.player
+        if (!pName || c.cardType !== 'red') continue
+        const entry = redMap.get(pName) ?? { name: pName, team: c.team ?? m.homeTeam, flagCode: teamFlagMap.get(c.team ?? '') ?? '', count: 0 }
+        entry.count++
+        redMap.set(pName, entry)
+      }
+    }
+    const topRedCards = [...redMap.values()].sort((a, b) => b.count - a.count).slice(0, 5)
+
+    // ── Goalkeeper saves (summed per keeper across matches) ───────────────────
+    const saveMap = new Map<string, { name: string; team: string; flagCode: string; count: number }>()
+    for (const m of allCompleted) {
+      for (const k of (m.goalkeeperSaves as any[]) ?? []) {
+        if (!k.playerName) continue
+        const entry = saveMap.get(k.playerName) ?? { name: k.playerName, team: k.team ?? '', flagCode: teamFlagMap.get(k.team ?? '') ?? '', count: 0 }
+        entry.count += k.saves ?? 0
+        saveMap.set(k.playerName, entry)
+      }
+    }
+    const topSaves = [...saveMap.values()].filter(p => p.count > 0).sort((a, b) => b.count - a.count).slice(0, 5)
+
     // ── Awards — merge winners with goal counts from standings ────────────────
     const standingsGoalMap = new Map<string, number>()
     for (const s of tournament.awardStandings ?? []) {
@@ -318,6 +343,8 @@ export function StatsPanel({ tournament }: { tournament: Tournament }) {
       topScorers,
       topAssists,
       topYellowCards,
+      topRedCards,
+      topSaves,
       highestScoring,
       biggestMargin,
       awards,
@@ -487,6 +514,38 @@ export function StatsPanel({ tournament }: { tournament: Tournament }) {
                     value={p.count}
                     valueLabel="yc"
                     accent="#e8d06a"
+                  />
+                ))}
+              </StatCard>
+            )}
+
+            {stats.topRedCards.length > 0 && (
+              <StatCard title="Most Red Cards">
+                {stats.topRedCards.map((p, i) => (
+                  <TeamRow
+                    key={p.name + i}
+                    rank={i + 1}
+                    flagCode={p.flagCode}
+                    name={p.name}
+                    value={p.count}
+                    valueLabel="rc"
+                    accent="#d96b6b"
+                  />
+                ))}
+              </StatCard>
+            )}
+
+            {stats.topSaves.length > 0 && (
+              <StatCard title="Most Saves (GK)">
+                {stats.topSaves.map((p, i) => (
+                  <TeamRow
+                    key={p.name + i}
+                    rank={i + 1}
+                    flagCode={p.flagCode}
+                    name={p.name}
+                    value={p.count}
+                    valueLabel="sv"
+                    accent="#6abf8f"
                   />
                 ))}
               </StatCard>

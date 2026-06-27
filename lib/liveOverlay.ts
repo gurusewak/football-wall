@@ -163,6 +163,7 @@ export function mergeApiOverlay(rawTournament: any, apiData: ApiFetchedData): Me
 
   let matchesUpdated = 0
   let liveMatchCount = 0
+  const gkFetchedIds = new Set(apiData.gkFetchedFixtureIds ?? [])
 
   const matches: any[] = tournament.matches ?? []
   for (const match of matches) {
@@ -232,6 +233,26 @@ export function mergeApiOverlay(rawTournament: any, apiData: ApiFetchedData): Me
       } else {
         tournament.teamMatchStatistics.push(statEntry)
       }
+    }
+
+    // ── Goalkeeper saves (per-match, persisted so the season tally is stable) ──
+    const gkSaves = apiData.fixtureGkSaves[fixtureId]
+    if (gkSaves?.length) {
+      match.goalkeeperSaves = gkSaves.map(k => {
+        const isHome = normalizeTeamName(k.teamName) === normHome
+        return {
+          playerName: k.playerName,
+          team: isHome ? homeTeamName : awayTeamName,
+          teamId: isHome ? (match.homeTeamId ?? '') : (match.awayTeamId ?? ''),
+          saves: k.saves,
+        }
+      })
+    }
+    // Mark as checked once we've queried it (even if empty), so a match with no
+    // keeper data doesn't perpetually block the capped back-fill.
+    if (gkFetchedIds.has(fixtureId)) {
+      match.goalkeeperSavesChecked = true
+      if (!Array.isArray(match.goalkeeperSaves)) match.goalkeeperSaves = []
     }
   }
 

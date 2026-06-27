@@ -44,8 +44,9 @@ async function handleSync(req: NextRequest) {
     return NextResponse.json({ status: 'skipped', reason: 'data_is_fresh' })
   }
 
-  // 5. Fetch live data from API-FOOTBALL (live + last-2-days event detail)
-  const apiData = await fetchWc2026Data()
+  // 5. Fetch live data from API-FOOTBALL (live + last-2-days event detail;
+  //    raw.matches lets it back-fill goalkeeper saves for older matches)
+  const apiData = await fetchWc2026Data(raw.matches ?? [])
   if (!apiData) {
     return NextResponse.json({ status: 'error', reason: 'api_failed' })
   }
