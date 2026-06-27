@@ -90,11 +90,21 @@ function normalizeV2(raw: any): Tournament {
   const groupByLetter = new Map<string, any>()
   for (const g of raw.groups ?? []) groupByLetter.set(g.group, g)
 
-  const groupSlot = (letter: string, rank: number): string | null => {
+  const groupSlot = (letter: string, position: number): string | null => {
     const g = groupByLetter.get(letter)
-    if (!g || g.standingsStatus !== 'complete' || !Array.isArray(g.standings)) return null
-    const sorted = [...g.standings].sort((a: any, b: any) => (a.rank ?? 99) - (b.rank ?? 99))
-    return sorted[rank - 1]?.team ?? null
+    if (!g || !Array.isArray(g.standings) || g.standings.length === 0) return null
+    // Completeness is derived from actual played counts, not the stored
+    // standingsStatus flag (which the live sync doesn't refresh).
+    const matchesPerTeam = g.standings.length - 1
+    const complete = matchesPerTeam > 0 && g.standings.every((s: any) => (s.played ?? 0) >= matchesPerTeam)
+    if (!complete) return null
+    // Sort by the live table order (points → GD → GF), not the stored rank.
+    const sorted = [...g.standings].sort((a: any, b: any) => {
+      if ((b.points ?? 0) !== (a.points ?? 0)) return (b.points ?? 0) - (a.points ?? 0)
+      if ((b.goalDifference ?? 0) !== (a.goalDifference ?? 0)) return (b.goalDifference ?? 0) - (a.goalDifference ?? 0)
+      return (b.goalsFor ?? 0) - (a.goalsFor ?? 0)
+    })
+    return sorted[position - 1]?.team ?? null
   }
 
   const koByNumber = new Map<number, any>()

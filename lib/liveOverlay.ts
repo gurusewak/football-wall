@@ -161,54 +161,6 @@ export function mergeApiOverlay(rawTournament: any, apiData: ApiFetchedData): Me
     apiFixtureMap.set(`${normAway}__${normHome}`, fixture)
   }
 
-  // ── Resolve knockout matchups from API fixtures ────────────────────────────
-  // As knockout fixtures resolve in API-Football (e.g. "Germany vs Paraguay"),
-  // fill the real teams into our bracket matches. Anchor on a side we already
-  // know (a group result carried in the seed) + the round — a team plays exactly
-  // one match per round, so the anchor maps to a single API fixture. Fill only
-  // the unknown side; never overwrite a known team, so a side can't be misplaced
-  // and the bracket convergence stays intact.
-  const isRealTeamName = (s: string): boolean =>
-    !!s && !/^(winner|runner-?up|third-?place|loser|tbd)\b/i.test(s) && !/^[123][A-L]+$/.test(s)
-  const apiRoundMatcher = (ourRound: string): ((r: string) => boolean) => {
-    switch (ourRound) {
-      case 'r32': return r => /round of 32/i.test(r)
-      case 'r16': return r => /round of 16/i.test(r)
-      case 'qf':  return r => /quarter/i.test(r)
-      case 'sf':  return r => /semi/i.test(r)
-      case 'final': return r => /final/i.test(r) && !/semi/i.test(r)
-      case '3p': case 'third_place': return r => /3rd|third/i.test(r)
-      default: return () => false
-    }
-  }
-  const teamIdByNorm = new Map<string, string>()
-  for (const t of tournament.teams ?? []) if (t?.name) teamIdByNorm.set(normalizeTeamName(t.name), t.id ?? '')
-  const apiKnockout = apiData.fixtures.filter(f =>
-    isRealTeamName(f.teams.home.name) && isRealTeamName(f.teams.away.name)
-  )
-  for (const match of tournament.matches ?? []) {
-    if (match.stage !== 'knockout' && match.stage !== 'placement') continue
-    const homeKnown = isRealTeamName(match.homeTeam ?? '')
-    const awayKnown = isRealTeamName(match.awayTeam ?? '')
-    if (homeKnown === awayKnown) continue  // both known (done) or both unknown (no anchor)
-    const matchesRound = apiRoundMatcher(match.round ?? '')
-    const anchor = normalizeTeamName(homeKnown ? match.homeTeam : match.awayTeam)
-    const hits = apiKnockout.filter(f =>
-      matchesRound(f.league.round) &&
-      (normalizeTeamName(f.teams.home.name) === anchor || normalizeTeamName(f.teams.away.name) === anchor)
-    )
-    if (hits.length !== 1) continue  // not yet resolved / ambiguous → leave as-is
-    const f = hits[0]
-    const apiOther = normalizeTeamName(f.teams.home.name) === anchor ? f.teams.away.name : f.teams.home.name
-    const otherNorm = normalizeTeamName(apiOther)
-    // Prefer our canonical roster name (e.g. "Cape Verde" not "Cape Verde Islands")
-    const rosterTeam = (tournament.teams ?? []).find((t: any) => normalizeTeamName(t.name ?? '') === otherNorm)
-    const other = rosterTeam?.name ?? apiOther
-    const otherId = rosterTeam?.id ?? teamIdByNorm.get(otherNorm) ?? ''
-    if (homeKnown) { match.awayTeam = other; if (otherId) match.awayTeamId = otherId }
-    else { match.homeTeam = other; if (otherId) match.homeTeamId = otherId }
-  }
-
   let matchesUpdated = 0
   let liveMatchCount = 0
 
@@ -325,6 +277,11 @@ export function mergeApiOverlay(rawTournament: any, apiData: ApiFetchedData): Me
 
     const sorted = [...standings].sort(byStanding)
 
+    // Keep the stored table order + completeness flag current (the seed values go
+    // stale as results come in; downstream readers shouldn't depend on them).
+    sorted.forEach((s: any, i: number) => { s.rank = i + 1 })
+    group.standingsStatus = groupComplete ? 'complete' : 'partial'
+
     if (!groupComplete) {
       // Group still in progress: clear all qualification so position heuristic drives the UI
       if (is48Team) {
@@ -367,6 +324,96 @@ export function mergeApiOverlay(rawTournament: any, apiData: ApiFetchedData): Me
         s.qualified = i < 8
         s.qualificationType = i < 8 ? 'best_third_place' : null
       })
+    }
+  }
+
+  // ── Resolve knockout bracket occupants (DB-driven) ─────────────────────────
+  // Write real teams into each knockout match as results come in, so the bracket
+  // (and downstream score-matching) read fully-resolved teams straight from the DB:
+  //   (a) 1X/2X     → group winner / runner-up once that group is complete
+  //   (b) W{n}/L{n} → winner / loser of match n (processed in match-number order)
+  //   (c) best-third opponents → filled from resolved API-Football fixtures
+  {
+    const isReal = (s: string) => !!s && !/^(winner|runner-?up|third-?place|loser|tbd)\b/i.test(s) && !/^[123][A-L]+$/.test(s)
+    const rosterByNorm = new Map<string, { id: string; name: string }>()
+    for (const tm of tournament.teams ?? []) if (tm?.name) rosterByNorm.set(normalizeTeamName(tm.name), { id: tm.id ?? '', name: tm.name })
+    const setSide = (match: any, side: 'home' | 'away', name: string) => {
+      const c = rosterByNorm.get(normalizeTeamName(name)) ?? { name, id: '' }
+      match[`${side}Team`] = c.name
+      if (c.id) match[`${side}TeamId`] = c.id
+    }
+
+    const groupOrder = new Map<string, any[]>()
+    for (const g of groups) {
+      const s: any[] = g.standings ?? []
+      const mpt = s.length - 1
+      if (mpt > 0 && s.every((x: any) => (x.played ?? 0) >= mpt)) groupOrder.set(g.group, [...s].sort(byStanding))
+    }
+    const groupSlot = (letter: string, pos: number): string | null => groupOrder.get(letter)?.[pos - 1]?.team ?? null
+
+    const koByNumber = new Map<number, any>()
+    for (const m of tournament.matches ?? []) {
+      if ((m.stage === 'knockout' || m.stage === 'placement') && m.matchNumber != null) koByNumber.set(m.matchNumber, m)
+    }
+    const winnerSide = (m: any): 'home' | 'away' | null => {
+      if (!m || m.status !== 'completed' || m.homeScore == null || m.awayScore == null) return null
+      if (m.wentToPenaltyShootout && m.homePenaltyScore != null && m.awayPenaltyScore != null) {
+        return m.homePenaltyScore > m.awayPenaltyScore ? 'home' : 'away'
+      }
+      if (m.homeScore === m.awayScore) return null
+      return m.homeScore > m.awayScore ? 'home' : 'away'
+    }
+
+    const koSorted = (tournament.matches ?? [])
+      .filter((m: any) => m.stage === 'knockout' || m.stage === 'placement')
+      .sort((a: any, b: any) => (a.matchNumber ?? 0) - (b.matchNumber ?? 0))
+
+    // (a) group positions + (b) match progression, in match order so feeders resolve first
+    for (const match of koSorted) {
+      for (const side of ['home', 'away'] as const) {
+        // Already a real team — just normalize to our canonical roster name
+        // (a prior sync may have stored a raw API name like "Cape Verde Islands").
+        if (isReal(match[`${side}Team`])) { setSide(match, side, match[`${side}Team`]); continue }
+        const code: string = match[`${side}SlotCode`] ?? ''
+        let mm: RegExpMatchArray | null
+        if ((mm = code.match(/^([12])([A-L])$/))) {
+          const team = groupSlot(mm[2], parseInt(mm[1], 10))
+          if (team) setSide(match, side, team)
+        } else if ((mm = code.match(/^W(\d+)$/))) {
+          const src = koByNumber.get(parseInt(mm[1], 10)); const w = winnerSide(src)
+          if (src && w && isReal(src[`${w}Team`])) setSide(match, side, src[`${w}Team`])
+        } else if ((mm = code.match(/^(?:RU|L)(\d+)$/))) {
+          const src = koByNumber.get(parseInt(mm[1], 10)); const w = winnerSide(src)
+          const loser = w === 'home' ? 'away' : w === 'away' ? 'home' : null
+          if (src && loser && isReal(src[`${loser}Team`])) setSide(match, side, src[`${loser}Team`])
+        }
+      }
+    }
+
+    // (c) fill remaining unknown sides (e.g. best-third opponents) from resolved
+    // API fixtures, anchoring on the side we now know + the round.
+    const apiRoundMatcher = (r: string): ((x: string) => boolean) => {
+      switch (r) {
+        case 'r32': return x => /round of 32/i.test(x)
+        case 'r16': return x => /round of 16/i.test(x)
+        case 'qf': return x => /quarter/i.test(x)
+        case 'sf': return x => /semi/i.test(x)
+        case 'final': return x => /final/i.test(x) && !/semi/i.test(x)
+        case '3p': case 'third_place': return x => /3rd|third/i.test(x)
+        default: return () => false
+      }
+    }
+    const apiKo = apiData.fixtures.filter(f => isReal(f.teams.home.name) && isReal(f.teams.away.name))
+    for (const match of koSorted) {
+      const homeKnown = isReal(match.homeTeam), awayKnown = isReal(match.awayTeam)
+      if (homeKnown === awayKnown) continue
+      const rm = apiRoundMatcher(match.round ?? '')
+      const anchor = normalizeTeamName(homeKnown ? match.homeTeam : match.awayTeam)
+      const hits = apiKo.filter(f => rm(f.league.round) && (normalizeTeamName(f.teams.home.name) === anchor || normalizeTeamName(f.teams.away.name) === anchor))
+      if (hits.length !== 1) continue
+      const f = hits[0]
+      const other = normalizeTeamName(f.teams.home.name) === anchor ? f.teams.away.name : f.teams.home.name
+      setSide(match, homeKnown ? 'away' : 'home', other)
     }
   }
 
