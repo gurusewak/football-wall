@@ -83,38 +83,95 @@ function normalizeV2(raw: any): Tournament {
     return { group: g.group, teams }
   })
 
-  // Build group winner/runner-up lookup for resolving bracket slots
-  const groupWinners = new Map<string, string>()
-  const groupRunnersUp = new Map<string, string>();
-  (raw.groups ?? []).forEach((rg: any) => {
-    if (rg.standingsStatus === 'complete' && Array.isArray(rg.standings) && rg.standings.length >= 2) {
-      const sorted = [...rg.standings].sort((a: any, b: any) => (a.rank ?? 99) - (b.rank ?? 99))
-      groupWinners.set(rg.group, sorted[0].team ?? '')
-      groupRunnersUp.set(rg.group, sorted[1].team ?? '')
-    }
-  })
+  // ── Live knockout-slot resolution ──────────────────────────────────────────
+  // Resolve who occupies each bracket slot from current results, every render.
+  // Slot codes: "1E"/"2A" = group winner/runner-up, "W74" = winner of match 74,
+  // "RU101"/"L101" = loser of match 101, "3ABCDF" = a best-third (not yet known).
+  const groupByLetter = new Map<string, any>()
+  for (const g of raw.groups ?? []) groupByLetter.set(g.group, g)
 
-  function resolveSlot(slot: string): string {
-    const winMatch = slot.match(/Winner\s+Group\s+([A-L])/i)
-    if (winMatch) return groupWinners.get(winMatch[1]) ?? slot
-    const runMatch = slot.match(/Runner.?up\s+Group\s+([A-L])/i)
-    if (runMatch) return groupRunnersUp.get(runMatch[1]) ?? slot
-    return slot
+  const groupSlot = (letter: string, rank: number): string | null => {
+    const g = groupByLetter.get(letter)
+    if (!g || g.standingsStatus !== 'complete' || !Array.isArray(g.standings)) return null
+    const sorted = [...g.standings].sort((a: any, b: any) => (a.rank ?? 99) - (b.rank ?? 99))
+    return sorted[rank - 1]?.team ?? null
   }
 
-  // Knockout bracket — structure from raw.knockoutBracket, data from raw.matches
+  const koByNumber = new Map<number, any>()
+  for (const m of raw.matches ?? []) {
+    if ((m.stage === 'knockout' || m.stage === 'placement') && m.matchNumber != null) {
+      koByNumber.set(m.matchNumber, m)
+    }
+  }
+
+  const matchWinnerSide = (m: any): 'home' | 'away' | null => {
+    if (!m || m.status !== 'completed' || m.homeScore == null || m.awayScore == null) return null
+    if (m.wentToPenaltyShootout && m.homePenaltyScore != null && m.awayPenaltyScore != null) {
+      return m.homePenaltyScore > m.awayPenaltyScore ? 'home' : 'away'
+    }
+    if (m.homeScore === m.awayScore) return null
+    return m.homeScore > m.awayScore ? 'home' : 'away'
+  }
+
+  const resolvedSlots = new Map<string, { home: string; away: string }>()
+
+  // Returns a resolved team name, the slot's human label if not yet decided, or
+  // null when this slot type can't be resolved here (e.g. best-third pools).
+  const resolveCode = (code: string | undefined, label: string | undefined): string | null => {
+    if (!code) return null
+    let mm: RegExpMatchArray | null
+    if ((mm = code.match(/^([12])([A-L])$/))) return groupSlot(mm[2], parseInt(mm[1], 10)) ?? (label ?? null)
+    if ((mm = code.match(/^W(\d+)$/))) {
+      const src = koByNumber.get(parseInt(mm[1], 10))
+      const side = matchWinnerSide(src)
+      const r = src ? resolvedSlots.get(src.id) : null
+      return side && r ? r[side] : (label ?? null)
+    }
+    if ((mm = code.match(/^(?:RU|L)(\d+)$/))) {
+      const src = koByNumber.get(parseInt(mm[1], 10))
+      const side = matchWinnerSide(src)
+      const r = src ? resolvedSlots.get(src.id) : null
+      if (!side || !r) return label ?? null
+      return side === 'home' ? r.away : r.home  // loser is the other side
+    }
+    return null  // best-third pools (3XXXXX) — resolved later via matrix/API
+  }
+
+  // Resolve in ascending match order so a feeder's result is known before its parent
+  const koSorted = [...(raw.matches ?? [])]
+    .filter((m: any) => m.stage === 'knockout' || m.stage === 'placement')
+    .sort((a: any, b: any) => (a.matchNumber ?? 0) - (b.matchNumber ?? 0))
+  for (const m of koSorted) {
+    resolvedSlots.set(m.id, {
+      home: resolveCode(m.homeSlotCode, m.homeSlotLabel) ?? m.homeTeam ?? 'TBD',
+      away: resolveCode(m.awaySlotCode, m.awaySlotLabel) ?? m.awayTeam ?? 'TBD',
+    })
+  }
+
+  // Knockout bracket — structure from raw.knockoutBracket, occupants resolved live
   const knockoutBracket: Bracket[] = (raw.knockoutBracket ?? []).map((b: any) => {
     const round = b.round === 'third_place' ? '3p' : b.round
     const matches: Match[] = (b.matches ?? []).map((slot: any) => {
       const matchId = slot.matchId ?? slot.id
       const m = matchById.get(matchId)
-      if (m) return normalizeMatchV2(m, round)
+      const resolved = resolvedSlots.get(matchId)
+      if (m) {
+        const nm = normalizeMatchV2(m, round)
+        // Override placeholder/stale occupants ("Winner Group E", a stale seed
+        // guess) with the live-resolved team, but never replace a real team with
+        // a slot label (resolveCode returns null for pools we can't resolve).
+        const rh = resolveCode(m.homeSlotCode, m.homeSlotLabel)
+        const ra = resolveCode(m.awaySlotCode, m.awaySlotLabel)
+        if (rh != null) nm.homeTeam = rh
+        if (ra != null) nm.awayTeam = ra
+        return nm
+      }
       return {
         id: matchId,
         stage: round as Match['stage'],
         matchLabel: slot.matchLabel,
-        homeTeam: resolveSlot(slot.homeSlot ?? 'TBD'),
-        awayTeam: resolveSlot(slot.awaySlot ?? 'TBD'),
+        homeTeam: resolved?.home ?? slot.homeSlot ?? 'TBD',
+        awayTeam: resolved?.away ?? slot.awaySlot ?? 'TBD',
         homeTeamId: '',
         awayTeamId: '',
         homeScore: null,
