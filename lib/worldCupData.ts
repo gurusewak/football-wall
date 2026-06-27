@@ -115,26 +115,40 @@ function normalizeV2(raw: any): Tournament {
 
   const resolvedSlots = new Map<string, { home: string; away: string }>()
 
-  // Returns a resolved team name, the slot's human label if not yet decided, or
-  // null when this slot type can't be resolved here (e.g. best-third pools).
-  const resolveCode = (code: string | undefined, label: string | undefined): string | null => {
+  // A "real team" is anything that isn't a placeholder/slot label.
+  const isRealTeam = (s: string | undefined | null): boolean =>
+    !!s && !/^(winner|runner-?up|third-?place|loser|tbd)\b/i.test(s) && !/^[123][A-L]+$/.test(s)
+
+  // Returns the team a slot resolves to from LIVE results, or null if not yet
+  // determinable (group not finished, feeder not played, best-third pool).
+  const resolveCode = (code: string | undefined): string | null => {
     if (!code) return null
     let mm: RegExpMatchArray | null
-    if ((mm = code.match(/^([12])([A-L])$/))) return groupSlot(mm[2], parseInt(mm[1], 10)) ?? (label ?? null)
+    if ((mm = code.match(/^([12])([A-L])$/))) return groupSlot(mm[2], parseInt(mm[1], 10))
     if ((mm = code.match(/^W(\d+)$/))) {
       const src = koByNumber.get(parseInt(mm[1], 10))
       const side = matchWinnerSide(src)
       const r = src ? resolvedSlots.get(src.id) : null
-      return side && r ? r[side] : (label ?? null)
+      return side && r ? r[side] : null
     }
     if ((mm = code.match(/^(?:RU|L)(\d+)$/))) {
       const src = koByNumber.get(parseInt(mm[1], 10))
       const side = matchWinnerSide(src)
       const r = src ? resolvedSlots.get(src.id) : null
-      if (!side || !r) return label ?? null
+      if (!side || !r) return null
       return side === 'home' ? r.away : r.home  // loser is the other side
     }
     return null  // best-third pools (3XXXXX) — resolved later via matrix/API
+  }
+
+  // Priority: live result (most current) → the seed's real team (FIFA-sourced
+  // bracket data) → the human slot label. Never shows a stale label in place of
+  // a team we actually know.
+  const pickName = (code: string | undefined, seedTeam: string | undefined, label: string | undefined): string => {
+    const live = resolveCode(code)
+    if (live) return live
+    if (isRealTeam(seedTeam)) return seedTeam as string
+    return label ?? seedTeam ?? 'TBD'
   }
 
   // Resolve in ascending match order so a feeder's result is known before its parent
@@ -143,8 +157,8 @@ function normalizeV2(raw: any): Tournament {
     .sort((a: any, b: any) => (a.matchNumber ?? 0) - (b.matchNumber ?? 0))
   for (const m of koSorted) {
     resolvedSlots.set(m.id, {
-      home: resolveCode(m.homeSlotCode, m.homeSlotLabel) ?? m.homeTeam ?? 'TBD',
-      away: resolveCode(m.awaySlotCode, m.awaySlotLabel) ?? m.awayTeam ?? 'TBD',
+      home: pickName(m.homeSlotCode, m.homeTeam, m.homeSlotLabel),
+      away: pickName(m.awaySlotCode, m.awayTeam, m.awaySlotLabel),
     })
   }
 
@@ -157,13 +171,8 @@ function normalizeV2(raw: any): Tournament {
       const resolved = resolvedSlots.get(matchId)
       if (m) {
         const nm = normalizeMatchV2(m, round)
-        // Override placeholder/stale occupants ("Winner Group E", a stale seed
-        // guess) with the live-resolved team, but never replace a real team with
-        // a slot label (resolveCode returns null for pools we can't resolve).
-        const rh = resolveCode(m.homeSlotCode, m.homeSlotLabel)
-        const ra = resolveCode(m.awaySlotCode, m.awaySlotLabel)
-        if (rh != null) nm.homeTeam = rh
-        if (ra != null) nm.awayTeam = ra
+        // Apply the resolved occupants (live result → FIFA seed team → label)
+        if (resolved) { nm.homeTeam = resolved.home; nm.awayTeam = resolved.away }
         return nm
       }
       return {
