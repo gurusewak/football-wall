@@ -505,6 +505,60 @@ export function mergeApiOverlay(rawTournament: any, apiData: ApiFetchedData): Me
     }))
   }
 
+  // ── Player of the Match: hidden for 2026 ──────────────────────────────────
+  // API-Football has no official POTM; rather than show a guess or stale seed,
+  // clear it so the match view simply omits the section.
+  tournament.playerOfTheMatch = []
+
+  // ── Auto-generated fun facts from live data ───────────────────────────────
+  // No fun-facts endpoint exists, so derive them from the data we already have.
+  {
+    const facts: any[] = []
+    let fid = 1
+    const add = (factType: string, statement: string) =>
+      facts.push({ id: `auto-fact-${fid++}`, factType, statement, verified: true })
+
+    const completed: any[] = (tournament.matches ?? [])
+      .filter((m: any) => m.status === 'completed' && m.homeScore != null && m.awayScore != null)
+    const summary = tournament.tournamentSummary ?? {}
+
+    if ((summary.completedMatches ?? 0) > 0) {
+      add('tournament totals', `${summary.totalGoals} goals in ${summary.completedMatches} matches so far — averaging ${summary.averageGoalsPerMatch} per game.`)
+    }
+
+    const topScorer = apiData.topScorers?.[0]
+    const tsGoals = topScorer?.statistics?.[0]?.goals?.total ?? 0
+    if (topScorer && tsGoals > 0) {
+      add('golden boot race', `${topScorer.player.name} leads the scoring charts with ${tsGoals} goal${tsGoals === 1 ? '' : 's'}.`)
+    }
+
+    let hi: any = null
+    for (const m of completed) { const tot = (m.homeScore ?? 0) + (m.awayScore ?? 0); if (!hi || tot > hi.tot) hi = { tot, m } }
+    if (hi && hi.tot >= 4) {
+      add('highest scoring', `${hi.m.homeTeam} ${hi.m.homeScore}–${hi.m.awayScore} ${hi.m.awayTeam} was the highest-scoring match with ${hi.tot} goals.`)
+    }
+
+    let big: any = null
+    for (const m of completed) { const mar = Math.abs((m.homeScore ?? 0) - (m.awayScore ?? 0)); if (mar > 0 && (!big || mar > big.mar)) big = { mar, m } }
+    if (big && big.mar >= 3) {
+      const homeWon = big.m.homeScore > big.m.awayScore
+      add('biggest win', `${homeWon ? big.m.homeTeam : big.m.awayTeam}'s ${Math.max(big.m.homeScore, big.m.awayScore)}–${Math.min(big.m.homeScore, big.m.awayScore)} win over ${homeWon ? big.m.awayTeam : big.m.homeTeam} is the biggest margin so far.`)
+    }
+
+    for (const m of completed) {
+      const counts = new Map<string, number>()
+      for (const g of m.goals ?? []) if (!g.isOwnGoal && g.scorerPlayerName) counts.set(g.scorerPlayerName, (counts.get(g.scorerPlayerName) ?? 0) + 1)
+      for (const [name, c] of counts) if (c >= 3) {
+        add('hat-trick', `${name} scored ${c === 3 ? 'a hat-trick' : `${c} goals`} in ${m.homeTeam} ${m.homeScore}–${m.awayScore} ${m.awayTeam}.`)
+      }
+    }
+
+    const pks = completed.filter((m: any) => m.wentToPenaltyShootout).length
+    if (pks > 0) add('penalty drama', `${pks} knockout tie${pks === 1 ? ' has been' : 's have been'} settled on penalties.`)
+
+    tournament.facts = facts
+  }
+
   return {
     tournament,
     dataSource: 'json+api',
