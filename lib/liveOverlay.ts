@@ -161,6 +161,54 @@ export function mergeApiOverlay(rawTournament: any, apiData: ApiFetchedData): Me
     apiFixtureMap.set(`${normAway}__${normHome}`, fixture)
   }
 
+  // ── Resolve knockout matchups from API fixtures ────────────────────────────
+  // As knockout fixtures resolve in API-Football (e.g. "Germany vs Paraguay"),
+  // fill the real teams into our bracket matches. Anchor on a side we already
+  // know (a group result carried in the seed) + the round — a team plays exactly
+  // one match per round, so the anchor maps to a single API fixture. Fill only
+  // the unknown side; never overwrite a known team, so a side can't be misplaced
+  // and the bracket convergence stays intact.
+  const isRealTeamName = (s: string): boolean =>
+    !!s && !/^(winner|runner-?up|third-?place|loser|tbd)\b/i.test(s) && !/^[123][A-L]+$/.test(s)
+  const apiRoundMatcher = (ourRound: string): ((r: string) => boolean) => {
+    switch (ourRound) {
+      case 'r32': return r => /round of 32/i.test(r)
+      case 'r16': return r => /round of 16/i.test(r)
+      case 'qf':  return r => /quarter/i.test(r)
+      case 'sf':  return r => /semi/i.test(r)
+      case 'final': return r => /final/i.test(r) && !/semi/i.test(r)
+      case '3p': case 'third_place': return r => /3rd|third/i.test(r)
+      default: return () => false
+    }
+  }
+  const teamIdByNorm = new Map<string, string>()
+  for (const t of tournament.teams ?? []) if (t?.name) teamIdByNorm.set(normalizeTeamName(t.name), t.id ?? '')
+  const apiKnockout = apiData.fixtures.filter(f =>
+    isRealTeamName(f.teams.home.name) && isRealTeamName(f.teams.away.name)
+  )
+  for (const match of tournament.matches ?? []) {
+    if (match.stage !== 'knockout' && match.stage !== 'placement') continue
+    const homeKnown = isRealTeamName(match.homeTeam ?? '')
+    const awayKnown = isRealTeamName(match.awayTeam ?? '')
+    if (homeKnown === awayKnown) continue  // both known (done) or both unknown (no anchor)
+    const matchesRound = apiRoundMatcher(match.round ?? '')
+    const anchor = normalizeTeamName(homeKnown ? match.homeTeam : match.awayTeam)
+    const hits = apiKnockout.filter(f =>
+      matchesRound(f.league.round) &&
+      (normalizeTeamName(f.teams.home.name) === anchor || normalizeTeamName(f.teams.away.name) === anchor)
+    )
+    if (hits.length !== 1) continue  // not yet resolved / ambiguous → leave as-is
+    const f = hits[0]
+    const apiOther = normalizeTeamName(f.teams.home.name) === anchor ? f.teams.away.name : f.teams.home.name
+    const otherNorm = normalizeTeamName(apiOther)
+    // Prefer our canonical roster name (e.g. "Cape Verde" not "Cape Verde Islands")
+    const rosterTeam = (tournament.teams ?? []).find((t: any) => normalizeTeamName(t.name ?? '') === otherNorm)
+    const other = rosterTeam?.name ?? apiOther
+    const otherId = rosterTeam?.id ?? teamIdByNorm.get(otherNorm) ?? ''
+    if (homeKnown) { match.awayTeam = other; if (otherId) match.awayTeamId = otherId }
+    else { match.homeTeam = other; if (otherId) match.homeTeamId = otherId }
+  }
+
   let matchesUpdated = 0
   let liveMatchCount = 0
 
