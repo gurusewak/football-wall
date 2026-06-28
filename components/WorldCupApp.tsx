@@ -7,6 +7,7 @@ import { Tournament } from '@/lib/types'
 import { CompactGroupTable } from '@/components/CompactGroupTable'
 import { KnockoutPosterBracket } from '@/components/KnockoutPosterBracket'
 import { GroupsPanel } from '@/components/GroupsPanel'
+import { MatchesPanel } from '@/components/MatchesPanel'
 import { StatsPanel } from '@/components/StatsPanel'
 import { YearSelector } from '@/components/YearSelector'
 import { MatchDetailModal } from '@/components/MatchDetailModal'
@@ -21,7 +22,7 @@ interface YearEntry {
   file: string
 }
 
-type Tab = 'brackets' | 'groups' | 'stats'
+type Tab = 'bracket' | 'matches' | 'groups' | 'stats'
 
 // ── Poster layout — full-size, always scrollable ──────────────────────────────
 const GROUP_COL_W = 134
@@ -183,7 +184,7 @@ export default function WorldCupApp({ initialYear, initialTab }: { initialYear?:
   const [tournament, setTournament]           = useState<Tournament | null>(null)
   const [cache, setCache]                     = useState<Map<number, Tournament>>(new Map())
   const [loading, setLoading]                 = useState(true)
-  const [tab, setTab]                         = useState<Tab>(initialTab ?? 'brackets')
+  const [tab, setTab]                         = useState<Tab>(initialTab ?? 'bracket')
   const [simKey, setSimKey]                   = useState(0)
   const [dataSource, setDataSource]           = useState<'json' | 'json+api' | 'db' | null>(null)
   const [apiUpdatedAt, setApiUpdatedAt]       = useState<string | null>(null)
@@ -221,7 +222,7 @@ export default function WorldCupApp({ initialYear, initialTab }: { initialYear?:
       if (!initialYear) {
         // No year in URL — load latest and update URL bar without navigation
         setSelectedYear(idx.latestYear)
-        window.history.replaceState({}, '', `/${idx.latestYear}/brackets`)
+        window.history.replaceState({}, '', `/${idx.latestYear}/bracket`)
       }
     }).catch(console.error)
   }, []) // eslint-disable-line react-hooks/exhaustive-deps
@@ -229,10 +230,10 @@ export default function WorldCupApp({ initialYear, initialTab }: { initialYear?:
   // ── Browser back/forward: sync state from URL ─────────────────────────────
   useEffect(() => {
     const handlePopState = () => {
-      const m = window.location.pathname.match(/^\/(\d{4})(?:\/(brackets|groups|stats))?$/)
+      const m = window.location.pathname.match(/^\/(\d{4})(?:\/(bracket|matches|groups|stats))?$/)
       if (m) {
         const y = parseInt(m[1], 10)
-        const t = (m[2] as Tab) || 'brackets'
+        const t = (m[2] as Tab) || 'bracket'
         if (y >= 1998 && y <= 2030) {
           setSelectedYear(y)
           setTab(t)
@@ -297,10 +298,10 @@ export default function WorldCupApp({ initialYear, initialTab }: { initialYear?:
   const changeYear = useCallback((y: number) => {
     setLoading(true)      // show spinner right away for every year switch
     setSelectedYear(y)
-    setTab('brackets')
+    setTab('bracket')
     setSimKey(0)
     setSelectedMatchId(null)
-    window.history.pushState({}, '', `/${y}/brackets`)
+    window.history.pushState({}, '', `/${y}/bracket`)
   }, [])
 
   // ── Tab change — update view + URL so each tab is shareable/bookmarkable ─────
@@ -337,11 +338,11 @@ export default function WorldCupApp({ initialYear, initialTab }: { initialYear?:
           onClick={() => {
             const target = latestYear ?? selectedYear
             if (target && target !== selectedYear) {
-              // Different year — changeYear resets to the brackets tab and pushes /{year}/brackets
+              // Different year — changeYear resets to the bracket tab and pushes /{year}/bracket
               changeYear(target)
-            } else if (tab !== 'brackets') {
-              // Already on the latest year — just snap back to the brackets tab
-              changeTab('brackets')
+            } else if (tab !== 'bracket') {
+              // Already on the latest year — just snap back to the bracket tab
+              changeTab('bracket')
             }
             window.scrollTo({ top: 0, behavior: 'smooth' })
           }}
@@ -407,7 +408,7 @@ export default function WorldCupApp({ initialYear, initialTab }: { initialYear?:
 
       {/* ── Tab bar ── */}
       <div className="flex items-center justify-center gap-2 mb-6 px-4">
-        {(['brackets', 'groups', 'stats'] as Tab[]).map(t => (
+        {(['bracket', 'matches', 'groups', 'stats'] as Tab[]).map(t => (
           <button
             key={t}
             onClick={() => changeTab(t)}
@@ -426,14 +427,19 @@ export default function WorldCupApp({ initialYear, initialTab }: { initialYear?:
 
       {/* ── Content ── */}
       <AnimatePresence mode="wait">
-        {tab === 'brackets' && (
-          <motion.div key="brackets" initial={{ opacity: 0 }} animate={{ opacity: 1 }} exit={{ opacity: 0 }} transition={{ duration: 0.2 }}>
+        {tab === 'bracket' && (
+          <motion.div key="bracket" initial={{ opacity: 0 }} animate={{ opacity: 1 }} exit={{ opacity: 0 }} transition={{ duration: 0.2 }}>
             <WallChartPoster
               tournament={tournament}
               simKey={simKey}
               onSimulate={() => setSimKey(k => k + 1)}
               onMatchClick={openMatch}
             />
+          </motion.div>
+        )}
+        {tab === 'matches' && (
+          <motion.div key="matches" initial={{ opacity: 0, y: 6 }} animate={{ opacity: 1, y: 0 }} exit={{ opacity: 0 }} transition={{ duration: 0.2 }} className="max-w-3xl mx-auto px-3 sm:px-6">
+            <MatchesPanel tournament={tournament} onMatchClick={openMatch} />
           </motion.div>
         )}
         {tab === 'groups' && (

@@ -5,13 +5,13 @@ export default async function YearPage({ params }: { params: Promise<{ year: str
   const { year } = await params
   const parsed = parseInt(year, 10)
 
-  // Unknown year → fall back to the latest World Cup's brackets
+  // Unknown year → fall back to the latest World Cup's bracket
   if (!isValidYear(parsed)) {
-    redirect(`/${LATEST_YEAR}/brackets`)
+    redirect(`/${LATEST_YEAR}/bracket`)
   }
 
   // Canonical URL always includes the tab segment
-  redirect(`/${parsed}/brackets`)
+  redirect(`/${parsed}/bracket`)
 }
 
 export function generateStaticParams() {

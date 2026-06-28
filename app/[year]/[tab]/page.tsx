@@ -6,14 +6,14 @@ export default async function YearTabPage({ params }: { params: Promise<{ year: 
   const { year, tab } = await params
   const parsed = parseInt(year, 10)
 
-  // Unknown year → fall back to the latest World Cup's brackets
+  // Unknown year → fall back to the latest World Cup's bracket
   if (!isValidYear(parsed)) {
-    redirect(`/${LATEST_YEAR}/brackets`)
+    redirect(`/${LATEST_YEAR}/bracket`)
   }
 
-  // Unknown tab → fall back to that year's brackets
+  // Unknown tab (includes the old "brackets" slug) → fall back to that year's bracket
   if (!isValidTab(tab)) {
-    redirect(`/${parsed}/brackets`)
+    redirect(`/${parsed}/bracket`)
   }
 
   return <WorldCupApp initialYear={parsed} initialTab={tab} />
