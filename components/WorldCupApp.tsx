@@ -25,6 +25,7 @@ type Tab = 'brackets' | 'groups' | 'stats'
 
 // ── Poster layout — full-size, always scrollable ──────────────────────────────
 const GROUP_COL_W = 134
+const SHOW_GROUPS_KEY = 'fw-bracket-show-groups'
 
 function WallChartPoster({ tournament, simKey, onSimulate, onMatchClick }: {
   tournament: Tournament
@@ -34,13 +35,29 @@ function WallChartPoster({ tournament, simKey, onSimulate, onMatchClick }: {
 }) {
   const is48 = !!tournament.knockoutBracket.find(b => b.round === 'r32')
   const bracketW = is48 ? 1404 : 1088
-  const NATURAL_W = GROUP_COL_W + 10 + bracketW + 10 + GROUP_COL_W + 20
 
   const leftGroups  = tournament.groups.slice(0, Math.ceil(tournament.groups.length / 2))
   const rightGroups = tournament.groups.slice(Math.ceil(tournament.groups.length / 2))
 
   const chartRef = useRef<HTMLDivElement>(null)
   const [exporting, setExporting] = useState(false)
+  // Persist the group-stage visibility choice so it survives reloads, year
+  // switches, and tab changes (this component remounts when tabs change).
+  const [showGroups, setShowGroups] = useState<boolean>(() => {
+    if (typeof window === 'undefined') return true
+    return window.localStorage.getItem(SHOW_GROUPS_KEY) !== 'false'
+  })
+  useEffect(() => {
+    if (typeof window === 'undefined') return
+    window.localStorage.setItem(SHOW_GROUPS_KEY, String(showGroups))
+  }, [showGroups])
+
+  // With the group columns hidden the canvas only needs to be as wide as the
+  // bracket itself — that's what removes the horizontal scroll once the group
+  // stage is over.
+  const NATURAL_W = showGroups
+    ? GROUP_COL_W + 10 + bracketW + 10 + GROUP_COL_W + 20
+    : bracketW + 20
 
   async function handleExport() {
     if (!chartRef.current || exporting) return
@@ -68,22 +85,39 @@ function WallChartPoster({ tournament, simKey, onSimulate, onMatchClick }: {
     >
       <div style={{ width: NATURAL_W, margin: '0 auto' }}>
 
-        {/* Button row: Simulate left | Export right */}
+        {/* Button row: Simulate + Hide groups left | Export right */}
         <div style={{ paddingLeft: '10px', paddingRight: '10px', paddingBottom: '8px', display: 'flex', justifyContent: 'space-between', alignItems: 'center' }}>
-          <motion.button
-            initial={{ opacity: 0, y: -4 }}
-            animate={{ opacity: 1, y: 0 }}
-            transition={{ delay: 0.5 }}
-            onClick={onSimulate}
-            className="flex items-center gap-1.5 px-3 py-1.5 rounded"
-            style={{
-              background: 'rgba(255,255,255,0.07)', border: '1px solid rgba(255,255,255,0.14)',
-              color: '#c0c0c0', fontSize: '12px', fontWeight: 600, letterSpacing: '0.06em', cursor: 'pointer',
-            }}
-          >
-            <span style={{ fontSize: '11px' }}>▶</span>
-            <span>{simKey > 0 ? 'Re-simulate' : 'Simulate'}</span>
-          </motion.button>
+          <div style={{ display: 'flex', alignItems: 'center', gap: '8px' }}>
+            <motion.button
+              initial={{ opacity: 0, y: -4 }}
+              animate={{ opacity: 1, y: 0 }}
+              transition={{ delay: 0.5 }}
+              onClick={onSimulate}
+              className="flex items-center gap-1.5 px-3 py-1.5 rounded"
+              style={{
+                background: 'rgba(255,255,255,0.07)', border: '1px solid rgba(255,255,255,0.14)',
+                color: '#c0c0c0', fontSize: '12px', fontWeight: 600, letterSpacing: '0.06em', cursor: 'pointer',
+              }}
+            >
+              <span style={{ fontSize: '11px' }}>▶</span>
+              <span>{simKey > 0 ? 'Re-simulate' : 'Simulate'}</span>
+            </motion.button>
+
+            <motion.button
+              initial={{ opacity: 0, y: -4 }}
+              animate={{ opacity: 1, y: 0 }}
+              transition={{ delay: 0.55 }}
+              onClick={() => setShowGroups(s => !s)}
+              className="flex items-center gap-1.5 px-3 py-1.5 rounded"
+              style={{
+                background: 'rgba(255,255,255,0.07)', border: '1px solid rgba(255,255,255,0.14)',
+                color: '#c0c0c0', fontSize: '12px', fontWeight: 600, letterSpacing: '0.06em', cursor: 'pointer',
+              }}
+            >
+              <span style={{ fontSize: '11px' }}>{showGroups ? '⊟' : '⊞'}</span>
+              <span>{showGroups ? 'Hide Group Stage' : 'Show Group Stage'}</span>
+            </motion.button>
+          </div>
 
           <motion.button
             initial={{ opacity: 0, y: -4 }}
@@ -116,19 +150,23 @@ function WallChartPoster({ tournament, simKey, onSimulate, onMatchClick }: {
         >
           <div className="absolute top-0 left-16 right-16 h-px" style={{ background: 'linear-gradient(90deg, transparent, rgba(255,255,255,0.12), transparent)' }} />
           <div className="flex gap-2 items-start">
-            <div className="flex-shrink-0 flex flex-col gap-1.5" style={{ width: GROUP_COL_W }}>
-              {leftGroups.map((g, idx) => (
-                <CompactGroupTable key={g.group} group={g} side="left" animDelay={idx * 0.04} />
-              ))}
-            </div>
+            {showGroups && (
+              <div className="flex-shrink-0 flex flex-col gap-1.5" style={{ width: GROUP_COL_W }}>
+                {leftGroups.map((g, idx) => (
+                  <CompactGroupTable key={g.group} group={g} side="left" animDelay={idx * 0.04} />
+                ))}
+              </div>
+            )}
             <div className="flex-1 overflow-visible">
               <KnockoutPosterBracket knockoutBracket={tournament.knockoutBracket} simKey={simKey} onMatchClick={onMatchClick} />
             </div>
-            <div className="flex-shrink-0 flex flex-col gap-1.5" style={{ width: GROUP_COL_W }}>
-              {rightGroups.map((g, idx) => (
-                <CompactGroupTable key={g.group} group={g} side="right" animDelay={idx * 0.04} />
-              ))}
-            </div>
+            {showGroups && (
+              <div className="flex-shrink-0 flex flex-col gap-1.5" style={{ width: GROUP_COL_W }}>
+                {rightGroups.map((g, idx) => (
+                  <CompactGroupTable key={g.group} group={g} side="right" animDelay={idx * 0.04} />
+                ))}
+              </div>
+            )}
           </div>
           <div className="absolute bottom-0 left-16 right-16 h-px" style={{ background: 'linear-gradient(90deg, transparent, rgba(255,255,255,0.06), transparent)' }} />
         </motion.div>
