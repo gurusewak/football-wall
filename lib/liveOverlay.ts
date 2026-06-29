@@ -180,46 +180,72 @@ export function mergeApiOverlay(rawTournament: any, apiData: ApiFetchedData): Me
     const apiStatus = mapApiStatus(apiFixture.fixture.status.short)
 
     // ── Score + status update ──────────────────────────────────────────────
+    // We sync only hourly, so an in-progress "live" score is a stale, misleading
+    // snapshot. Surface a result ONLY once the match is final; until then keep it
+    // scheduled with no score — clearing anything a prior (pre-fix) sync stored.
     if (!(match.status === 'completed' && match.homeScore != null && match.awayScore != null)) {
-      match.homeScore = apiFixture.goals.home
-      match.awayScore = apiFixture.goals.away
-      match.status = apiStatus
+      if (apiStatus === 'completed') {
+        match.homeScore = apiFixture.goals.home
+        match.awayScore = apiFixture.goals.away
+        match.status = 'completed'
 
-      const etHome = apiFixture.score.extratime.home
-      const etAway = apiFixture.score.extratime.away
-      if (etHome != null || etAway != null) match.wentToExtraTime = true
+        const etHome = apiFixture.score.extratime.home
+        const etAway = apiFixture.score.extratime.away
+        if (etHome != null || etAway != null) match.wentToExtraTime = true
 
-      const penHome = apiFixture.score.penalty.home
-      const penAway = apiFixture.score.penalty.away
-      if (penHome != null || penAway != null) {
-        match.wentToPenaltyShootout = true
-        match.homePenaltyScore = penHome
-        match.awayPenaltyScore = penAway
+        const penHome = apiFixture.score.penalty.home
+        const penAway = apiFixture.score.penalty.away
+        if (penHome != null || penAway != null) {
+          match.wentToPenaltyShootout = true
+          match.homePenaltyScore = penHome
+          match.awayPenaltyScore = penAway
+        }
+
+        matchesUpdated++
+      } else {
+        // Live or scheduled — no final result yet. Reset to a clean scheduled
+        // state so nothing (score, goals, cards, saves, stats) shows until FT.
+        match.status = 'scheduled'
+        match.homeScore = null
+        match.awayScore = null
+        match.wentToExtraTime = false
+        match.wentToPenaltyShootout = false
+        match.homePenaltyScore = null
+        match.awayPenaltyScore = null
+        match.goals = []
+        match.cards = []
+        match.goalkeeperSaves = []
+        if (Array.isArray(tournament.teamMatchStatistics)) {
+          const sIdx = tournament.teamMatchStatistics.findIndex((ts: any) => ts.matchId === match.id)
+          if (sIdx >= 0) tournament.teamMatchStatistics.splice(sIdx, 1)
+        }
       }
-
-      if (apiStatus === 'completed') matchesUpdated++
     }
 
     if (apiStatus === 'live') liveMatchCount++
 
+    // Everything below this point is final-result data — only ever applied to a
+    // completed match, mirroring the score rule (no live data leaks anywhere).
+    const isCompletedNow = match.status === 'completed' && match.homeScore != null && match.awayScore != null
+
     // ── Events: goals + cards ──────────────────────────────────────────────
-    // Update events for live matches, matches missing events, or completed matches
-    // where stored goal count doesn't match the actual score (late API data arrival)
+    // Backfill events for finished matches missing them, or where the stored goal
+    // count doesn't match the final score (late API data arrival).
     const events = apiData.fixtureEvents[fixtureId]
-    if (events?.length) {
+    if (events?.length && isCompletedNow) {
       const hasExistingEvents = (match.goals?.length > 0) || (match.cards?.length > 0)
       const expectedGoals = (match.homeScore ?? 0) + (match.awayScore ?? 0)
       const goalCountMismatch = (match.goals?.length ?? 0) !== expectedGoals
-      if (apiStatus === 'live' || !hasExistingEvents || goalCountMismatch) {
+      if (!hasExistingEvents || goalCountMismatch) {
         match.goals = eventsToGoals(events, match.id, homeTeamName, awayTeamName, match.homeTeamId ?? '', match.awayTeamId ?? '', normHome)
         match.cards = eventsToCards(events, match.id, homeTeamName, awayTeamName, match.homeTeamId ?? '', match.awayTeamId ?? '', normHome)
-        if (apiStatus !== 'live') matchesUpdated++
+        matchesUpdated++
       }
     }
 
     // ── Match statistics ───────────────────────────────────────────────────
     const stats = apiData.fixtureStats[fixtureId]
-    if (stats?.length) {
+    if (stats?.length && isCompletedNow) {
       if (!tournament.teamMatchStatistics) tournament.teamMatchStatistics = []
       const statEntry = statsToMatchStatEntry(
         stats, match.id,
@@ -236,23 +262,25 @@ export function mergeApiOverlay(rawTournament: any, apiData: ApiFetchedData): Me
     }
 
     // ── Goalkeeper saves (per-match, persisted so the season tally is stable) ──
-    const gkSaves = apiData.fixtureGkSaves[fixtureId]
-    if (gkSaves?.length) {
-      match.goalkeeperSaves = gkSaves.map(k => {
-        const isHome = normalizeTeamName(k.teamName) === normHome
-        return {
-          playerName: k.playerName,
-          team: isHome ? homeTeamName : awayTeamName,
-          teamId: isHome ? (match.homeTeamId ?? '') : (match.awayTeamId ?? ''),
-          saves: k.saves,
-        }
-      })
-    }
-    // Mark as checked once we've queried it (even if empty), so a match with no
-    // keeper data doesn't perpetually block the capped back-fill.
-    if (gkFetchedIds.has(fixtureId)) {
-      match.goalkeeperSavesChecked = true
-      if (!Array.isArray(match.goalkeeperSaves)) match.goalkeeperSaves = []
+    if (isCompletedNow) {
+      const gkSaves = apiData.fixtureGkSaves[fixtureId]
+      if (gkSaves?.length) {
+        match.goalkeeperSaves = gkSaves.map(k => {
+          const isHome = normalizeTeamName(k.teamName) === normHome
+          return {
+            playerName: k.playerName,
+            team: isHome ? homeTeamName : awayTeamName,
+            teamId: isHome ? (match.homeTeamId ?? '') : (match.awayTeamId ?? ''),
+            saves: k.saves,
+          }
+        })
+      }
+      // Mark as checked once we've queried it (even if empty), so a match with no
+      // keeper data doesn't perpetually block the capped back-fill.
+      if (gkFetchedIds.has(fixtureId)) {
+        match.goalkeeperSavesChecked = true
+        if (!Array.isArray(match.goalkeeperSaves)) match.goalkeeperSaves = []
+      }
     }
   }
 
