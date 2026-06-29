@@ -1,6 +1,6 @@
 'use client'
 
-import { useMemo } from 'react'
+import { useEffect, useMemo, useRef } from 'react'
 import { motion } from 'framer-motion'
 import { Bracket, Match } from '@/lib/types'
 import { PosterMatchBox } from './PosterMatchBox'
@@ -51,19 +51,41 @@ function fmtDate(iso: string): string {
   return d.toLocaleDateString('en-US', { month: 'short', day: 'numeric' })
 }
 
-function computeFirstRoundDelays(matches: (Match | null)[]): Map<string, number> {
+// Simulate: reveal tiles one at a time in true chronological order (match
+// date + kickoff time), SIM_TILE_INTERVAL seconds apart — the bracket "plays
+// out" in the order the matches are actually scheduled. Tune the interval here.
+const SIM_TILE_INTERVAL = 0.8
+
+function computeChronoDelays(matches: (Match | null)[]): Map<string, number> {
   const delays = new Map<string, number>()
-  const validMatches = matches.filter((m): m is Match => !!m?.date)
-  if (!validMatches.length) return delays
-
-  const uniqueDates = [...new Set(validMatches.map(m => m.date.split('T')[0]))].sort()
-
-  validMatches.forEach(match => {
-    const dateIndex = uniqueDates.indexOf(match.date.split('T')[0])
-    delays.set(match.id, dateIndex * 0.7) // 700ms per date group
-  })
-
+  const valid = matches.filter((m): m is Match => !!m?.id && !!m?.date && !isNaN(Date.parse(m.date)))
+  const sorted = [...valid].sort((a, b) => Date.parse(a.date) - Date.parse(b.date))
+  sorted.forEach((m, i) => delays.set(m.id, i * SIM_TILE_INTERVAL))
   return delays
+}
+
+// scroll-margin so a tile aligned to the top edge clears the sticky header,
+// and isn't flush against the bottom edge.
+const SIM_SCROLL_STYLE: React.CSSProperties = { scrollMarginTop: 90, scrollMarginBottom: 48 }
+
+// During a simulate run, scroll each tile into view right as it reveals (in
+// chronological order) so none appear off-screen above/below the fold. Uses
+// block:'nearest' → only scrolls when the tile is actually out of view.
+function useSimulateAutoScroll(simKey: number, isSimulate: boolean, simDelays: Map<string, number>) {
+  const delaysRef = useRef(simDelays)
+  delaysRef.current = simDelays
+  useEffect(() => {
+    if (!isSimulate) return
+    const entries = [...delaysRef.current.entries()].sort((a, b) => a[1] - b[1])
+    const timers: ReturnType<typeof setTimeout>[] = []
+    for (const [id, delay] of entries) {
+      timers.push(setTimeout(() => {
+        document.querySelector(`[data-sim-tile="${id}"]`)
+          ?.scrollIntoView({ behavior: 'smooth', block: 'nearest', inline: 'nearest' })
+      }, delay * 1000))
+    }
+    return () => timers.forEach(clearTimeout)
+  }, [simKey, isSimulate]) // eslint-disable-line react-hooks/exhaustive-deps
 }
 
 // ─── SVG path builders ────────────────────────────────────────────────────────
@@ -116,12 +138,18 @@ function Bracket48({ rounds, simKey, onMatchClick }: { rounds: Record<string, Ma
   const third = tp[0]  ?? null
 
   const isSimulate = simKey > 0
-  const r32Delays = useMemo(() => isSimulate ? computeFirstRoundDelays([...r32L, ...r32R]) : new Map<string, number>(), [r32L, r32R, isSimulate])
-  const maxR32Delay = isSimulate ? Math.max(0, ...Array.from(r32Delays.values())) : 0
-  const r16BaseDelay = isSimulate ? maxR32Delay + 0.7 : 0.2
-  const qfBaseDelay  = isSimulate ? r16BaseDelay + 0.7 : 0.32
-  const sfBaseDelay  = isSimulate ? qfBaseDelay + 0.5  : 0.42
-  const finalBaseDelay = isSimulate ? sfBaseDelay + 0.4 : 0.5
+  // Simulate → one global chronological reveal across every tile. Otherwise →
+  // the original quick round-by-round cascade.
+  const simDelays = useMemo(
+    () => isSimulate ? computeChronoDelays([...r32L, ...r32R, ...r16L, ...r16R, ...qfL, ...qfR, sfL, sfR, final, third]) : new Map<string, number>(),
+    [isSimulate, r32L, r32R, r16L, r16R, qfL, qfR, sfL, sfR, final, third],
+  )
+  const simAt = (m: Match | null) => (m ? simDelays.get(m.id) : undefined) ?? 0
+  const r16BaseDelay = 0.2
+  const qfBaseDelay  = 0.32
+  const sfBaseDelay  = 0.42
+  const finalBaseDelay = 0.5
+  useSimulateAutoScroll(simKey, isSimulate, simDelays)
 
   const svgPaths = useMemo(() => {
     const p: string[] = []
@@ -166,18 +194,18 @@ function Bracket48({ rounds, simKey, onMatchClick }: { rounds: Record<string, Ma
           {svgPaths.map((d, i) => <path key={i} d={d} className="bracket-line" />)}
         </svg>
 
-        <MatchCol matches={r32L} colX={COL_X_48[0]} cyList={R32_CY_48} matchH={MATCH_H_48} side="left"  delay={0}             simKey={simKey} delayMap={r32Delays} enterX={simKey > 0 ? -110 : undefined} onMatchClick={onMatchClick} />
-        <MatchCol matches={r16L} colX={COL_X_48[1]} cyList={R16_CY_48} matchH={MATCH_H_48} side="left"  delay={r16BaseDelay}   simKey={simKey} enterX={simKey > 0 ? -110 : undefined} onMatchClick={onMatchClick} />
-        <MatchCol matches={qfL}  colX={COL_X_48[2]} cyList={QF_CY_48}  matchH={MATCH_H_48} side="left"  delay={qfBaseDelay}    simKey={simKey} enterX={simKey > 0 ? -110 : undefined} onMatchClick={onMatchClick} />
-        {sfL && <SingleMatch match={sfL} colX={COL_X_48[3]} cy={SF_CY_48} matchH={MATCH_H_48} side="left"  delay={sfBaseDelay}  simKey={simKey} enterX={simKey > 0 ? -110 : undefined} onMatchClick={onMatchClick} />}
+        <MatchCol matches={r32L} colX={COL_X_48[0]} cyList={R32_CY_48} matchH={MATCH_H_48} side="left"  delay={0}             simKey={simKey} delayMap={isSimulate ? simDelays : undefined} enterX={simKey > 0 ? -110 : undefined} onMatchClick={onMatchClick} />
+        <MatchCol matches={r16L} colX={COL_X_48[1]} cyList={R16_CY_48} matchH={MATCH_H_48} side="left"  delay={r16BaseDelay}   simKey={simKey} delayMap={isSimulate ? simDelays : undefined} enterX={simKey > 0 ? -110 : undefined} onMatchClick={onMatchClick} />
+        <MatchCol matches={qfL}  colX={COL_X_48[2]} cyList={QF_CY_48}  matchH={MATCH_H_48} side="left"  delay={qfBaseDelay}    simKey={simKey} delayMap={isSimulate ? simDelays : undefined} enterX={simKey > 0 ? -110 : undefined} onMatchClick={onMatchClick} />
+        {sfL && <SingleMatch match={sfL} colX={COL_X_48[3]} cy={SF_CY_48} matchH={MATCH_H_48} side="left"  delay={isSimulate ? simAt(sfL) : sfBaseDelay}  simKey={simKey} enterX={simKey > 0 ? -110 : undefined} onMatchClick={onMatchClick} />}
 
-        <FinalBox match={final} colX={COL_X_48[4]} cy={FINAL_CY_48} delay={finalBaseDelay} simKey={simKey} onMatchClick={onMatchClick} />
-        {third && <ThirdBox match={third} colX={COL_X_48[4]} cy={THIRD_CY_48} matchH={MATCH_H_48} delay={finalBaseDelay + 0.03} simKey={simKey} onMatchClick={onMatchClick} />}
+        <FinalBox match={final} colX={COL_X_48[4]} cy={FINAL_CY_48} delay={isSimulate ? simAt(final) : finalBaseDelay} simKey={simKey} onMatchClick={onMatchClick} />
+        {third && <ThirdBox match={third} colX={COL_X_48[4]} cy={THIRD_CY_48} matchH={MATCH_H_48} delay={isSimulate ? simAt(third) : finalBaseDelay + 0.03} simKey={simKey} onMatchClick={onMatchClick} />}
 
-        {sfR && <SingleMatch match={sfR} colX={COL_X_48[5]} cy={SF_CY_48} matchH={MATCH_H_48} side="right" delay={sfBaseDelay}  simKey={simKey} enterX={simKey > 0 ? 110 : undefined} onMatchClick={onMatchClick} />}
-        <MatchCol matches={qfR}  colX={COL_X_48[6]} cyList={QF_CY_48}  matchH={MATCH_H_48} side="right" delay={qfBaseDelay}    simKey={simKey} enterX={simKey > 0 ? 110 : undefined} onMatchClick={onMatchClick} />
-        <MatchCol matches={r16R} colX={COL_X_48[7]} cyList={R16_CY_48} matchH={MATCH_H_48} side="right" delay={r16BaseDelay}   simKey={simKey} enterX={simKey > 0 ? 110 : undefined} onMatchClick={onMatchClick} />
-        <MatchCol matches={r32R} colX={COL_X_48[8]} cyList={R32_CY_48} matchH={MATCH_H_48} side="right" delay={0}             simKey={simKey} delayMap={r32Delays} enterX={simKey > 0 ? 110 : undefined} onMatchClick={onMatchClick} />
+        {sfR && <SingleMatch match={sfR} colX={COL_X_48[5]} cy={SF_CY_48} matchH={MATCH_H_48} side="right" delay={isSimulate ? simAt(sfR) : sfBaseDelay}  simKey={simKey} enterX={simKey > 0 ? 110 : undefined} onMatchClick={onMatchClick} />}
+        <MatchCol matches={qfR}  colX={COL_X_48[6]} cyList={QF_CY_48}  matchH={MATCH_H_48} side="right" delay={qfBaseDelay}    simKey={simKey} delayMap={isSimulate ? simDelays : undefined} enterX={simKey > 0 ? 110 : undefined} onMatchClick={onMatchClick} />
+        <MatchCol matches={r16R} colX={COL_X_48[7]} cyList={R16_CY_48} matchH={MATCH_H_48} side="right" delay={r16BaseDelay}   simKey={simKey} delayMap={isSimulate ? simDelays : undefined} enterX={simKey > 0 ? 110 : undefined} onMatchClick={onMatchClick} />
+        <MatchCol matches={r32R} colX={COL_X_48[8]} cyList={R32_CY_48} matchH={MATCH_H_48} side="right" delay={0}             simKey={simKey} delayMap={isSimulate ? simDelays : undefined} enterX={simKey > 0 ? 110 : undefined} onMatchClick={onMatchClick} />
       </div>
     </div>
   )
@@ -198,11 +226,15 @@ function Bracket32({ rounds, simKey, onMatchClick }: { rounds: Record<string, Ma
   const third = tp[0]  ?? null
 
   const isSimulate = simKey > 0
-  const r16Delays = useMemo(() => isSimulate ? computeFirstRoundDelays([...r16L, ...r16R]) : new Map<string, number>(), [r16L, r16R, isSimulate])
-  const maxR16Delay = isSimulate ? Math.max(0, ...Array.from(r16Delays.values())) : 0
-  const qfBaseDelay  = isSimulate ? maxR16Delay + 0.7 : 0.2
-  const sfBaseDelay  = isSimulate ? qfBaseDelay + 0.5  : 0.32
-  const finalBaseDelay = isSimulate ? sfBaseDelay + 0.4 : 0.42
+  const simDelays = useMemo(
+    () => isSimulate ? computeChronoDelays([...r16L, ...r16R, ...qfL, ...qfR, sfL, sfR, final, third]) : new Map<string, number>(),
+    [isSimulate, r16L, r16R, qfL, qfR, sfL, sfR, final, third],
+  )
+  const simAt = (m: Match | null) => (m ? simDelays.get(m.id) : undefined) ?? 0
+  const qfBaseDelay  = 0.2
+  const sfBaseDelay  = 0.32
+  const finalBaseDelay = 0.42
+  useSimulateAutoScroll(simKey, isSimulate, simDelays)
 
   const svgPaths = useMemo(() => {
     const p: string[] = []
@@ -243,16 +275,16 @@ function Bracket32({ rounds, simKey, onMatchClick }: { rounds: Record<string, Ma
           {svgPaths.map((d, i) => <path key={i} d={d} className="bracket-line" />)}
         </svg>
 
-        <MatchCol matches={r16L} colX={COL_X_32[0]} cyList={R16_CY_32} matchH={MATCH_H_32} side="left"  delay={0}           simKey={simKey} delayMap={r16Delays} enterX={simKey > 0 ? -110 : undefined} onMatchClick={onMatchClick} />
-        <MatchCol matches={qfL}  colX={COL_X_32[1]} cyList={QF_CY_32}  matchH={MATCH_H_32} side="left"  delay={qfBaseDelay}  simKey={simKey} enterX={simKey > 0 ? -110 : undefined} onMatchClick={onMatchClick} />
-        {sfL && <SingleMatch match={sfL} colX={COL_X_32[2]} cy={SF_CY_32} matchH={MATCH_H_32} side="left"  delay={sfBaseDelay} simKey={simKey} enterX={simKey > 0 ? -110 : undefined} onMatchClick={onMatchClick} />}
+        <MatchCol matches={r16L} colX={COL_X_32[0]} cyList={R16_CY_32} matchH={MATCH_H_32} side="left"  delay={0}           simKey={simKey} delayMap={isSimulate ? simDelays : undefined} enterX={simKey > 0 ? -110 : undefined} onMatchClick={onMatchClick} />
+        <MatchCol matches={qfL}  colX={COL_X_32[1]} cyList={QF_CY_32}  matchH={MATCH_H_32} side="left"  delay={qfBaseDelay}  simKey={simKey} delayMap={isSimulate ? simDelays : undefined} enterX={simKey > 0 ? -110 : undefined} onMatchClick={onMatchClick} />
+        {sfL && <SingleMatch match={sfL} colX={COL_X_32[2]} cy={SF_CY_32} matchH={MATCH_H_32} side="left"  delay={isSimulate ? simAt(sfL) : sfBaseDelay} simKey={simKey} enterX={simKey > 0 ? -110 : undefined} onMatchClick={onMatchClick} />}
 
-        <FinalBox match={final} colX={COL_X_32[3]} cy={FINAL_CY_32} delay={finalBaseDelay} simKey={simKey} onMatchClick={onMatchClick} />
-        {third && <ThirdBox match={third} colX={COL_X_32[3]} cy={THIRD_CY_32} matchH={MATCH_H_32} delay={finalBaseDelay + 0.03} simKey={simKey} onMatchClick={onMatchClick} />}
+        <FinalBox match={final} colX={COL_X_32[3]} cy={FINAL_CY_32} delay={isSimulate ? simAt(final) : finalBaseDelay} simKey={simKey} onMatchClick={onMatchClick} />
+        {third && <ThirdBox match={third} colX={COL_X_32[3]} cy={THIRD_CY_32} matchH={MATCH_H_32} delay={isSimulate ? simAt(third) : finalBaseDelay + 0.03} simKey={simKey} onMatchClick={onMatchClick} />}
 
-        {sfR && <SingleMatch match={sfR} colX={COL_X_32[4]} cy={SF_CY_32} matchH={MATCH_H_32} side="right" delay={sfBaseDelay} simKey={simKey} enterX={simKey > 0 ? 110 : undefined} onMatchClick={onMatchClick} />}
-        <MatchCol matches={qfR}  colX={COL_X_32[5]} cyList={QF_CY_32}  matchH={MATCH_H_32} side="right" delay={qfBaseDelay}  simKey={simKey} enterX={simKey > 0 ? 110 : undefined} onMatchClick={onMatchClick} />
-        <MatchCol matches={r16R} colX={COL_X_32[6]} cyList={R16_CY_32} matchH={MATCH_H_32} side="right" delay={0}           simKey={simKey} delayMap={r16Delays} enterX={simKey > 0 ? 110 : undefined} onMatchClick={onMatchClick} />
+        {sfR && <SingleMatch match={sfR} colX={COL_X_32[4]} cy={SF_CY_32} matchH={MATCH_H_32} side="right" delay={isSimulate ? simAt(sfR) : sfBaseDelay} simKey={simKey} enterX={simKey > 0 ? 110 : undefined} onMatchClick={onMatchClick} />}
+        <MatchCol matches={qfR}  colX={COL_X_32[5]} cyList={QF_CY_32}  matchH={MATCH_H_32} side="right" delay={qfBaseDelay}  simKey={simKey} delayMap={isSimulate ? simDelays : undefined} enterX={simKey > 0 ? 110 : undefined} onMatchClick={onMatchClick} />
+        <MatchCol matches={r16R} colX={COL_X_32[6]} cyList={R16_CY_32} matchH={MATCH_H_32} side="right" delay={0}           simKey={simKey} delayMap={isSimulate ? simDelays : undefined} enterX={simKey > 0 ? 110 : undefined} onMatchClick={onMatchClick} />
       </div>
     </div>
   )
@@ -302,8 +334,10 @@ function MatchCol({ matches, colX, cyList, matchH, side, delay, simKey, delayMap
         const cy = cyList[i] ?? 0
         const isSimulate = enterX !== undefined
         const stagger = isSimulate ? 0.06 : 0.03
-        const matchDelay = isSimulate && match && delayMap?.has(match.id)
-          ? delayMap.get(match.id)! + i * stagger
+        // delayMap (simulate) carries each tile's own chronological delay — use it
+        // directly; otherwise fall back to the round's base delay + index stagger.
+        const matchDelay = match && delayMap?.has(match.id)
+          ? delayMap.get(match.id)!
           : delay + i * stagger
         const initAnim = isSimulate
           ? { opacity: 0, x: enterX, y: 0 }
@@ -315,7 +349,8 @@ function MatchCol({ matches, colX, cyList, matchH, side, delay, simKey, delayMap
             animate={{ opacity: 1, x: 0, y: 0 }}
             transition={{ duration: isSimulate ? 0.55 : 0.35, delay: matchDelay }}
             className="absolute"
-            style={{ left: colX, top: cy - matchH / 2 - CAPTION_H, width: COL_W }}
+            data-sim-tile={match?.id}
+            style={{ ...SIM_SCROLL_STYLE, left: colX, top: cy - matchH / 2 - CAPTION_H, width: COL_W }}
           >
             <MatchCaption match={match} />
             <PosterMatchBox match={match} size="sm" showLabel={false} popoverSide={side === 'left' ? 'right' : 'left'} onMatchClick={onMatchClick} />
@@ -337,7 +372,8 @@ function SingleMatch({ match, colX, cy, matchH, side, delay, simKey, enterX, onM
       animate={{ opacity: 1, x: 0, y: 0 }}
       transition={{ duration: enterX !== undefined ? 0.55 : 0.4, delay }}
       className="absolute"
-      style={{ left: colX, top: cy - matchH / 2 - CAPTION_H, width: COL_W }}
+      data-sim-tile={match?.id}
+      style={{ ...SIM_SCROLL_STYLE, left: colX, top: cy - matchH / 2 - CAPTION_H, width: COL_W }}
     >
       <MatchCaption match={match} />
       <PosterMatchBox match={match} size="sm" showLabel={false} popoverSide={side === 'left' ? 'right' : 'left'} onMatchClick={onMatchClick} />
@@ -376,7 +412,8 @@ function FinalBox({ match, colX, cy, delay, simKey, onMatchClick }: { match: Mat
       animate={{ opacity: 1, scale: 1 }}
       transition={{ duration: 0.5, delay }}
       className="absolute"
-      style={{ left: colX, top: cy - FINAL_H / 2 - TROPHY_H, width: COL_W }}
+      data-sim-tile={match?.id}
+      style={{ ...SIM_SCROLL_STYLE, left: colX, top: cy - FINAL_H / 2 - TROPHY_H, width: COL_W }}
     >
       {/* Winner flag + name above trophy */}
       <div style={{ height: TROPHY_H - 4, display: 'flex', flexDirection: 'column', alignItems: 'center', justifyContent: winner ? 'space-between' : 'flex-end', paddingTop: winner ? 6 : 0 }}>
@@ -410,7 +447,8 @@ function ThirdBox({ match, colX, cy, matchH, delay, simKey, onMatchClick }: { ma
       animate={{ opacity: 1, y: 0 }}
       transition={{ duration: 0.38, delay }}
       className="absolute"
-      style={{ left: colX, top: cy - matchH / 2 - CAPTION_H - 18 - (getFinalWinner(match) ? 28 : 0), width: COL_W }}
+      data-sim-tile={match?.id}
+      style={{ ...SIM_SCROLL_STYLE, left: colX, top: cy - matchH / 2 - CAPTION_H - 18 - (getFinalWinner(match) ? 28 : 0), width: COL_W }}
     >
       {/* 3rd place winner */}
       {(() => {
