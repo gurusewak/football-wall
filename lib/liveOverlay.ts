@@ -203,9 +203,10 @@ export function mergeApiOverlay(rawTournament: any, apiData: ApiFetchedData): Me
 
         matchesUpdated++
       } else {
-        // Live or scheduled — no final result yet. Reset to a clean scheduled
-        // state so nothing (score, goals, cards, saves, stats) shows until FT.
-        match.status = 'scheduled'
+        // Live or scheduled — no final result yet. Keep the live/scheduled status
+        // (so the Matches tab "Live Now" section can list it) but store NO score
+        // or in-progress data; everything stays hidden until full-time.
+        match.status = apiStatus
         match.homeScore = null
         match.awayScore = null
         match.wentToExtraTime = false

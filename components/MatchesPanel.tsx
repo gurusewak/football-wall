@@ -69,7 +69,7 @@ function LiveDot() {
   return (
     <span
       className="inline-block w-1.5 h-1.5 rounded-full animate-pulse"
-      style={{ background: '#e0564f', boxShadow: '0 0 6px #e0564f' }}
+      style={{ background: '#e0a24f', boxShadow: '0 0 6px #e0a24f' }}
     />
   )
 }
@@ -78,7 +78,7 @@ function SectionHeader({ label, count, live }: { label: string; count: number; l
   return (
     <div className="flex items-center gap-2.5 mb-3">
       {live && <LiveDot />}
-      <span style={{ fontSize: 12, fontWeight: 700, letterSpacing: '0.12em', textTransform: 'uppercase', color: live ? '#e06b6b' : '#9a9a9a' }}>
+      <span style={{ fontSize: 12, fontWeight: 700, letterSpacing: '0.12em', textTransform: 'uppercase', color: live ? '#e0a24f' : '#9a9a9a' }}>
         {label}
       </span>
       <span style={{ fontSize: 11, color: '#5a5a5a' }}>{count}</span>
@@ -149,14 +149,15 @@ function MatchRow({ m, index, onClick }: { m: Match; index: number; onClick: () 
         <span style={{ fontSize: 10.5, fontWeight: 700, letterSpacing: '0.08em', textTransform: 'uppercase', color: '#7a7a7a' }}>
           {stageLabel(m)}
         </span>
-        <span style={{ fontSize: 11, color: isLive ? '#e06b6b' : '#8a8a8a', display: 'flex', alignItems: 'center', gap: 6, whiteSpace: 'nowrap' }}>
+        <span style={{ fontSize: 11, color: isLive ? '#e0a24f' : '#8a8a8a', display: 'flex', alignItems: 'center', gap: 6, whiteSpace: 'nowrap' }}>
           {isLive && <LiveDot />}
-          {isLive ? 'LIVE' : `${day}${time ? ` · ${time}` : ''}`}
+          {isLive ? 'In Play' : `${day}${time ? ` · ${time}` : ''}`}
         </span>
       </div>
 
-      <TeamLine name={m.homeTeam} score={m.homeScore} win={w.home} show={isDone || isLive} />
-      <TeamLine name={m.awayTeam} score={m.awayScore} win={w.away} show={isDone || isLive} />
+      {/* In-play rows never show a score — only completed matches do */}
+      <TeamLine name={m.homeTeam} score={m.homeScore} win={w.home} show={isDone} />
+      <TeamLine name={m.awayTeam} score={m.awayScore} win={w.away} show={isDone} />
 
       {(city || extra) && (
         <div className="flex items-center justify-between mt-1.5 gap-2">
@@ -185,7 +186,7 @@ export function MatchesPanel({ tournament, onMatchClick }: Props) {
     const past = all.filter(m => m.status === 'completed').sort(desc) // §3 — most recent first
 
     return [
-      { key: 'live', label: 'Live Now', matches: live },
+      { key: 'live', label: 'In Play', matches: live },
       { key: 'upcoming', label: 'Upcoming', matches: known },
       { key: 'tbd', label: 'Yet to be Decided', matches: unknown },
       { key: 'completed', label: 'Completed', matches: past },
